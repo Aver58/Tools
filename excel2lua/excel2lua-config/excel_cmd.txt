@@ -1,0 +1,13 @@
+#========================================================================
+#   FileName: excel_cmd.txt
+#     Author: kevinlin
+#      Desc:  配置生成的命令集合
+#   History:
+#      Date:   2014年12月15日 11:53:44
+#========================================================================
+
+#for test
+./excel2lua_final.py excel/Dungeon.xls  DUNGEON_LIST  --repeated=0 --subkey=0 --output=cs
+
+cd excel2lua-master
+doall.bat
