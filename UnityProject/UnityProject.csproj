@@ -85,12 +85,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\AddObjCommand.cs" />
-    <Compile Include="Assets\Scripts\CommandPattern\Command.cs" />
-    <Compile Include="Assets\Scripts\CommandPattern\CommandPool.cs" />
-    <Compile Include="Assets\Scripts\CommandPattern\Deque.cs" />
-    <Compile Include="Assets\Scripts\DeleteObjCommand.cs" />
-    <Compile Include="Assets\Scripts\UndoRedoManager.cs" />
+    <Compile Include="Assets\Scripts\UndoDemo\AddObjCommand.cs" />
+    <Compile Include="Assets\Scripts\UndoDemo\CommandPattern\Command.cs" />
+    <Compile Include="Assets\Scripts\UndoDemo\CommandPattern\CommandPool.cs" />
+    <Compile Include="Assets\Scripts\UndoDemo\CommandPattern\Deque.cs" />
+    <Compile Include="Assets\Scripts\UndoDemo\DeleteObjCommand.cs" />
+    <Compile Include="Assets\Scripts\UndoDemo\UndoRedoManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

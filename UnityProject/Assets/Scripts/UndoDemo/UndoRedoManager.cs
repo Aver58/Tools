@@ -196,6 +196,8 @@ public class UndoRedoManager
     #endregion
 }
 
+//http://blog.skydev.cc/Article/View/25c9a7f7-e5be-4419-b0b4-7f147b96617a
+
 //public class TypeNameSerializationBinder : ISerializationBinder
 //{
 //    public void BindToName(Type serializedType, out string assemblyName, out string typeName)
