@@ -122,6 +122,9 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="ConsoleE">
+      <HintPath>Assets/Editor/ConsoleE/Editor/ConsoleE.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Program Files/Unity_5.6.6/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -136,7 +139,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Editor\MapEditorWindow.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\ACHelper.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\ACModule.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\ACPrefab.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\ACProject.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\ACScene.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\ACSingleModule.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\ACSprite.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\ACStyles.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\ACWindow.cs" />
+    <Compile Include="Assets\Editor\AtlasCollect\AcMultiMoudle.cs" />
+    <Compile Include="Assets\Editor\AtlasLooker\ALAtlas.cs" />
+    <Compile Include="Assets\Editor\AtlasLooker\ALStyles.cs" />
+    <Compile Include="Assets\Editor\AtlasLooker\ALWindow.cs" />
+    <Compile Include="Assets\Editor\MapEditorWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
