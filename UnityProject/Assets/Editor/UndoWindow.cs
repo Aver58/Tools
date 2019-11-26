@@ -12,7 +12,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class MapEditorWindow : EditorWindow
+public class UndoWindow : EditorWindow
 {
     private int m_maxCommandCount;
     private int selUndoGridInt = 0;
@@ -20,7 +20,7 @@ public class MapEditorWindow : EditorWindow
 
     private Vector2 m_scroll1 = Vector2.zero;
     private UndoRedoManager undoRedoManager;
-    private static MapEditorWindow window;
+    private static UndoWindow window;
 
     [MenuItem("Window/打开MapEditorWindow", false, 1)]
     public static void OpenMapEditorWindow()
@@ -30,7 +30,7 @@ public class MapEditorWindow : EditorWindow
 
     public static void ShowWindow()
     {
-        window = GetWindow<MapEditorWindow>();
+        window = GetWindow<UndoWindow>();
         window.Show();
     }
 

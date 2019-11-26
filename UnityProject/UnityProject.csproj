@@ -85,12 +85,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\AssetBundleDataBinaryReader.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\AssetBundleDataReader.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\AssetBundleExportType.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\AssetBundleInfo.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\AssetBundleLoadProgress.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\AssetBundleLoader.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\AssetBundleManager.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\AssetBundlePathResolver.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\HashUtil.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\ListPool.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\Loaders\AndroidAssetBundleLoader.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\Loaders\EditorModeAssetBundleLoader.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\Loaders\IOSAssetBundleLoader.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\Loaders\MissAssetBundleLoader.cs" />
+    <Compile Include="Assets\ABSystem\Scripts\AssetBundle\ObjectPool.cs" />
+    <Compile Include="Assets\Scripts\Network\TestDownload.cs" />
     <Compile Include="Assets\Scripts\UndoDemo\AddObjCommand.cs" />
     <Compile Include="Assets\Scripts\UndoDemo\CommandPattern\Command.cs" />
     <Compile Include="Assets\Scripts\UndoDemo\CommandPattern\CommandPool.cs" />
     <Compile Include="Assets\Scripts\UndoDemo\CommandPattern\Deque.cs" />
     <Compile Include="Assets\Scripts\UndoDemo\DeleteObjCommand.cs" />
     <Compile Include="Assets\Scripts\UndoDemo\UndoRedoManager.cs" />
+    <Compile Include="Assets\Test.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\ABSystem\link.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
