@@ -131,7 +131,7 @@ public class AtlasData
 	}
 
 	// 查找并设置给Image(包括Sprite和材质)
-	public void SetToImage(ImageEx image, string name)
+	public void SetToImage(SDImage image, string name)
 	{
 		Sprite data = GetSpriteData(name);
 		if (data != null)
@@ -144,7 +144,7 @@ public class AtlasData
 		}
 	}
 
-	public static void SetImage(ImageEx image, AtlasData ad, Sprite sprite)
+	public static void SetImage(SDImage image, AtlasData ad, Sprite sprite)
 	{
 		image.sprite = sprite;
 		//image.SpriteName = sprite.name;

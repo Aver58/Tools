@@ -50,9 +50,12 @@
      <Compile Include="Assets\AStar\MyAStar.cs" />
      <Compile Include="Assets\AStar\Reference.cs" />
      <Compile Include="Assets\Scripts\Component\LoopScrollRect.cs" />
+     <Compile Include="Assets\Scripts\PathDef.cs" />
      <Compile Include="Assets\Scripts\TexturePacker\AtlasHierarchy.cs" />
      <Compile Include="Assets\Scripts\TexturePacker\AtlasReference.cs" />
-     <Compile Include="Assets\Scripts\TexturePacker\ImageEx.cs" />
+     <Compile Include="Assets\Scripts\TexturePacker\PaddingData.cs" />
+     <Compile Include="Assets\Scripts\TexturePacker\SDImage.cs" />
+     <Compile Include="Assets\Scripts\TexturePacker\SpriteAssetMoudle.cs" />
      <Compile Include="Assets\Scripts\UndoDemo\AddObjCommand.cs" />
      <Compile Include="Assets\Scripts\UndoDemo\CommandPattern\Command.cs" />
      <Compile Include="Assets\Scripts\UndoDemo\CommandPattern\CommandPool.cs" />

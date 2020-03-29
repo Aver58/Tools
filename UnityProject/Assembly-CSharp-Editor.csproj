@@ -62,8 +62,6 @@
      <Compile Include="Assets\Editor\TexturePacker\AtlasEditorHelper.cs" />
      <Compile Include="Assets\Editor\TexturePacker\FileHelper.cs" />
      <Compile Include="Assets\Editor\TexturePacker\MiniJSON.cs" />
-     <Compile Include="Assets\Editor\TexturePacker\PaddingData.cs" />
-     <Compile Include="Assets\Editor\TexturePacker\PathDef.cs" />
      <Compile Include="Assets\Editor\TexturePacker\PdrAtlasMaker.cs" />
      <Compile Include="Assets\Editor\TexturePacker\PdrMenuOptions.cs" />
      <Compile Include="Assets\Editor\TexturePacker\ShellHelper.cs" />
