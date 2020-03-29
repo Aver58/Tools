@@ -1,0 +1,140 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>plain</name>
+	
+    <!-- display name of the exporter for the combo box -->
+    <displayName>~~~ Custom ~~~</displayName>
+	
+    <!-- description of the exporter -->
+    <description>Exporter to demonstrate how to crate your own exporters</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>plaintext</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>Plain text file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>txt</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Demo txt file containing an example for the sprite data</description>
+
+            <!-- name of the template file -->
+            <template>plain.txt</template>
+        </file>
+
+        <file>
+            <!-- name of this file variable -->
+            <name>header</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>Header file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>h</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Another file created from the same data. Might be a header file with definitions for the sprites.</description>
+
+            <!-- name of the template file -->
+            <template>plain.h</template>
+
+            <!-- write this file only for the first AutoSD variation -->
+            <!-- values are: all (default), first, last -->
+            <hasSeparateAutoSDFiles>first</hasSeparateAutoSDFiles>
+
+            <!-- do not write a file for each multipack variation -->
+            <hasSeparateMultiPackFiles>false</hasSeparateMultiPackFiles>
+
+            <!-- this file is optional -->
+            <optional>true</optional>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>true</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>true</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <!-- supports npot sizes -->
+    <supportsNPOT>true</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+    <!-- ui properties -->
+    <properties>
+        <property>
+            <name>string-property</name>
+            <type>string</type>
+            <displayName>String property</displayName>
+            <toolTip>Some string that is passed to the exporter, you can access it using {{exporterProperties.string_property}}</toolTip>
+            <default>hello world</default>
+        </property>
+
+        <property>
+            <name>bool-property</name>
+            <type>bool</type>
+            <displayName>Bool property</displayName>
+            <toolTip>Some bool flag that is passed to the exporter, you can access it using {{exporterProperties.bool_property}}</toolTip>
+        </property>
+    </properties>
+
+    <!-- default values, applied when the exporter is activated in the UI or command line -->
+    <defaults>
+        <!-- this is currently only a subset of settings -->
+        <extrude>1</extrude>
+        <shapePadding>0</shapePadding>
+        <borderPadding>0</borderPadding>
+        <trimMode>Trim</trimMode>
+        <writePivotPoints>false</writePivotPoints>
+        <sizeConstraints>AnySize</sizeConstraints>
+    </defaults>
+
+    <!-- scaling variant presets -->
+    <variantPresets>
+        <variantPreset>
+            <name>Plain @2x</name>
+            <variant>
+                <scale>1.0</scale>
+                <extension>@2x</extension>
+            </variant>
+            <variant>
+                <scale>0.5</scale>
+                <extension></extension>
+            </variant>
+        </variantPreset>
+
+        <variantPreset>
+            <name>Plain @4x/@2x</name>
+            <variant>
+                <scale>1.0</scale>
+                <extension>@4x</extension>
+            </variant>
+            <variant>
+                <scale>0.5</scale>
+                <extension>@2x</extension>
+            </variant>
+            <variant>
+                <scale>0.25</scale>
+                <extension></extension>
+            </variant>
+        </variantPreset>
+    </variantPresets>
+
+</exporter>
+
+

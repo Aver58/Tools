@@ -1,0 +1,12 @@
+{% for sprite in allSprites %}
+
+.{{sprite.trimmedName}}
+{
+	width: {{sprite.frameRect.width}}px; 
+	height: {{sprite.frameRect.height}}px; 
+	background-decorator: image; 
+	background-image: {{texture.fullName}} {{sprite.frameRect.x}}px {{sprite.frameRect.y}}px {{sprite.frameRect.x|add:sprite.frameRect.width}}px {{sprite.frameRect.y|add:sprite.frameRect.height}}px;
+}
+
+{% endfor %}
+

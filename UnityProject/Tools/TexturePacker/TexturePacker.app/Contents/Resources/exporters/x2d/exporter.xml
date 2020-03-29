@@ -1,0 +1,52 @@
+<exporter version="1.0">
+  <!-- identifier of the exporter -->
+  <name>x2d</name>
+ 
+  <!-- display name of the exporter for the combo box -->
+  <displayName>x2d engine</displayName>
+ 
+  <!-- description of the exporter -->
+  <description>Export to x2d engine format.</description>
+ 
+  <!-- exporter version -->
+  <version>1.0</version>
+ 
+  <!-- currently only one file allowed -
+       more to come soon -->
+  <files>
+      <file>
+          <!-- name of this file variable -->
+          <name>main</name>
+ 
+          <!-- human readable name (for GUI) -->
+          <displayName>spritesheet</displayName>
+ 
+          <!-- file extension for the file -->
+          <fileExtension>xml</fileExtension>
+ 
+           <!-- description what the file contains, used in tooltips in the GUI -->
+           <description>XML file for x2d</description>
+
+          <!-- name of the template file -->
+          <template>template.xml</template>
+      </file>
+  </files>
+ 
+  <!-- target framework supports trimming -->
+  <supportsTrimming>no</supportsTrimming>
+ 
+  <!-- target framework supports rotated sprites -->
+  <supportsRotation>no</supportsRotation>
+ 
+  <!-- rotated sprites direction (cw/ccw) -->
+  <rotationDirection>cw</rotationDirection>
+ 
+  <!-- supports npot sizes -->
+  <supportsNPOT>true</supportsNPOT>
+ 
+  <!-- supports file name stripping (remove .png etc) -->
+  <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+ 
+  <!-- supports texture subpath -->
+  <supportsTextureSubPath>yes</supportsTextureSubPath>
+</exporter>

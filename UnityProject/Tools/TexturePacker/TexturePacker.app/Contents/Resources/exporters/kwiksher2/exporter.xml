@@ -1,0 +1,90 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>kwik</name>
+
+    <!-- for compatiblility only: allow referencing the exporter as "Kwik 2" -->
+    <nameAlias>Kwik 2</nameAlias>
+    <nameAlias>kwik2</nameAlias>
+
+    <!-- display name of the exporter for the combo box -->
+    <displayName>Kwik (image sheet)</displayName>
+	
+    <!-- description of the exporter -->
+    <description>Exporter for Kwik using new image sheet format.</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>lua</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>Kwik lua file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>lua</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Lua file for Kwik</description>
+
+            <!-- name of the template file -->
+            <template>K2.lua</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>false</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>false</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <!-- supports npot sizes -->
+    <supportsNPOT>true</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+    <variantPresets>
+        <variantPreset>
+            <name>Corona @2x</name>
+            <forceIdenticalLayout>true</forceIdenticalLayout>
+            <variant>
+                <scale>1.0</scale>
+                <extension>@2x</extension>
+            </variant>
+            <variant>
+                <scale>0.5</scale>
+                <extension></extension>
+            </variant>
+        </variantPreset>
+
+        <variantPreset>
+            <name>Corona @4x/@2x</name>
+            <forceIdenticalLayout>true</forceIdenticalLayout>
+            <variant>
+                <scale>1.0</scale>
+                <extension>@4x</extension>
+            </variant>
+            <variant>
+                <scale>0.5</scale>
+                <extension>@2x</extension>
+            </variant>
+            <variant>
+                <scale>0.25</scale>
+                <extension></extension>
+            </variant>
+        </variantPreset>
+    </variantPresets>
+
+</exporter>
+
+

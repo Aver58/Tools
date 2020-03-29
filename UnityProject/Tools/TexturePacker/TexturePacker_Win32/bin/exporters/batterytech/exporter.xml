@@ -1,0 +1,54 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>batterytech</name>
+	
+    <!-- display name of the exporter for the combo box -->
+    <displayName>BatteryTech SDK</displayName>
+	
+    <!-- description of the exporter -->
+    <description>BatteryTech Exporter</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>batterytech_btx</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>BatteryTech Texture</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>btx</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Data file for BetteryTech</description>
+
+            <!-- name of the template file -->
+            <template>batterytech_btx.txt</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>true</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>true</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <!-- supports npot sizes -->
+    <supportsNPOT>true</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>no</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+</exporter>
+
+

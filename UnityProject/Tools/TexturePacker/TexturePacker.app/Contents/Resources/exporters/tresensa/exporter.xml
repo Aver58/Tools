@@ -1,0 +1,57 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>tresensa</name>
+
+    <!-- for compatiblility only: allow referencing the exporter as "easyjs" -->
+    <nameAlias>tresensa</nameAlias>
+
+    <!-- display name of the exporter for the combo box -->
+    <displayName>TreSensa</displayName>
+	
+    <!-- description of the exporter -->
+    <description>Exporter for TreSensa TGE.</description>
+
+    <!-- exporter version -->
+    <version>1.1</version>
+	
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>js</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>Javascript</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>js</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Javascript file for TreSensa</description>
+
+            <!-- name of the template file -->
+            <template>TreSensa.js</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>true</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>false</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <!-- supports npot sizes -->
+    <supportsNPOT>false</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+</exporter>
+
+

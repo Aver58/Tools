@@ -1,0 +1,54 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>less</name>
+	
+    <!-- display name of the exporter for the combo box -->
+    <displayName>LESS (css)</displayName>
+	
+    <!-- description of the exporter -->
+    <description>Creates a LESS file that can be incorporated into a sprites arrangement</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>less</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>LESS file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>less</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>LESS stylesheet file</description>
+
+            <!-- name of the template file -->
+            <template>sprites.less</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>true</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>false</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <!-- supports npot sizes -->
+    <supportsNPOT>true</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texture subpath -->
+    <supportsTextureSubPath>no</supportsTextureSubPath>
+
+</exporter>
+
+

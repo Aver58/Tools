@@ -1,10 +1,8 @@
 ﻿
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Debuger = LuaInterface.Debugger;
 
 /// <summary>
 /// 纯自动适配无限循环滚动  
@@ -161,7 +159,7 @@ public class LoopScrollRect : UIBehaviour, IPointerDownHandler, IPointerUpHandle
     protected System.Action onRelease;              //拖拽刷新时拖拽后回调，非拖拽刷新在刷新出当前最后一个时回调
 
     public RectTransform m_releaseRectTr;           //刷新文本的Item
-    protected TextEx m_releaseText;                   //刷新文本
+    protected Text m_releaseText;                   //刷新文本
     #endregion
 
     protected override void Awake()
@@ -169,10 +167,10 @@ public class LoopScrollRect : UIBehaviour, IPointerDownHandler, IPointerUpHandle
         base.Awake();
         if (m_releaseRectTr)
         {
-            m_releaseText = m_releaseRectTr.GetComponentInChildren<TextEx>();
+            m_releaseText = m_releaseRectTr.GetComponentInChildren<Text>();
         }
-        m_swipeUpStr = LuaEventMgr.Instance.InvokeFunc<string>(LuaEventDefine.GETLANGUAGETEXT, SWIPEUPKEY);
-        m_releseStr = LuaEventMgr.Instance.InvokeFunc<string>(LuaEventDefine.GETLANGUAGETEXT, RELEASEKEY);
+        //m_swipeUpStr = LuaEventMgr.Instance.InvokeFunc<string>(LuaEventDefine.GETLANGUAGETEXT, SWIPEUPKEY);
+        //m_releseStr = LuaEventMgr.Instance.InvokeFunc<string>(LuaEventDefine.GETLANGUAGETEXT, RELEASEKEY);
     }
 
     protected override void Start()

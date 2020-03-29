@@ -1,0 +1,52 @@
+<exporter version="1.0">
+  <!-- identifier of the exporter -->
+  <name>spritestudio</name>
+ 
+  <!-- display name of the exporter for the combo box -->
+  <displayName>SpriteStudio</displayName>
+ 
+  <!-- description of the exporter -->
+  <description>OPTPiX SpriteStudio 5 CellMap File.</description>
+ 
+  <!-- exporter version -->
+  <version>1.1</version>
+ 
+  <!-- currently only one file allowed -
+       more to come soon -->
+  <files>
+      <file>
+          <!-- name of this file variable -->
+          <name>ssce</name>
+ 
+          <!-- human readable name (for GUI) -->
+          <displayName>SpriteStudio ssce file</displayName>
+ 
+          <!-- file extension for the file -->
+          <fileExtension>ssce</fileExtension>
+ 
+          <!-- name of the template file -->
+          <template>template.xml</template>
+      </file>
+  </files>
+ 
+  <!-- target framework supports trimming -->
+  <supportsTrimming>no</supportsTrimming>
+ 
+  <!-- target framework supports rotated sprites -->
+  <supportsRotation>no</supportsRotation>
+ 
+  <!-- rotated sprites direction (cw/ccw) -->
+  <rotationDirection>cw</rotationDirection>
+ 
+  <!-- supports npot sizes -->
+  <supportsNPOT>yes</supportsNPOT>
+ 
+  <!-- supports file name stripping (remove .png etc.) -->
+  <supportsTrimSpriteNames>no</supportsTrimSpriteNames>
+ 
+  <!-- supports texture subpath -->
+  <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+  <!-- enable pivot points -->
+  <supportsPivotPoint>true</supportsPivotPoint>
+</exporter>

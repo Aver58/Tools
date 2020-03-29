@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+===================================================================
+
+Sprite sheet file created for Shiva3D using TexturePacker
+http://www.codeandweb.com/texturepacker
+
+The Shiva3D extension to load the data is available from
+http://www.codeandweb.com/redirect/tp-shiva-loader
+
+===================================================================
+{{smartUpdateKey}}
+-->
+<TextureAtlas imagePath="{{settings.textureSubPath}}{{texture.fullName}}" width="{{texture.size.width}}" height="{{texture.size.height}}">
+{% for sprite in allSprites %}
+    <sprite n="{{sprite.fullName}}" x="{{sprite.frameRect.x}}" y="{{sprite.frameRect.y}}" w="{{sprite.frameRect.width}}" h="{{sprite.frameRect.height}}"{% if sprite.trimmed %} oX="{{sprite.sourceRect.x}}" oY="{{sprite.sourceRect.y}}" oW="{{sprite.untrimmedSize.width}}" oH="{{sprite.untrimmedSize.height}}"{% endif %}{% if sprite.rotated %} r="y"{% endif %}/>{% endfor %}
+</TextureAtlas>

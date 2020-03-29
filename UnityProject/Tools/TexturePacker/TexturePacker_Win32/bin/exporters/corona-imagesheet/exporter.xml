@@ -1,0 +1,88 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>corona-imagesheet</name>
+	
+    <!-- display name of the exporter for the combo box -->
+    <displayName>Corona(TM) SDK (image sheet)</displayName>
+	
+    <!-- description of the exporter -->
+    <description>Exporter for Corona(TM) SDK using new image sheet format.</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>lua</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>Corona(TM) SDK lua file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>lua</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Lua file for Corona(TM) SDK</description>
+
+            <!-- name of the template file -->
+            <template>corona-imagesheet.lua</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>true</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>false</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <!-- supports npot sizes -->
+    <supportsNPOT>true</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+    <!-- vector from center of untrimmed image to center of trimmed image must have integer coordinates -->
+    <ensureIntegerCenterOffset>yes</ensureIntegerCenterOffset>
+
+    <variantPresets>
+        <variantPreset>
+            <name>Corona @2x</name>
+            <forceIdenticalLayout>true</forceIdenticalLayout>
+            <variant>
+                <scale>1.0</scale>
+                <extension>@2x</extension>
+            </variant>
+            <variant>
+                <scale>0.5</scale>
+                <extension></extension>
+            </variant>
+        </variantPreset>
+
+        <variantPreset>
+            <name>Corona @4x/@2x</name>
+            <forceIdenticalLayout>true</forceIdenticalLayout>
+            <variant>
+                <scale>1.0</scale>
+                <extension>@4x</extension>
+            </variant>
+            <variant>
+                <scale>0.5</scale>
+                <extension>@2x</extension>
+            </variant>
+            <variant>
+                <scale>0.25</scale>
+                <extension></extension>
+            </variant>
+        </variantPreset>
+    </variantPresets>
+
+</exporter>
+

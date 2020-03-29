@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+===================================================================
+
+Sprite sheet file created for UIKit using TexturePacker
+http://www.codeandweb.com/texturepacker
+
+===================================================================
+{{smartUpdateKey}}
+-->
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+{% for sprite in allSprites %}
+                        <key>{{sprite.trimmedName}}</key>
+			<dict>
+				<key>x</key><real>{{sprite.frameRect.x}}</real>
+				<key>y</key><real>{{sprite.frameRect.y}}</real>
+				<key>w</key><real>{{sprite.frameRect.width}}</real>
+				<key>h</key><real>{{sprite.frameRect.height}}</real>
+				{% if sprite.trimmed %}<key>oX</key><real>{{sprite.sourceRect.x}}</real>
+				<key>oY</key><real>{{sprite.sourceRect.y}}</real>
+				<key>oW</key><real>{{sprite.untrimmedSize.width}}</real>
+				<key>oH</key><real>{{sprite.untrimmedSize.height}}</real>{% endif %}
+{% if sprite.rotated %}				<key>rotated</key><true/>{% endif %}				
+			</dict>{% endfor %}
+		</dict>
+		<key>meta</key>
+		<dict>
+			<key>image</key>
+			<string>{{settings.textureSubPath}}{{texture.fullName}}</string>
+			<key>width</key>
+			<integer>{{texture.size.width}}</integer>
+			<key>height</key>
+			<integer>{{texture.size.height}}</integer>
+		</dict>
+	</dict>
+</plist>

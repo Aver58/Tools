@@ -1,0 +1,16 @@
+{
+    "frames": [{% for sprite in allSprites %}
+        {
+            "name": "{{sprite.fullName}}",
+            "position": {"x": {{sprite.frameRect.x}}, "y": {{sprite.frameRect.y}}},
+            "size": {"w": {{sprite.frameRect.width}}, "h": {{sprite.frameRect.height}}}
+        }{% if not forloop.last %}, {% endif %}{% endfor %}],
+    "meta": {
+        "app": "http://www.codeandweb.com/texturepacker",
+        "description": "Json file for Molecule Framework",
+        "version": "1.0",
+        "image": "{{texture.fullName}}",
+        "size": {"w":{{texture.size.width}},"h":{{texture.size.height}}},
+        "smartupdate": "{{smartUpdateKey}}"
+    }
+}

@@ -1,0 +1,17 @@
+//
+// css sprite mixins - created with http://www.codeandweb.com/texturepacker
+// exporter created by Rob Moorman
+//
+// {{smartUpdateKey}}
+
+{% for sprite in allSprites %}
+@mixin sprite-{{sprite.trimmedName}}($path: './')
+    display: inline-block
+    overflow: hidden
+    width: {{sprite.frameRect.width}}px
+    height: {{sprite.frameRect.height}}px
+    background:
+        repeat: no-repeat
+        image: url('#{$path}{{settings.textureSubPath}}{{texture.fullName}}')
+        position: -{{sprite.frameRect.x}}px -{{sprite.frameRect.y}}px
+{% endfor %}

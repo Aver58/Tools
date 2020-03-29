@@ -1,0 +1,53 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>libRocket</name>
+	
+    <!-- display name of the exporter for the combo box -->
+    <displayName>libRocket RCSS</displayName>
+	
+    <!-- description of the exporter -->
+    <description>Exporter to demonstrate how to crate your own exporters</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>rocketCSS</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>libRocket RCSS</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>rcss</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Stylesheet for libRocket</description>
+
+            <!-- name of the template file -->
+            <template>libRocket.rcss</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>true</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>false</supportsRotation>
+
+	<rotationDirection>cw</rotationDirection>
+		
+    <!-- supports npot sizes -->
+    <supportsNPOT>true</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+</exporter>
+
+

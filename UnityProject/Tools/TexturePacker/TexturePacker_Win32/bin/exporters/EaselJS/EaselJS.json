@@ -1,0 +1,10 @@
+{
+{% load easeljs %}
+{{tp|exportData}}
+
+"texturepacker": [
+        "SmartUpdateHash: {{smartUpdateKey}}",
+        "Created with TexturePacker (https://www.codeandweb.com/texturepacker) for EaselJS"
+]
+
+}

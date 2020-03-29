@@ -1,0 +1,77 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>monogame</name>
+	
+    <!-- display name of the exporter for the combo box -->
+    <displayName>MonoGame</displayName>
+             
+    <!-- description of the exporter -->
+    <description>Input format for the MonoGame TexturePacker Importer</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>datafile</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>Data file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>txt</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Sprite sheet Data</description>
+
+            <!-- name of the template file -->
+            <template>monogame.txt</template>
+        </file>
+        <file>
+            <!-- name of this file variable -->
+            <name>classfile</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>Class file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>cs</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Sprite Definition Class</description>
+
+            <!-- write this file only for the first AutoSD variation -->
+            <!-- values are: all (default), first, last -->
+            <hasSeparateAutoSDFiles>first</hasSeparateAutoSDFiles>
+
+            <!-- do not write a file for each multipack variation -->
+            <hasSeparateMultiPackFiles>false</hasSeparateMultiPackFiles>
+
+            <!-- name of the template file -->
+            <template>monogame.cs</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>true</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>true</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <supportsPivotPoint>true</supportsPivotPoint>
+
+    <supportsNPOT>true</supportsNPOT>
+    
+    <textureSizeFactor>4</textureSizeFactor>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>no</supportsTextureSubPath>
+
+</exporter>

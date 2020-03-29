@@ -1,0 +1,66 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>unity-texture2d</name>
+	
+    <!-- display name of the exporter for the combo box -->
+    <displayName>Unity(R) - Texture2D sprite sheet</displayName>
+             
+    <!-- description of the exporter -->
+    <description>Input format for the Unity(R) TexturePacker Importer</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>datafile</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>Data file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>tpsheet</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>Sprite sheet Data</description>
+
+            <!-- name of the template file -->
+            <template>unity.tpsheet</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>false</supportsTrimming>
+
+    <!-- target framework supports rendering sprite with triangle list, not just rectangle-->
+    <supportsPolygonPacking>true</supportsPolygonPacking>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>false</supportsRotation>
+
+    <supportsPivotPoint>true</supportsPivotPoint>
+
+    <spriteOrigin>BottomLeft</spriteOrigin>
+
+    <supportsNPOT>true</supportsNPOT>
+    
+    <textureSizeFactor>4</textureSizeFactor>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>no</supportsTextureSubPath>
+
+    <supportsScale9>true</supportsScale9>
+
+    <infoMessage>To import the published sprite sheets in Unity please download &lt;a href="https://www.assetstore.unity3d.com/en/#!/content/16641">TexturePacker Importer&lt;/a></infoMessage>
+
+    <defaults>
+        <trimMode>Polygon</trimMode>
+        <writePivotPoints>true</writePivotPoints>
+        <sizeConstraints>POT</sizeConstraints>
+    </defaults>
+
+</exporter>

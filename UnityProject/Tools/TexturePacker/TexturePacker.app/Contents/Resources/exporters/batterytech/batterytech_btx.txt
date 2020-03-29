@@ -1,0 +1,15 @@
+btx = 1.0
+texture.assetname = {{texture.fullName}}
+texture.width  = {{texture.size.width}}
+texture.height = {{texture.size.height}}
+{% for sprite in allSprites %}
+image.assetname = {{sprite.fullName}}
+{% if sprite.rotated %}image.uvs = {{sprite.frameRectRel.x|add:sprite.frameRectRel.width}} {{sprite.frameRectRel.y}} {{sprite.frameRectRel.x|add:sprite.frameRectRel.width}} {{sprite.frameRectRel.y|add:sprite.frameRectRel.height}} {{sprite.frameRectRel.x}} {{sprite.frameRectRel.y|add:sprite.frameRectRel.height}} {{sprite.frameRectRel.x}} {{sprite.frameRectRel.y}}{% else %}
+image.uvs = {{sprite.frameRectRel.x}} {{sprite.frameRectRel.y}} {{sprite.frameRectRel.x|add:sprite.frameRectRel.width}} {{sprite.frameRectRel.y}} {{sprite.frameRectRel.x|add:sprite.frameRectRel.width}} {{sprite.frameRectRel.y|add:sprite.frameRectRel.height}} {{sprite.frameRectRel.x}} {{sprite.frameRectRel.y|add:sprite.frameRectRel.height}}{% endif %}
+image.rotated = {{sprite.rotated}}
+image.trimmed = {{sprite.trimmed}}
+image.origsize = {{sprite.untrimmedSize.width}} {{sprite.untrimmedSize.height}}
+image.offset = {{sprite.cornerOffset.x}} {{sprite.cornerOffset.y}}
+image.trimmedsize = {{sprite.frameRectWithoutRotation.width}} {{sprite.frameRectWithoutRotation.height}}
+{% endfor %}
+

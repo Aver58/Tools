@@ -1,0 +1,10 @@
+/*
+-------------------------------------------------------------------
+Created with TexturePacker https://www.codeandweb.com/texturepacker
+-------------------------------------------------------------------
+Inline:     <i class="{{exporterProperties.sprite_prefix}}yourspritesname"></i>
+Responsive: <div class="{{exporterProperties.sprite_prefix}}yourspritesname"></div>
+*/
+{% load css %}{{tp|exportData|safe}}
+
+/* {{smartUpdateKey}} */

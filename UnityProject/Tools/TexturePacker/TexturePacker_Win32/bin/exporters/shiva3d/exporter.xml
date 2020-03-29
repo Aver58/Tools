@@ -1,0 +1,54 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>shiva3d</name>
+
+    <!-- display name of the exporter for the combo box -->
+    <displayName>Shiva3D (deprecated)</displayName>
+	
+    <!-- description of the exporter -->
+    <description>Exporter for Shiva3D.</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>xml</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>XML</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>xml</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>XML file Shiva3D</description>
+
+            <!-- name of the template file -->
+            <template>shiva.xml</template>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>false</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>true</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <!-- supports npot sizes -->
+    <supportsNPOT>true</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+</exporter>
+
+

@@ -1,0 +1,97 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>css</name>
+	
+    <!-- display name of the exporter for the combo box -->
+    <displayName>CSS (responsive, retina)</displayName>
+	
+    <!-- description of the exporter -->
+    <description>Creates CSS sprite sheets, responsive, with retina/highdpi support</description>
+
+    <!-- exporter version -->
+    <version>1.0</version>
+	
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>data</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>CSS file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>css</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>CSS stylesheet file</description>
+
+            <!-- name of the template file -->
+            <template>sprites.css</template>
+
+            <hasSeparateAutoSDFiles>first</hasSeparateAutoSDFiles>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>false</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>false</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <!-- supports npot sizes -->
+    <supportsNPOT>true</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texture subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+    <properties>
+        <property>
+            <name>media-query-2x</name>
+            <type>string</type>
+            <displayName>Media query 2x</displayName>
+            <toolTip>Media Query used for the -2x variant</toolTip>
+            <default>(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)</default>
+            <isAdvanced>true</isAdvanced>
+        </property>
+
+        <property>
+            <name>sprite-prefix</name>
+            <type>string</type>
+            <displayName>Sprite prefix</displayName>
+            <toolTip>Prefix for the sprite's name. Works best with prefixes like "icon-".</toolTip>
+            <default></default>
+            <isAdvanced>true</isAdvanced>
+        </property>
+    </properties>
+
+    <defaults>
+        <extrude>0</extrude>
+        <shapePadding>1</shapePadding>
+        <borderPadding>1</borderPadding>
+    </defaults>
+
+    <variantPresets>
+        <variantPreset>
+            <name>CSS: Retina / HighDPI</name>
+            <variant>
+                <scale>1.0</scale>
+                <extension>-2x</extension>
+            </variant>
+            <variant>
+                <scale>0.5</scale>
+                <extension></extension>
+            </variant>
+            <forceIdenticalLayout>true</forceIdenticalLayout>
+        </variantPreset>
+    </variantPresets>
+
+</exporter>
+
+

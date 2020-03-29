@@ -1,0 +1,62 @@
+<exporter version="1.0">
+    <!-- identifier of the exporter -->
+    <name>easeljs</name>
+
+    <!-- for compatiblility only: allow referencing the exporter as "easaljs" -->
+    <nameAlias>easaljs</nameAlias>
+
+    <!-- display name of the exporter for the combo box -->
+    <displayName>EaselJS / CreateJS</displayName>
+	
+    <!-- description of the exporter -->
+    <description>Exporter for EaselJS.</description>
+
+    <!-- exporter version -->
+    <version>2.0</version>
+	
+    <!-- currently only one file allowed - more to come with update -->
+    <files>
+        <file>
+            <!-- name of this file variable -->
+            <name>json</name>
+
+            <!-- human readable name (for GUI) -->
+            <displayName>JSON file</displayName>
+
+            <!-- file extension for the file -->
+            <fileExtension>json</fileExtension>
+
+            <!-- description what the file contains, used in tooltips in the GUI -->
+            <description>JSON file for EaselJS</description>
+
+            <!-- name of the template file -->
+            <template>EaselJS.json</template>
+
+            <!-- one json file for all multi-pack sheets -->
+            <hasSeparateMultiPackFiles>false</hasSeparateMultiPackFiles>
+        </file>
+    </files>
+
+    <!-- target framework supports trimming -->
+    <supportsTrimming>true</supportsTrimming>
+
+    <!-- target framework supports rotated sprites -->
+    <supportsRotation>false</supportsRotation>
+
+    <!-- rotated sprites direction (cw/ccw) -->
+    <rotationDirection>cw</rotationDirection>
+
+    <!-- supports npot sizes -->
+    <supportsNPOT>true</supportsNPOT>
+
+    <!-- supports file name stripping (remove .png etc) -->
+    <supportsTrimSpriteNames>yes</supportsTrimSpriteNames>
+
+    <!-- supports texure subpath -->
+    <supportsTextureSubPath>yes</supportsTextureSubPath>
+
+    <supportsPivotPoint>true</supportsPivotPoint>
+
+    <supportsAnimations>true</supportsAnimations>
+
+</exporter>

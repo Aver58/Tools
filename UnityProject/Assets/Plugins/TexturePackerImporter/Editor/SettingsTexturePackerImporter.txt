@@ -1,0 +1,12 @@
+version: 2
+importPivots: 1
+tpsheetFileNames:
+- Assets/echo/hero.tpsheet
+- Assets/echo/weapon.tpsheet
+textureFileNames:
+- Assets/echo/hero.png
+- Assets/echo/weapon.png
+normalmapFileNames:
+- 
+- 
+enableDebugOutput: 0

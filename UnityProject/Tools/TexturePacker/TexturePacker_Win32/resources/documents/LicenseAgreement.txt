@@ -1,0 +1,512 @@
+Licensing Terms for the "Texture Packer" Software - End-User License Agreement
+(EULA)
+
+
+Preamble
+
+Please read the following terms of the end-user license agreement on the
+software specified below carefully.
+When you click the "Accept" button or when you install, copy or use this
+software in any other way, you confirm that you have read and understood the
+terms of this end-user license agreement and that you recognize its substantive
+regulations as legally binding.
+If you or the company you represent do not agree with the terms of this end-
+user license agreement, do not install this software. If you do not agree to
+the applicability of any term of this end-user license agreement, you will not
+be authorized to use this software. By installing, copying or otherwise using
+software updates and/or software upgrades you will also become subject to the
+applicability of any additional licensing terms, which are enclosed with these
+updates and/or upgrades. If you do not accept those additional licensing terms,
+the installation, copying, or the use of these updates and/or updates is
+prohibited.
+
+1. Definitions
+
+
+  CodeAndWeb
+      identifies the originator/author of the software and contractual partner,
+      CodeAndWeb GmbH
+      Saalbau-Strasse 61 89233 Neu-Ulm
+      Germany
+      District court / Registergericht: Amtsgericht Memmingen, HRB 15791
+      CEO / Geschäftsführer: Andreas Loew
+      with whom this license agreement has been concluded.
+
+  End-user or Licensee
+      identifies the natural person, who concludes this license agreement with
+      CodeAndWeb for him-/herself or on behalf of a legal entity and who will
+      be provided with a legal copy of the software by CodeAndWeb.
+
+  Software
+      identifies all programs and data provided to you under the name
+      "TexturePacker".
+
+
+2. Subject Matter of the License Contract
+
+
+  1. The subject matter of this license contract is the concession of rights to
+     use this software according to these licensing terms and according to the
+     respective license type, which has been purchased by the customer.
+  2. The license type will be determined by the scope of the provided software
+     selected by the customer. The features of the software, as well as its
+     scope and license price, result from the product description provided
+     online, from the information gathered during the ordering process (product
+     information) and from any documentation.
+  3. Any further details or specifications will only become an integral part of
+     the contract when agreed upon in writing by the contractual partners.
+  4. Any other presentations of the software on the internet are for
+     informational purposes only. They do not constitute a binding offer but
+     are an opportunity to submit a binding offer of contract by placing an
+     order.
+  5. You may choose from the following license types:
+
+       a. TexturePacker Evaluation License:
+          An evaluation license (trial license) is a license (right of use) to
+          the software, which authorizes the licensee to use all functions of
+          the corresponding software product. A trial license, however,
+          exclusively authorizes use of the software for testing and evaluating
+          the software within the agreed period of time. The licensee is
+          prohibited from using the trial license for publishing data generated
+          within the TexturePacker evaluation license in his own products or in
+          the software components of third parties or to use it for his own
+          business purposes.In this case the purchase of a single user license,
+          a volume license or a lifetime license is required.
+       b. TexturePacker Single User License
+          A single user license authorizes the named user to use the software
+          with the provided license key on two clients (hardware, computer)
+          maximum. The (shared) use of a TexturePacker single user license by
+          more than one named user is expressly prohibited. The license key for
+          a specific TexturePacker single user license may not be actively
+          installed on more than two clients at the same time.
+       c. TexturePacker Volume License
+          A TexturePacker volume license authorizes the licensee to use the
+          license key for as many additional software copies as permitted by
+          the specified number of clients in the corresponding order
+          confirmation or license certificate. The number of clients on which
+          the software has been installed and for which the license key has
+          been activated should not exceed the number of licenses. The clients
+          may only be used by the corresponding number of users, i.e. a server
+          installation is prohibited.
+       d. TexturePacker Lifetime License
+          A TexturePacker lifetime license corresponds to the scope of the
+          TexturePacker single user license above, but authorizes the licensee
+          to obtain and use all upgrades of the software for the specified
+          duration of the license agreement against payment of a separate
+          license fee.
+       e. TexturePacker Blogger / Framework License
+          The scope of a TexturePacker blogger framework license corresponds to
+          the scope of the TexturePacker single user license. This license may
+          only be granted after prior verification and approval by CodeAndWeb
+          and will be granted to blog writers or framework developers. The
+          acquistion of this license is subject to a separate request to
+          CodeAndWeb. There is no legal claim to a TexturePacker blogger
+          framework license.
+       f. TexturePacker Essential License
+          If none of the above mentioned licenses is available, TexturePacker
+          will activate a limited range of functions ("Essential Mode"). Within
+          this limited range, basic functions will be activated and advanced
+          functions will color parts of the generated textures red.
+          TexturePacker can be installed on any number of computers in this
+          mode.
+
+  6. The source code of the software is not subject matter of the contract and
+     specifically will not be provided.
+  7. The license that the software is based on, as well as the associated
+     license key, may neither be sold nor transferred if and insofar as the
+     software is labelled "not for sale" or "not for resale".
+  8. CodeAndWeb points out, that especially for reasons of system security,
+     stability and compatibility, updates will be performed and new versions
+     will be created or the software will be improved otherwise, where
+     necessary. Therefore, the conditions for using the software may change
+     over time. The provided updates and their use are subject to the terms of
+     this agreement.
+  9. The use and provision of free software updates is limited in time
+     (paragraph 8).
+ 10. CodeAndWeb reserves the right to change the licensing terms. CodeAndWeb
+     will inform the licensee about any changes.
+
+
+3. Scope of Rights of Use Granted (License)
+
+
+  1. CodeAndWeb grants the licensee an unlimited, revocable, non-exclusive
+     (simple), non-transferable, non-sublicensable right to use this software
+     subject to the payment of any applicable license fees (paragraph 6).
+  2. This includes the right
+
+       a. to use the software, the license key and the documentation enclosed
+          in the form in which it was provided to the licensee by CodeAndWeb;
+       b. to use the software and the associated license key in strict
+          accordance with the terms of this agreement and under the specific
+          conditions and limitations, which are given by the specific license
+          type
+       c. to copy this software under the condition that all property rights,
+          trademark symbols, copyright signs and notes and other proprietary
+          notices will be reproduced on such a copy and that the license key
+          for this software will not be passed to third parties
+
+  3. The software and the associated documentation, all copies, modifications,
+     translations, components, functions and connected parts thereof will
+     always remain property of CodeAndWeb.
+  4. The agreement on the scope of the license granted extends to all updates,
+     upgrades, releases, revisions or improvements of the software, which are
+     provided to the licensee by CodeAndWeb.The use and provision of free
+     updates for this software after its installation and activation with the
+     license key is limited in time (paragraph 8).
+
+
+4. License Restrictions
+
+
+  1. The licensee is obligated to neither directly nor on behalf of a parent or
+     affiliated company, a related company, a representative or a third party,
+     perform the following actions with regard to the licensed software or its
+     documentation, unless CodeAndWeb has previously given its written consent:
+
+       a. Use of the software, of the associated license key or of the
+          documentation in violation of the terms of this agreement,
+          particularly of the scope of the license type granted;
+       b. Authorization of the multiple use of software copies and of the
+          license key, insofar as this is not permitted by a corresponding
+          license type;
+       c. Sale, rent, licensing, sublicensing or further disposal of a part of
+          the software or the documentation;
+       d. Providing the license keys to persons, who are not licensees, without
+          prior written consent from CodeAndWeb. This applies to the same
+          extent to lending, disclosing, publishing, providing or permitting
+          the use of the license key;
+       e. Removal or modification of proprietary notices, labels or marks on a
+          copy of the software or documentation;
+       f. Reverse engineering, decompiling, disassembling, modification,
+          translation, attempting to find the source code or creation of
+          adaptations (derivative works) of the software.
+
+  2. Mandatory legal provisions such as those in § 69 e Copyright Act (UrhG)
+     will remain unaffected.
+
+
+5. End-User Obligations
+
+
+  1. The end-user has gathered information about the main features of the
+     software and the respective license type. CodeAndWeb has no influence over
+     whether and to what extent the software will meet the wishes and needs of
+     the end-user.
+  2. The end-user is obligated to register with correct and complete
+     information in order to use this software where required.
+  3. The end-user takes appropriate measures to protect the license key against
+     unauthorized access by third parties.
+  4. The end-user is responsible for preserving the confidentiality of the
+     license key (access data) assigned. He is liable for all culpable
+     infringements, which cause damage regarding his access, his account or his
+     use of this software
+  5. The end-user is obligated to immediately inform CodeAndWeb about any
+     suspicion of unauthorized use of the access data, i.e. an unauthorized
+     access to the license key.
+
+
+6. License Fee
+
+
+  1. The fee for using the software is determined by the license type selected.
+  2. The fee must be paid in advance.
+  3. CodeAndWeb reserves the right to carry out the invoicing by itself or by
+     an invoicing company commissioned by CodeAndWeb.When using an invoicing
+     system, this system will bill on behalf and for the account of CodeAndWeb
+     according to the utilization of the fee-based license type.
+  4. In this respect, CodeAndWeb has no direct influence over the applicable
+     payment and agreement terms.
+
+
+7. Contract Duration and Termination of the Right of Use
+
+
+  1. The license agreement with the licensee is concluded for an indefinite
+     period of time.
+  2. The rights of the end-user and the licensee according to paragraph 3 shall
+     not pass to the client before complete settlement of all existing accounts
+     receivable of a client arising from the current business relationship with
+     CodeAndWeb or its invoicing company. Prior to this, the client has only a
+     temporary, contractual and revocable right of use.
+  3. CodeAndWeb reserves the right to block the license key and thus the
+     software use in the form of the respective license type when these
+     obligations are violated.
+  4. CodeAndWeb may revoke the granted rights of use for good cause. In this
+     case the rights granted to the client shall expire automatically with
+     immediate effect, if and as soon as the client significantly violates the
+     restrictions on use as specified in this agreement (paragraph 4).
+  5. If and insofar as the right of use will not arise or will end, the client
+     is obligated to immediately delete all copies of the program available to
+     him and to delete the license key. The right of CodeAndWeb to block the
+     license key remains unaffected.
+
+
+8. Updates
+
+
+  1. The software may need updates in order to work effectively. Updates may
+     include new features, bug-fixes or the removal of features of the software
+     and the accompanying documentation.
+  2. Updates will only be available for download and for use during the
+     contract period.
+  3. CodeAndWeb will provide free updates to the licensee for a period of 12
+     months after downloading and activation of the license key (update
+     period). After expiration of this period, the licensee will be obligated
+     to pay for the use and for the provision of further updates. These costs
+     will be determined by the specific license type and by the documented
+     update fees, which will be displayed on CodeAndWeb's website.
+  4. In case of a lifetime license, the update period shall cover the entire
+     lifetime of the software.
+  5. The licensee may make further use of the software versions, which have
+     existed prior to expiration of the update period, but will not receive any
+     further updates.
+  6. Updates may require additional or deviating licensing terms, which should
+     be accepted before starting or installing the program. Updates may replace
+     previously licensed parts of the software, but do not increase the
+     authorized number of clients or named users within the respective license
+     type. The updates provided to the end-user are subject to the terms of
+     this agreement. CodeAndWeb will make reasonable efforts to inform the end-
+     user about any significant changes of the software.
+
+
+9. Warranty Rights
+
+
+  1. CodeAndWeb points out that the current state of technology does not allow
+     for creating software in a way that all applications and combinations, in
+     particular with various hardware components and software frameworks, will
+     work flawlessly at any time.
+  2. Special conditions for end-users located in the European Union
+
+       a. When you, being the client, are living in a country of the European
+          Union or when your company is based in a country of the European
+          Union when purchasing the software, the following warranty rights
+          shall apply (warranty). In case of defects in the software or the
+          associated documentation and upon notification by the end-user,
+          CodeAndWeb will initially provide warranty by supplementary
+          performance. For this, CodeAndWeb will, at the end-user's own choice,
+          either provide him with a new, defect-free software version or will
+          remove the defect.
+       b. The assurance of a warranted feature or a guarantee shall always be
+          in writing.
+       c. If CodeAndWeb is not willing or not in a position to provide
+          rectification or replacement or if the action will be delayed beyond
+          the reasonable period agreed upon with the end-user or if the action
+          will fail due to any other reasons, the end-user shall be entitled to
+          withdraw from the contract or may insist on a reduction of the
+          license price. A rectification or replacement shall only be
+          considered as not having been carried out after CodeAndWeb has been
+          given ample opportunity for rectification or replacement and when the
+          actions did not produce the desired success, when rectification or
+          replacement is not possible or refused or unreasonably delayed by
+          CodeAndWeb, or when rectification has been carried out twice without
+          success. The right of the end-user to claim for damages under § 437
+          of the German Civil Code (BGB) remains unaffected.
+       d. The end-user is responsible for determining the location where the
+          software will be used and for determining the appropriate hardware
+          environment.
+       e. These warranty terms do not apply when the software is not used in
+          compliance with this agreement or the documentation, when the
+          software or parts of it have been modified by any entity other than
+          CodeAndWeb or when a malfunctioning in the software has been caused
+          by devices or software that have not been supplied by CodeAndWeb.
+       f. The limitation period for all claims for damages is determined by
+          legal provisions and begins with the delivery or providing/granting
+          of the license.
+       g. This warranty does not apply to software that has been provided to
+          the end-user free of charge. CodeAndWeb, therefore, is not obligated
+          to remove any defects or to pay compensation if the licensee uses a
+          free TexturePacker evaluation license or the TexturePacker essential
+          license.
+       h. CodeAndWeb is not liable for any damages, which arise due to omitting
+          the installation of updates. Apart from that, the following liability
+          provisions shall apply analogously.
+
+  3. Special conditions for end-users located in the US. When you, being the
+     client, are living in the US or when your company is based there when
+     purchasing the software, the following warranty rights shall apply
+     (warranty).
+
+       a. CodeAnDWeb guarantees that the software licensed under this agreement
+          will work substantially in compliance with the documentation for the
+          period of sixty (60) days from the moment of the installation and
+          activation with the license key ("warranty period"), including
+          upgrades, which are provided within the warranty period for the rest
+          of the warranty period.
+       b. In case of a violation of the preceding limited warranty, CodeAndWeb
+          undertakes to repair or replace the software or, if CodeAndWeb
+          considers such a repair or replacement as commercially inappropriate,
+          to refund the corresponding license fee.
+       c. The preceding limited warranty does not apply when the software is
+          not used in compliance with this agreement or the documentation, when
+          the software or parts of it have been modified by any entity other
+          than CodeAndWeb or when a malfunctioning in the software has been
+          caused by devices or software which have not been supplied by
+          CodeAndWeb.
+       d. This warranty does not apply to software which has been provided to
+          the end-user free of charge. CodeAndWeb, therefore, is not obligated
+          to remove any defects or to pay compensation if the licensee uses a
+          free TexturePacker evaluation license or the TexturePacker essential
+          license.
+       e. THE PRECEDING WARRANTIES ARE THE ONLY WARRANTIES APPLYING TO THE END-
+          USER, INSOFAR AS HE IS LOCATED IN THE US AND THEY ARE IN LIEU OF ALL
+          OTHER WARRANTIES OR CONDITIONS, EXPRESS OR IMPLIED, IN PARTICULAR
+          WARRANTIES OR CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY,
+          FITNESS FOR A PARTICULAR PURPOSE, OF PROPERTY RIGHTS, AND NON-
+          INFRINGEMENT OF THE PROPERTY RIGHTS OF THIRD PARTIES.
+       f. EXCEPT FOR THE LIMITED WARRANTY PREVIOUSLY SET OUT, THE SOFTWARE WILL
+          BE SUPPLIED "AS IS". CodeAndWeb DOES NOT PROVIDE ANY WARRANTY OR
+          GUARANTEE REGARDING ITS USE OR PERFORMANCE AND DOES NOT GUARANTEE,
+          THAT THE OPERATION OF THE SOFTWARE WILL BE FAIL-SAFE, FREE OF
+          INTERRUPTIONS, ERRORS OR DEFECTS, OR THAT THE SOFTWARE WILL PROTECT
+          FROM ANY POTENTIAL THREATS.
+
+
+
+10. Liability
+
+
+  1. Special conditions for end-users located in the European Union When you,
+     being the client, are living in a country of the European Union or when
+     your company is based there and you have purchased the software in such a
+     country, the following liability provisions shall apply (liability).
+
+       a. CodeAndWeb shall always be liable to the client
+
+          # for damages caused deliberately or due to gross negligence by
+            CodeAndWeb or by legal representatives or performing agents of
+            CodeAndWeb as well as
+          # under the German Product Liability Act and
+          # for death, bodily injury or health damage, which lie in the
+            responsibility of CodeAndWeb, its legal representatives or
+            performing agents or
+          # in case of the assurance of a guaranteed quality or a warranted
+            characteristic.
+
+       b. CodeAndWeb, its legal representatives and performing agents shall not
+          be liable in case of slight negligence. This does not apply insofar
+          as there is a culpable violation of cardinal obligations or
+          substantial contractual obligation. Cardinal obligations or
+          substantial contractual obligations are obligations of CodeAndWeb,
+          which must be fulfilled in the first place in order to enable the
+          proper implementation of this contract and on the performance of
+          which the client may regularly rely on, i.e. obligations, which may
+          endanger the attainment of the purpose of the contract when violated.
+       c. In case of losses of data CodeAndWeb shall not be liable to the
+          extent described above. The provisions, which substantiate a
+          mandatory liability of CodeAndWeb to the extent described above,
+          remain unaffected.
+       d. There is no further liability of CodeAndWeb. This shall also apply to
+          lost profits and missed savings. Liability for other remote
+          consequential damages is excluded.
+       e. The limited liabilities above shall also apply to the personal
+          liability of the employees, representatives and representative bodies
+          of CodeAndWeb.
+
+  2. Special conditions for end-users located in the US. When you, being the
+     client, are living in the US or when your company is based there and you
+     have purchased the software in such a country, the following liability
+     provisions shall apply (liability).
+
+       a. THE LIABILITY OF CodeAndWeb TOWARDS THE LICENSEE DUE TO ANY DAMAGES
+          IS LIMITED TO DIRECT DAMAGES AND WILL NOT EXCEED THE AMOUNT THE
+          LICENSEE ORIGINALLY HAS PAID FOR THE SOFTWARE.
+       b. IN NO EVENT SHALL CodeAndWeb OR LEGAL REPRESENTATIVES OF CodeAndWeb
+          BE LIABLE FOR ANY INCIDENTAL, INDIRECT, CONCRETE (PREDICTABLE)
+          DAMAGES, PUNITIVE OR CONSEQUENTIAL DAMAGES (INCLUDING BUT NOT LIMITED
+          TO PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOST PROFIT, BENEFIT
+          OR LOSS OF DATA; OR DUE TO BUSINESS INTERRUPTIONS), EVEN THOUGH
+          CodeAndWeb OR THE REPRESENTATIVES OF CodeAndWeb HAVE BEEN INFORMED
+          ABOUT THE POSSIBILITY OF SUCH DAMAGES.
+
+
+11. Privacy
+
+
+  1. Regarding the protection of personal data, the parties are obligated to
+     observe the provisions of the Privacy Act and to commit their employees,
+     who are connected with the contract and its execution, to comply with the
+     regulations concerning data secrecy as described under § 5 BDSG (Federal
+     Data Protection Act), unless they already have a general obligation to
+     this.
+  2. In addition to this, CodeAndWeb will collect and use client-related data
+     only to the extent which is necessary to execute this contract.
+  3. CodeAndWeb indicates that it does not have any influence on the data
+     protection provisions and requirements of any invoicing companies. In this
+     respect, the data protection provisions of the corresponding provider,
+     which are applicable at the time of invoicing and payment, shall apply.
+  4. While using the software, the end-user may use a reporting function or may
+     submit a support request to CodeAndWeb. For providing support, the entry
+     of an e-mail address is required in order to contact the end-user. For
+     executing the support and for processing the reporting, CodeAndWeb uses
+     the provider "zendesk" (https://www.zendesk.com) located in the
+     US.
+  5. The end-user agrees that concerning support requests and reporting
+     functions the e-mail address of the end-user will be submitted to the
+     provider "zendesk" (https://www.zendesk.com). In the event
+     that the end-user does not desire such data processing, he may not use the
+     support and reporting function in the software.
+  6. Apart from that, the client always has the option of asking CodeAndWeb for
+     stored data related to him, to change this data or to delete it.
+
+
+12. Applicable Law
+
+
+  1. If the end-user has purchased the software in the European Union, German
+     Law shall apply. In this case, the application of the UN Convention of
+     Contracts for the International Sale of Goods will be excluded.
+  2. If the end-user has purchased the software outside the European Union, the
+     locally applicable law may apply. In this case, the respective substantive
+     laws may apply for the interpretation of the contract.
+
+
+13. End-User's Contractual Right to Return Software
+
+
+  1. The software will be offered to the end-user for download. Therefore, a
+     right for withdrawal for the benefit of consumers does not exist. The
+     right for withdrawal does not exist for contracts concerning the delivery
+     of goods, which due to their nature are not suited for being returned.
+     This includes the aforementioned software TexturePacker.
+  2. Apart from this, however, CodeAndWeb grants the end-user a right to return
+     the software within 30 days. If the end-user should notice within this
+     period, that after the installation of the software and after the
+     activation of the license key, the software or the selected license type
+     does not suit his purposes, CodeAndWeb will refund the license fee.
+     CodeAndWeb will then block the license key. The right to continue to use
+     the free TexturePacker evaluation license or the TexturePacker essential
+     license shall remain unaffected.
+
+
+14. Final Provisions
+
+
+  1. The languages of this contract are German and English.
+  2. The provided software (incl. accompanyin material) is legally protected.
+     The copyright, patent rights, trademark rights and all other ancillary
+     copyrights in the software and in other objects, as well, which CodeAndWeb
+     provides or makes accessible to the customer for the initiation and
+     execution of a contract shall belong exclusively to CodeAndWeb.
+  3. Agreements that deviate from these terms of use - including this clause -
+     shall be in writing.
+  4. For all disputes arising from or in connection with this contract,
+     including the effectiveness of the contract, the sole competent court of
+     jurisdiction shall be the Landgericht Ulm (District Court of Ulm), to the
+     extent permitted by law. CodeAndWeb reserves the right to take legal
+     action against the end-user at his place of business as well.
+  5. The regulation of § 139 of the German Civil Code (BGB) shall be waived.
+  6. If any provisions of this contract prove ineffective or unenforceable, the
+     validity of the remaining provisions of this contract shall be unaffected.
+     In this case, the invalid or ineffective provision must be replaced by a
+     new regulation, which meets the intended purpose and shall apply from the
+     beginning of the ineffectiveness.
+  7. Insofar as provisions are concerned, which are essential or cannot be
+     ommitted without endangering the purpose of this contract, the contracting
+     partners commit themselves, under consideration of the intended purpose,
+     to interpret, to correct or to replace the contract with another effective
+     and enforceable provision so that its commercial and legal purpose may be
+     attained.
+
+Effective: 05/2015

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- {{smartUpdateKey}} -->
+<x2d version="1.0">
+    <texture n="{{texture.trimmedName}}" path="res/graphics/{{texture.fullName}}">
+{% for sprite in allSprites %}        <sprite n="{{sprite.trimmedName}}" x="{{sprite.frameRect.x}}" y="{{sprite.frameRect.y}}" w="{{sprite.frameRect.width}}" h="{{sprite.frameRect.height}}" />{% if not forloop.last %}
+{% endif %}{% endfor %}
+    </texture>
+</x2d>

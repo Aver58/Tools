@@ -1,0 +1,11 @@
+#
+# Sprite sheet data for MonoGame.
+#
+# To learn how to import these sprites into your MonoGame project visit:
+# http://www.codeandweb.com/texturepacker/monogame
+#
+# Sprite sheet: {{texture.fullName}} ({{texture.size.width}} x {{texture.size.height}})
+# {{smartUpdateKey}}
+#
+{% load TransformCoords %}{{texture.size.height|setTextureHeight}}{% for sprite in allSprites %}
+{{sprite.trimmedName}};{% if sprite.rotated %}1{% else %}0{% endif %};{{sprite.frameRect.x}};{{sprite.frameRect.y}};{{sprite.frameRect.width}};{{sprite.frameRect.height}};{{sprite.untrimmedSize.width}};{{sprite.untrimmedSize.height}};{{sprite|TrimmedPivotX}};{{sprite|TrimmedPivotY}}{% endfor %}
