@@ -174,12 +174,12 @@ class AtlasEditorHelper
         // }
         AssetDatabase.Refresh();
 
-        //string pathTxt = string.Format("{0}.txt", fullPathDst);
-        //if(!File.Exists(pathTxt))
-        //{
-        //    Debug.LogError(string.Format("TexturePacker Config No Exist: {0}", name));
-        //    return;
-        //}
+        string pathTxt = string.Format("{0}.txt", fullPathDst);
+        if(!File.Exists(pathTxt))
+        {
+            Debug.LogError(string.Format("TexturePacker Config No Exist: {0}", name));
+            return;
+        }
         string path = string.Format("{0}.png", fullPathDst);
         TextureImporter importer = (TextureImporter)AssetImporter.GetAtPath(path);
         importer.textureType = TextureImporterType.Default;

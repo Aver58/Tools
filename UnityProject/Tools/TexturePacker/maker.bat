@@ -13,4 +13,4 @@ SET SHEET_FILE=%PATH_DST%.png
 
 if %3% == 1 SET TRIN_MODE=Trim
 
-./Tools/TexturePacker/TexturePacker_Win32/bin/TexturePacker.exe --smart-update %PATH_SRC% --data %DATA_FILE% --format unity --sheet %SHEET_FILE% --max-size 2048 --force-squared --size-constraints POT --disable-rotation --trim-mode %TRIN_MODE% --trim-margin 0 --extrude 1
+%TexturePacker% --smart-update %PATH_SRC% --data %DATA_FILE% --format unity --sheet %SHEET_FILE% --max-size 2048 --force-squared --size-constraints POT --disable-rotation --trim-mode %TRIN_MODE% --trim-margin 0 --extrude 1

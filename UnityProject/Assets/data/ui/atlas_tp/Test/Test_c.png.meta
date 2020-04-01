@@ -1,11 +1,14 @@
 fileFormatVersion: 2
 guid: fc835ee6b80d2374da779ceded3f68af
-timeCreated: 1585467794
+timeCreated: 1585533622
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
     21300000: common_n_arrow_001
     21300002: common_n_arrow_002
+    21300004: bag_icon_n_item_219001
+    21300006: common_n_btn_002
+    21300008: common_n_frame_square_011
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -64,29 +67,29 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: common_n_arrow_001
+      name: bag_icon_n_item_219001
       rect:
         serializedVersion: 2
-        x: 0
-        y: 67
-        width: 72
-        height: 61
+        x: 1
+        y: 166
+        width: 96
+        height: 89
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: common_n_arrow_002
+      name: common_n_frame_square_011
       rect:
         serializedVersion: 2
-        x: 73
-        y: 90
-        width: 32
-        height: 38
+        x: 99
+        y: 211
+        width: 44
+        height: 44
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 10, y: 16, z: 12, w: 14}
       outline: []
       tessellationDetail: -1
     outline: []
