@@ -1,3 +1,7 @@
 UnityProject/Library/
 UnityProject/Temp/
 UnityProject/.vs/
+*.csproj
+UnityProject/obj/
+*.sln
+*.csproj
