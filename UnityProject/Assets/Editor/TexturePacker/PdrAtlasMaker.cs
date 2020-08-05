@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class PdrAtlasMaker
 {
-    static string PATH_ATLAS = PathDef.SourceAtlasPath;
+    //static string PATH_ATLAS = PathDef.SourceAtlasPath;
     static string PATH_TP_TEMP = PathDef.TempTPPath;
     static string PATH_ATLAS_TP = PathDef.AtlasTPPath;
 
@@ -42,7 +42,7 @@ public class PdrAtlasMaker
     {
         if (File.Exists(path))
         {
-            int index = path.LastIndexOf("/");
+            //int index = path.LastIndexOf("/");
             string name = Path.GetFileNameWithoutExtension(path);
             string p = Path.GetDirectoryName(path);
             AtlasEditorHelper.BuildSplitChannel(name,p,p,false);

@@ -6,8 +6,6 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 /// <summary>
 /// 输入拓展组件，目前仅适用于聊天相关，支持emoji和@功能
@@ -24,51 +22,6 @@ public class InputFieldEx
     ICanvasElement,
     ILayoutElement
 {
-    #region  emoji 处理  wff
-    static List<string> emojiPatterns;
-    protected override void Awake()
-    {
-        base.Awake();
-        if(emojiPatterns == null)
-        {
-            emojiPatterns = new List<string>();
-            emojiPatterns.Add(@"\p{Cs}");
-            emojiPatterns.Add(@"[\u2702-\u27B0]");
-        }
-        
-        if(!m_isSupportEmoji)
-        {
-            onValidateInput = OnValidateFilterEmoji;
-        }
-    }
-    private char OnValidateFilterEmoji(string text, int charIndex, char addedChar)
-    {
-        if (emojiPatterns.Count > 0)
-        {
-            string s = string.Format("{0}", addedChar);
-            if (BEmoji(s))
-            {
-                return '\0';
-            }
-        }
-        return addedChar;
-    }
-
-    private bool BEmoji(string s)
-    {
-        bool bEmoji = false;
-        for (int i = 0; i < emojiPatterns.Count; ++i)
-        {
-            bEmoji = Regex.IsMatch(s, emojiPatterns[i]);
-            if (bEmoji)
-            {
-                break;
-            }
-        }
-        return bEmoji;
-    }
-    #endregion
-
     // Setting the content type acts as a shortcut for setting a combination of InputType, CharacterValidation, LineType, and TouchScreenKeyboardType
     public enum ContentType
     {
@@ -261,14 +214,14 @@ public class InputFieldEx
 
     #region 拓展
     [SerializeField]
-    bool m_isSupportEmoji = false;
+    bool m_isSupportEmoji = true;
     #endregion
 
     private BaseInput input
     {
         get
         {
-            if (EventSystem.current && EventSystem.current.currentInputModule)
+            if(EventSystem.current && EventSystem.current.currentInputModule)
                 return EventSystem.current.currentInputModule.input;
             return null;
         }
@@ -291,7 +244,7 @@ public class InputFieldEx
     {
         get
         {
-            if (m_Mesh == null)
+            if(m_Mesh == null)
                 m_Mesh = new Mesh();
             return m_Mesh;
         }
@@ -301,7 +254,7 @@ public class InputFieldEx
     {
         get
         {
-            if (m_InputTextCache == null)
+            if(m_InputTextCache == null)
                 m_InputTextCache = new TextGenerator();
 
             return m_InputTextCache;
@@ -320,7 +273,7 @@ public class InputFieldEx
         }
         get
         {
-            switch (Application.platform)
+            switch(Application.platform)
             {
                 case RuntimePlatform.Android:
                 case RuntimePlatform.IPhonePlayer:
@@ -353,25 +306,25 @@ public class InputFieldEx
         }
         set
         {
-            if (this.text == value)
+            if(this.text == value)
                 return;
-            if (value == null)
+            if(value == null)
                 value = "";
             value = value.Replace("\0", string.Empty); // remove embedded nulls
-            if (m_LineType == LineType.SingleLine)
+            if(m_LineType == LineType.SingleLine)
                 value = value.Replace("\n", "").Replace("\t", "");
 
             // If we have an input validator, validate the input and apply the character limit at the same time.
-            if (onValidateInput != null || characterValidation != CharacterValidation.None)
+            if(onValidateInput != null || characterValidation != CharacterValidation.None)
             {
                 m_Text = "";
                 OnValidateInput validatorMethod = onValidateInput ?? Validate;
                 m_CaretPosition = m_CaretSelectPosition = value.Length;
                 int charactersToCheck = characterLimit > 0 ? Math.Min(characterLimit, value.Length) : value.Length;
-                for (int i = 0; i < charactersToCheck; ++i)
+                for(int i = 0; i < charactersToCheck; ++i)
                 {
                     char c = validatorMethod(m_Text, m_Text.Length, value[i]);
-                    if (c != 0)
+                    if(c != 0)
                         m_Text += c;
                 }
             }
@@ -381,19 +334,19 @@ public class InputFieldEx
             }
 
 #if UNITY_EDITOR
-            if (!Application.isPlaying)
+            if(!Application.isPlaying)
             {
                 SendOnValueChangedAndUpdateLabel();
                 return;
             }
 #endif
 
-            if (m_Keyboard != null)
+            if(m_Keyboard != null)
                 m_Keyboard.text = m_Text;
 
-            if (m_CaretPosition > m_Text.Length)
+            if(m_CaretPosition > m_Text.Length)
                 m_CaretPosition = m_CaretSelectPosition = m_Text.Length;
-            else if (m_CaretSelectPosition > m_Text.Length)
+            else if(m_CaretSelectPosition > m_Text.Length)
                 m_CaretSelectPosition = m_Text.Length;
             SendOnValueChangedAndUpdateLabel();
         }
@@ -409,33 +362,33 @@ public class InputFieldEx
         get { return m_CaretBlinkRate; }
         set
         {
-            if (SetPropertyUtility.SetStruct(ref m_CaretBlinkRate, value))
+            if(SetPropertyUtility.SetStruct(ref m_CaretBlinkRate, value))
             {
-                if (m_AllowInput)
+                if(m_AllowInput)
                     SetCaretActive();
             }
         }
     }
 
-    public int caretWidth { get { return m_CaretWidth; } set { if (SetPropertyUtility.SetStruct(ref m_CaretWidth, value)) MarkGeometryAsDirty(); } }
+    public int caretWidth { get { return m_CaretWidth; } set { if(SetPropertyUtility.SetStruct(ref m_CaretWidth, value)) MarkGeometryAsDirty(); } }
 
     public Text textComponent
     {
         get { return m_TextComponent; }
         set
         {
-            if (SetPropertyUtility.SetClass(ref m_TextComponent, value))
+            if(SetPropertyUtility.SetClass(ref m_TextComponent, value))
                 EnforceTextHOverflow();
         }
     }
 
     public Graphic placeholder { get { return m_Placeholder; } set { SetPropertyUtility.SetClass(ref m_Placeholder, value); } }
 
-    public Color caretColor { get { return customCaretColor ? m_CaretColor : textComponent.color; } set { if (SetPropertyUtility.SetColor(ref m_CaretColor, value)) MarkGeometryAsDirty(); } }
+    public Color caretColor { get { return customCaretColor ? m_CaretColor : textComponent.color; } set { if(SetPropertyUtility.SetColor(ref m_CaretColor, value)) MarkGeometryAsDirty(); } }
 
-    public bool customCaretColor { get { return m_CustomCaretColor; } set { if (m_CustomCaretColor != value) { m_CustomCaretColor = value; MarkGeometryAsDirty(); } } }
+    public bool customCaretColor { get { return m_CustomCaretColor; } set { if(m_CustomCaretColor != value) { m_CustomCaretColor = value; MarkGeometryAsDirty(); } } }
 
-    public Color selectionColor { get { return m_SelectionColor; } set { if (SetPropertyUtility.SetColor(ref m_SelectionColor, value)) MarkGeometryAsDirty(); } }
+    public Color selectionColor { get { return m_SelectionColor; } set { if(SetPropertyUtility.SetColor(ref m_SelectionColor, value)) MarkGeometryAsDirty(); } }
 
     public SubmitEvent onEndEdit { get { return m_OnEndEdit; } set { SetPropertyUtility.SetClass(ref m_OnEndEdit, value); } }
 
@@ -448,18 +401,18 @@ public class InputFieldEx
 
     public OnValidateInput onValidateInput { get { return m_OnValidateInput; } set { SetPropertyUtility.SetClass(ref m_OnValidateInput, value); } }
 
-    public int characterLimit { get { return m_CharacterLimit; } set { if (SetPropertyUtility.SetStruct(ref m_CharacterLimit, Math.Max(0, value))) UpdateLabel(); } }
+    public int characterLimit { get { return m_CharacterLimit; } set { if(SetPropertyUtility.SetStruct(ref m_CharacterLimit, Math.Max(0, value))) UpdateLabel(); } }
 
     // Content Type related
 
-    public ContentType contentType { get { return m_ContentType; } set { if (SetPropertyUtility.SetStruct(ref m_ContentType, value)) EnforceContentType(); } }
+    public ContentType contentType { get { return m_ContentType; } set { if(SetPropertyUtility.SetStruct(ref m_ContentType, value)) EnforceContentType(); } }
 
     public LineType lineType
     {
         get { return m_LineType; }
         set
         {
-            if (SetPropertyUtility.SetStruct(ref m_LineType, value))
+            if(SetPropertyUtility.SetStruct(ref m_LineType, value))
             {
                 SetToCustomIfContentTypeIsNot(ContentType.Standard, ContentType.Autocorrected);
                 EnforceTextHOverflow();
@@ -467,24 +420,24 @@ public class InputFieldEx
         }
     }
 
-    public InputType inputType { get { return m_InputType; } set { if (SetPropertyUtility.SetStruct(ref m_InputType, value)) SetToCustom(); } }
+    public InputType inputType { get { return m_InputType; } set { if(SetPropertyUtility.SetStruct(ref m_InputType, value)) SetToCustom(); } }
 
-    public TouchScreenKeyboardType keyboardType { get { return m_KeyboardType; } set { if (SetPropertyUtility.SetStruct(ref m_KeyboardType, value)) SetToCustom(); } }
+    public TouchScreenKeyboardType keyboardType { get { return m_KeyboardType; } set { if(SetPropertyUtility.SetStruct(ref m_KeyboardType, value)) SetToCustom(); } }
 
-    public CharacterValidation characterValidation { get { return m_CharacterValidation; } set { if (SetPropertyUtility.SetStruct(ref m_CharacterValidation, value)) SetToCustom(); } }
+    public CharacterValidation characterValidation { get { return m_CharacterValidation; } set { if(SetPropertyUtility.SetStruct(ref m_CharacterValidation, value)) SetToCustom(); } }
 
     public bool readOnly { get { return m_ReadOnly; } set { m_ReadOnly = value; } }
 
     // Derived property
     public bool multiLine { get { return m_LineType == LineType.MultiLineNewline || lineType == LineType.MultiLineSubmit; } }
     // Not shown in Inspector.
-    public char asteriskChar { get { return m_AsteriskChar; } set { if (SetPropertyUtility.SetStruct(ref m_AsteriskChar, value)) UpdateLabel(); } }
+    public char asteriskChar { get { return m_AsteriskChar; } set { if(SetPropertyUtility.SetStruct(ref m_AsteriskChar, value)) UpdateLabel(); } }
     public bool wasCanceled { get { return m_WasCanceled; } }
 
     protected void ClampPos(ref int pos)
     {
-        if (pos < 0) pos = 0;
-        else if (pos > text.Length) pos = text.Length;
+        if(pos < 0) pos = 0;
+        else if(pos > text.Length) pos = text.Length;
     }
 
     /// <summary>
@@ -522,7 +475,7 @@ public class InputFieldEx
         get { return m_CaretPosition + compositionString.Length; }
         set
         {
-            if (compositionString.Length != 0)
+            if(compositionString.Length != 0)
                 return;
 
             m_CaretPosition = value;
@@ -540,7 +493,7 @@ public class InputFieldEx
         get { return m_CaretSelectPosition + compositionString.Length; }
         set
         {
-            if (compositionString.Length != 0)
+            if(compositionString.Length != 0)
                 return;
 
             m_CaretSelectPosition = value;
@@ -560,11 +513,11 @@ public class InputFieldEx
         m_CharacterLimit = Math.Max(0, m_CharacterLimit);
 
         //This can be invoked before OnEnabled is called. So we shouldn't be accessing other objects, before OnEnable is called.
-        if (!IsActive())
+        if(!IsActive())
             return;
 
         UpdateLabel();
-        if (m_AllowInput)
+        if(m_AllowInput)
             SetCaretActive();
     }
 
@@ -573,16 +526,16 @@ public class InputFieldEx
     protected override void OnEnable()
     {
         base.OnEnable();
-        if (m_Text == null)
+        if(m_Text == null)
             m_Text = string.Empty;
         m_DrawStart = 0;
         m_DrawEnd = m_Text.Length;
 
         // If we have a cached renderer then we had OnDisable called so just restore the material.
-        if (m_CachedInputRenderer != null)
+        if(m_CachedInputRenderer != null)
             m_CachedInputRenderer.SetMaterial(m_TextComponent.GetModifiedMaterial(Graphic.defaultGraphicMaterial), Texture2D.whiteTexture);
 
-        if (m_TextComponent != null)
+        if(m_TextComponent != null)
         {
             m_TextComponent.RegisterDirtyVerticesCallback(MarkGeometryAsDirty);
             m_TextComponent.RegisterDirtyVerticesCallback(UpdateLabel);
@@ -597,7 +550,7 @@ public class InputFieldEx
         m_BlinkCoroutine = null;
 
         DeactivateInputField();
-        if (m_TextComponent != null)
+        if(m_TextComponent != null)
         {
             m_TextComponent.UnregisterDirtyVerticesCallback(MarkGeometryAsDirty);
             m_TextComponent.UnregisterDirtyVerticesCallback(UpdateLabel);
@@ -606,10 +559,10 @@ public class InputFieldEx
         CanvasUpdateRegistry.UnRegisterCanvasElementForRebuild(this);
 
         // Clear needs to be called otherwise sync never happens as the object is disabled.
-        if (m_CachedInputRenderer != null)
+        if(m_CachedInputRenderer != null)
             m_CachedInputRenderer.Clear();
 
-        if (m_Mesh != null)
+        if(m_Mesh != null)
             DestroyImmediate(m_Mesh);
         m_Mesh = null;
 
@@ -622,17 +575,17 @@ public class InputFieldEx
         m_CaretVisible = true;
         yield return null;
 
-        while (isFocused && m_CaretBlinkRate > 0)
+        while(isFocused && m_CaretBlinkRate > 0)
         {
             // the blink rate is expressed as a frequency
             float blinkPeriod = 1f / m_CaretBlinkRate;
 
             // the caret should be ON if we are in the first half of the blink period
             bool blinkState = (Time.unscaledTime - m_BlinkStartTime) % blinkPeriod < blinkPeriod / 2;
-            if (m_CaretVisible != blinkState)
+            if(m_CaretVisible != blinkState)
             {
                 m_CaretVisible = blinkState;
-                if (!hasSelection)
+                if(!hasSelection)
                     MarkGeometryAsDirty();
             }
 
@@ -644,7 +597,7 @@ public class InputFieldEx
 
     void SetCaretVisible()
     {
-        if (!m_AllowInput)
+        if(!m_AllowInput)
             return;
 
         m_CaretVisible = true;
@@ -656,12 +609,12 @@ public class InputFieldEx
     // However, it will handle things correctly if the blink speed changed from zero to non-zero or non-zero to zero.
     void SetCaretActive()
     {
-        if (!m_AllowInput)
+        if(!m_AllowInput)
             return;
 
-        if (m_CaretBlinkRate > 0.0f)
+        if(m_CaretBlinkRate > 0.0f)
         {
-            if (m_BlinkCoroutine == null)
+            if(m_BlinkCoroutine == null)
                 m_BlinkCoroutine = StartCoroutine(CaretBlink());
         }
         else
@@ -672,7 +625,7 @@ public class InputFieldEx
 
     private void UpdateCaretMaterial()
     {
-        if (m_TextComponent != null && m_CachedInputRenderer != null)
+        if(m_TextComponent != null && m_CachedInputRenderer != null)
             m_CachedInputRenderer.SetMaterial(m_TextComponent.GetModifiedMaterial(Graphic.defaultGraphicMaterial), Texture2D.whiteTexture);
     }
 
@@ -691,7 +644,7 @@ public class InputFieldEx
     {
         int position = text.Length;
 
-        if (shift)
+        if(shift)
         {
             caretSelectPositionInternal = position;
         }
@@ -707,7 +660,7 @@ public class InputFieldEx
     {
         int position = 0;
 
-        if (shift)
+        if(shift)
         {
             caretSelectPositionInternal = position;
         }
@@ -746,19 +699,19 @@ public class InputFieldEx
 
         var caretChanged = false;
 
-        if (caretPositionInternal != selectionStart)
+        if(caretPositionInternal != selectionStart)
         {
             caretChanged = true;
             caretPositionInternal = selectionStart;
         }
 
-        if (caretSelectPositionInternal != selectionEnd)
+        if(caretSelectPositionInternal != selectionEnd)
         {
             caretSelectPositionInternal = selectionEnd;
             caretChanged = true;
         }
 
-        if (caretChanged)
+        if(caretChanged)
         {
             m_BlinkStartTime = Time.unscaledTime;
 
@@ -773,9 +726,9 @@ public class InputFieldEx
     protected virtual void LateUpdate()
     {
         // Only activate if we are not already activated.
-        if (m_ShouldActivateNextUpdate)
+        if(m_ShouldActivateNextUpdate)
         {
-            if (!isFocused)
+            if(!isFocused)
             {
                 ActivateInputFieldInternal();
                 m_ShouldActivateNextUpdate = false;
@@ -786,19 +739,19 @@ public class InputFieldEx
             m_ShouldActivateNextUpdate = false;
         }
 
-        if (InPlaceEditing() || !isFocused)
+        if(InPlaceEditing() || !isFocused)
             return;
 
         AssignPositioningIfNeeded();
 
-        if (m_Keyboard == null || m_Keyboard.done)
+        if(m_Keyboard == null || m_Keyboard.done)
         {
-            if (m_Keyboard != null)
+            if(m_Keyboard != null)
             {
-                if (!m_ReadOnly)
+                if(!m_ReadOnly)
                     text = m_Keyboard.text;
 
-                if (m_Keyboard.wasCanceled)
+                if(m_Keyboard.wasCanceled)
                     m_WasCanceled = true;
             }
 
@@ -808,9 +761,9 @@ public class InputFieldEx
 
         string val = m_Keyboard.text;
 
-        if (m_Text != val)
+        if(m_Text != val)
         {
-            if (m_ReadOnly)
+            if(m_ReadOnly)
             {
                 m_Keyboard.text = m_Text;
             }
@@ -818,19 +771,19 @@ public class InputFieldEx
             {
                 m_Text = "";
 
-                for (int i = 0; i < val.Length; ++i)
+                for(int i = 0; i < val.Length; ++i)
                 {
                     char c = val[i];
 
-                    if (c == '\r' || (int)c == 3)
+                    if(c == '\r' || (int)c == 3)
                         c = '\n';
 
-                    if (onValidateInput != null)
+                    if(onValidateInput != null)
                         c = onValidateInput(m_Text, m_Text.Length, c);
-                    else if (characterValidation != CharacterValidation.None)
+                    else if(characterValidation != CharacterValidation.None)
                         c = Validate(m_Text, m_Text.Length, c);
 
-                    if (lineType == LineType.MultiLineSubmit && c == '\n')
+                    if(lineType == LineType.MultiLineSubmit && c == '\n')
                     {
                         m_Keyboard.text = m_Text;
 
@@ -838,14 +791,14 @@ public class InputFieldEx
                         return;
                     }
 
-                    if (c != 0)
+                    if(c != 0)
                         m_Text += c;
                 }
 
-                if (characterLimit > 0 && m_Text.Length > characterLimit)
+                if(characterLimit > 0 && m_Text.Length > characterLimit)
                     m_Text = m_Text.Substring(0, characterLimit);
 
-                if (m_Keyboard.canGetSelection)
+                if(m_Keyboard.canGetSelection)
                 {
                     UpdateCaretFromKeyboard();
                 }
@@ -856,21 +809,21 @@ public class InputFieldEx
 
                 // Set keyboard text before updating label, as we might have changed it with validation
                 // and update label will take the old value from keyboard if we don't change it here
-                if (m_Text != val)
+                if(m_Text != val)
                     m_Keyboard.text = m_Text;
 
                 SendOnValueChangedAndUpdateLabel();
             }
         }
-        else if (m_Keyboard.canGetSelection)
+        else if(m_Keyboard.canGetSelection)
         {
             UpdateCaretFromKeyboard();
         }
 
 
-        if (m_Keyboard.done)
+        if(m_Keyboard.done)
         {
-            if (m_Keyboard.wasCanceled)
+            if(m_Keyboard.wasCanceled)
                 m_WasCanceled = true;
 
             OnDeselect(null);
@@ -881,15 +834,15 @@ public class InputFieldEx
     public Vector2 ScreenToLocal(Vector2 screen)
     {
         var theCanvas = m_TextComponent.canvas;
-        if (theCanvas == null)
+        if(theCanvas == null)
             return screen;
 
         Vector3 pos = Vector3.zero;
-        if (theCanvas.renderMode == RenderMode.ScreenSpaceOverlay)
+        if(theCanvas.renderMode == RenderMode.ScreenSpaceOverlay)
         {
             pos = m_TextComponent.transform.InverseTransformPoint(screen);
         }
-        else if (theCanvas.worldCamera != null)
+        else if(theCanvas.worldCamera != null)
         {
             Ray mouseRay = theCanvas.worldCamera.ScreenPointToRay(screen);
             float dist;
@@ -902,30 +855,30 @@ public class InputFieldEx
 
     private int GetUnclampedCharacterLineFromPosition(Vector2 pos, TextGenerator generator)
     {
-        if (!multiLine)
+        if(!multiLine)
             return 0;
 
         // transform y to local scale
         float y = pos.y * m_TextComponent.pixelsPerUnit;
         float lastBottomY = 0.0f;
 
-        for (int i = 0; i < generator.lineCount; ++i)
+        for(int i = 0; i < generator.lineCount; ++i)
         {
             float topY = generator.lines[i].topY;
             float bottomY = topY - generator.lines[i].height;
 
             // pos is somewhere in the leading above this line
-            if (y > topY)
+            if(y > topY)
             {
                 // determine which line we're closer to
                 float leading = topY - lastBottomY;
-                if (y > topY - 0.5f * leading)
+                if(y > topY - 0.5f * leading)
                     return i - 1;
                 else
                     return i;
             }
 
-            if (y > bottomY)
+            if(y > bottomY)
                 return i;
 
             lastBottomY = bottomY;
@@ -943,21 +896,21 @@ public class InputFieldEx
     {
         TextGenerator gen = m_TextComponent.cachedTextGenerator;
 
-        if (gen.lineCount == 0)
+        if(gen.lineCount == 0)
             return 0;
 
         int line = GetUnclampedCharacterLineFromPosition(pos, gen);
-        if (line < 0)
+        if(line < 0)
             return 0;
-        if (line >= gen.lines.Count)
+        if(line >= gen.lines.Count)
             return gen.characterCountVisible;
 
         int startCharIndex = gen.lines[line].startCharIdx;
         int endCharIndex = GetLineEndPosition(gen, line);
 
-        for (int i = startCharIndex; i < endCharIndex; i++)
+        for(int i = startCharIndex; i < endCharIndex; i++)
         {
-            if (i >= gen.characters.Count)
+            if(i >= gen.characters.Count)
                 break;
 
             UICharInfo charInfo = gen.characters[i];
@@ -965,7 +918,7 @@ public class InputFieldEx
 
             float distToCharStart = pos.x - charPos.x;
             float distToCharEnd = charPos.x + (charInfo.charWidth / m_TextComponent.pixelsPerUnit) - pos.x;
-            if (distToCharStart < distToCharEnd)
+            if(distToCharStart < distToCharEnd)
                 return i;
         }
 
@@ -983,7 +936,7 @@ public class InputFieldEx
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        if (!MayDrag(eventData))
+        if(!MayDrag(eventData))
             return;
 
         m_UpdateDrag = true;
@@ -991,7 +944,7 @@ public class InputFieldEx
 
     public virtual void OnDrag(PointerEventData eventData)
     {
-        if (!MayDrag(eventData))
+        if(!MayDrag(eventData))
             return;
 
         Vector2 localMousePos;
@@ -1000,7 +953,7 @@ public class InputFieldEx
         MarkGeometryAsDirty();
 
         m_DragPositionOutOfBounds = !RectTransformUtility.RectangleContainsScreenPoint(textComponent.rectTransform, eventData.position, eventData.pressEventCamera);
-        if (m_DragPositionOutOfBounds && m_DragCoroutine == null)
+        if(m_DragPositionOutOfBounds && m_DragCoroutine == null)
             m_DragCoroutine = StartCoroutine(MouseDragOutsideRect(eventData));
 
         eventData.Use();
@@ -1008,25 +961,25 @@ public class InputFieldEx
 
     IEnumerator MouseDragOutsideRect(PointerEventData eventData)
     {
-        while (m_UpdateDrag && m_DragPositionOutOfBounds)
+        while(m_UpdateDrag && m_DragPositionOutOfBounds)
         {
             Vector2 localMousePos;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(textComponent.rectTransform, eventData.position, eventData.pressEventCamera, out localMousePos);
 
             Rect rect = textComponent.rectTransform.rect;
 
-            if (multiLine)
+            if(multiLine)
             {
-                if (localMousePos.y > rect.yMax)
+                if(localMousePos.y > rect.yMax)
                     MoveUp(true, true);
-                else if (localMousePos.y < rect.yMin)
+                else if(localMousePos.y < rect.yMin)
                     MoveDown(true, true);
             }
             else
             {
-                if (localMousePos.x < rect.xMin)
+                if(localMousePos.x < rect.xMin)
                     MoveLeft(true, false);
-                else if (localMousePos.x > rect.xMax)
+                else if(localMousePos.x > rect.xMax)
                     MoveRight(true, false);
             }
             UpdateLabel();
@@ -1038,7 +991,7 @@ public class InputFieldEx
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        if (!MayDrag(eventData))
+        if(!MayDrag(eventData))
             return;
 
         m_UpdateDrag = false;
@@ -1046,7 +999,7 @@ public class InputFieldEx
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if (!MayDrag(eventData))
+        if(!MayDrag(eventData))
             return;
 
         EventSystem.current.SetSelectedGameObject(gameObject, eventData);
@@ -1054,9 +1007,9 @@ public class InputFieldEx
         bool hadFocusBefore = m_AllowInput;
         base.OnPointerDown(eventData);
 
-        if (!InPlaceEditing())
+        if(!InPlaceEditing())
         {
-            if (m_Keyboard == null || !m_Keyboard.active)
+            if(m_Keyboard == null || !m_Keyboard.active)
             {
                 OnSelect(eventData);
                 return;
@@ -1065,7 +1018,7 @@ public class InputFieldEx
 
         // Only set caret position if we didn't just get focus now.
         // Otherwise it will overwrite the select all on focus.
-        if (hadFocusBefore)
+        if(hadFocusBefore)
         {
             Vector2 localMousePos;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(textComponent.rectTransform, eventData.position, eventData.pressEventCamera, out localMousePos);
@@ -1090,7 +1043,7 @@ public class InputFieldEx
         bool alt = (currentEventModifiers & EventModifiers.Alt) != 0;
         bool ctrlOnly = ctrl && !alt && !shift;
 
-        switch (evt.keyCode)
+        switch(evt.keyCode)
         {
             case KeyCode.Backspace:
                 {
@@ -1119,7 +1072,7 @@ public class InputFieldEx
             // Select All
             case KeyCode.A:
                 {
-                    if (ctrlOnly)
+                    if(ctrlOnly)
                     {
                         SelectAll();
                         return EditState.Continue;
@@ -1130,9 +1083,9 @@ public class InputFieldEx
             // Copy
             case KeyCode.C:
                 {
-                    if (ctrlOnly)
+                    if(ctrlOnly)
                     {
-                        if (inputType != InputType.Password)
+                        if(inputType != InputType.Password)
                             clipboard = GetSelectedString();
                         else
                             clipboard = "";
@@ -1144,7 +1097,7 @@ public class InputFieldEx
             // Paste
             case KeyCode.V:
                 {
-                    if (ctrlOnly)
+                    if(ctrlOnly)
                     {
                         Append(clipboard);
                         return EditState.Continue;
@@ -1155,9 +1108,9 @@ public class InputFieldEx
             // Cut
             case KeyCode.X:
                 {
-                    if (ctrlOnly)
+                    if(ctrlOnly)
                     {
-                        if (inputType != InputType.Password)
+                        if(inputType != InputType.Password)
                             clipboard = GetSelectedString();
                         else
                             clipboard = "";
@@ -1196,7 +1149,7 @@ public class InputFieldEx
             case KeyCode.Return:
             case KeyCode.KeypadEnter:
                 {
-                    if (lineType != LineType.MultiLineNewline)
+                    if(lineType != LineType.MultiLineNewline)
                     {
                         return EditState.Finish;
                     }
@@ -1212,21 +1165,21 @@ public class InputFieldEx
 
         char c = evt.character;
         // Don't allow return chars or tabulator key to be entered into single line fields.
-        if (!multiLine && (c == '\t' || c == '\r' || c == 10))
+        if(!multiLine && (c == '\t' || c == '\r' || c == 10))
             return EditState.Continue;
 
         // Convert carriage return and end-of-text characters to newline.
-        if (c == '\r' || (int)c == 3)
+        if(c == '\r' || (int)c == 3)
             c = '\n';
 
-        if (IsValidChar(c))
+        if(IsValidChar(c))
         {
             Append(c);
         }
 
-        if (c == 0)
+        if(c == 0)
         {
-            if (compositionString.Length > 0)
+            if(compositionString.Length > 0)
             {
                 UpdateLabel();
             }
@@ -1237,10 +1190,10 @@ public class InputFieldEx
     private bool IsValidChar(char c)
     {
         // Delete key on mac
-        if ((int)c == 127)
+        if((int)c == 127)
             return false;
         // Accept newline and tab
-        if (c == '\t' || c == '\n')
+        if(c == '\t' || c == '\n')
             return true;
 
         return m_TextComponent.font.HasCharacter(c);
@@ -1258,28 +1211,28 @@ public class InputFieldEx
 
     public virtual void OnUpdateSelected(BaseEventData eventData)
     {
-        if (!isFocused)
+        if(!isFocused)
             return;
 
         bool consumedEvent = false;
-        while (Event.PopEvent(m_ProcessingEvent))
+        while(Event.PopEvent(m_ProcessingEvent))
         {
-            if (m_ProcessingEvent.rawType == EventType.KeyDown)
+            if(m_ProcessingEvent.rawType == EventType.KeyDown)
             {
                 consumedEvent = true;
                 var shouldContinue = KeyPressed(m_ProcessingEvent);
-                if (shouldContinue == EditState.Finish)
+                if(shouldContinue == EditState.Finish)
                 {
                     DeactivateInputField();
                     break;
                 }
             }
 
-            switch (m_ProcessingEvent.type)
+            switch(m_ProcessingEvent.type)
             {
                 case EventType.ValidateCommand:
                 case EventType.ExecuteCommand:
-                    switch (m_ProcessingEvent.commandName)
+                    switch(m_ProcessingEvent.commandName)
                     {
                         case "SelectAll":
                             SelectAll();
@@ -1290,7 +1243,7 @@ public class InputFieldEx
             }
         }
 
-        if (consumedEvent)
+        if(consumedEvent)
             UpdateLabel();
 
         eventData.Use();
@@ -1298,14 +1251,14 @@ public class InputFieldEx
 
     private string GetSelectedString()
     {
-        if (!hasSelection)
+        if(!hasSelection)
             return "";
 
         int startPos = caretPositionInternal;
         int endPos = caretSelectPositionInternal;
 
         // Ensure startPos is always less then endPos to make the code simpler
-        if (startPos > endPos)
+        if(startPos > endPos)
         {
             int temp = startPos;
             startPos = endPos;
@@ -1317,12 +1270,12 @@ public class InputFieldEx
 
     private int FindtNextWordBegin()
     {
-        if (caretSelectPositionInternal + 1 >= text.Length)
+        if(caretSelectPositionInternal + 1 >= text.Length)
             return text.Length;
 
         int spaceLoc = text.IndexOfAny(kSeparators, caretSelectPositionInternal + 1);
 
-        if (spaceLoc == -1)
+        if(spaceLoc == -1)
             spaceLoc = text.Length;
         else
             spaceLoc++;
@@ -1332,7 +1285,7 @@ public class InputFieldEx
 
     private void MoveRight(bool shift, bool ctrl)
     {
-        if (hasSelection && !shift)
+        if(hasSelection && !shift)
         {
             // By convention, if we have a selection and move right without holding shift,
             // we just place the cursor at the end.
@@ -1341,12 +1294,12 @@ public class InputFieldEx
         }
 
         int position;
-        if (ctrl)
+        if(ctrl)
             position = FindtNextWordBegin();
         else
             position = caretSelectPositionInternal + 1;
 
-        if (shift)
+        if(shift)
             caretSelectPositionInternal = position;
         else
             caretSelectPositionInternal = caretPositionInternal = position;
@@ -1354,12 +1307,12 @@ public class InputFieldEx
 
     private int FindtPrevWordBegin()
     {
-        if (caretSelectPositionInternal - 2 < 0)
+        if(caretSelectPositionInternal - 2 < 0)
             return 0;
 
         int spaceLoc = text.LastIndexOfAny(kSeparators, caretSelectPositionInternal - 2);
 
-        if (spaceLoc == -1)
+        if(spaceLoc == -1)
             spaceLoc = 0;
         else
             spaceLoc++;
@@ -1369,7 +1322,7 @@ public class InputFieldEx
 
     private void MoveLeft(bool shift, bool ctrl)
     {
-        if (hasSelection && !shift)
+        if(hasSelection && !shift)
         {
             // By convention, if we have a selection and move left without holding shift,
             // we just place the cursor at the start.
@@ -1378,12 +1331,12 @@ public class InputFieldEx
         }
 
         int position;
-        if (ctrl)
+        if(ctrl)
             position = FindtPrevWordBegin();
         else
             position = caretSelectPositionInternal - 1;
 
-        if (shift)
+        if(shift)
             caretSelectPositionInternal = position;
         else
             caretSelectPositionInternal = caretPositionInternal = position;
@@ -1391,9 +1344,9 @@ public class InputFieldEx
 
     private int DetermineCharacterLine(int charPos, TextGenerator generator)
     {
-        for (int i = 0; i < generator.lineCount - 1; ++i)
+        for(int i = 0; i < generator.lineCount - 1; ++i)
         {
-            if (generator.lines[i + 1].startCharIdx > charPos)
+            if(generator.lines[i + 1].startCharIdx > charPos)
                 return i;
         }
 
@@ -1406,21 +1359,21 @@ public class InputFieldEx
 
     private int LineUpCharacterPosition(int originalPos, bool goToFirstChar)
     {
-        if (originalPos >= cachedInputTextGenerator.characters.Count)
+        if(originalPos >= cachedInputTextGenerator.characters.Count)
             return 0;
 
         UICharInfo originChar = cachedInputTextGenerator.characters[originalPos];
         int originLine = DetermineCharacterLine(originalPos, cachedInputTextGenerator);
 
         // We are on the first line return first character
-        if (originLine <= 0)
+        if(originLine <= 0)
             return goToFirstChar ? 0 : originalPos;
 
         int endCharIdx = cachedInputTextGenerator.lines[originLine].startCharIdx - 1;
 
-        for (int i = cachedInputTextGenerator.lines[originLine - 1].startCharIdx; i < endCharIdx; ++i)
+        for(int i = cachedInputTextGenerator.lines[originLine - 1].startCharIdx; i < endCharIdx; ++i)
         {
-            if (cachedInputTextGenerator.characters[i].cursorPos.x >= originChar.cursorPos.x)
+            if(cachedInputTextGenerator.characters[i].cursorPos.x >= originChar.cursorPos.x)
                 return i;
         }
         return endCharIdx;
@@ -1432,22 +1385,22 @@ public class InputFieldEx
 
     private int LineDownCharacterPosition(int originalPos, bool goToLastChar)
     {
-        if (originalPos >= cachedInputTextGenerator.characterCountVisible)
+        if(originalPos >= cachedInputTextGenerator.characterCountVisible)
             return text.Length;
 
         UICharInfo originChar = cachedInputTextGenerator.characters[originalPos];
         int originLine = DetermineCharacterLine(originalPos, cachedInputTextGenerator);
 
         // We are on the last line return last character
-        if (originLine + 1 >= cachedInputTextGenerator.lineCount)
+        if(originLine + 1 >= cachedInputTextGenerator.lineCount)
             return goToLastChar ? text.Length : originalPos;
 
         // Need to determine end line for next line.
         int endCharIdx = GetLineEndPosition(cachedInputTextGenerator, originLine + 1);
 
-        for (int i = cachedInputTextGenerator.lines[originLine + 1].startCharIdx; i < endCharIdx; ++i)
+        for(int i = cachedInputTextGenerator.lines[originLine + 1].startCharIdx; i < endCharIdx; ++i)
         {
-            if (cachedInputTextGenerator.characters[i].cursorPos.x >= originChar.cursorPos.x)
+            if(cachedInputTextGenerator.characters[i].cursorPos.x >= originChar.cursorPos.x)
                 return i;
         }
         return endCharIdx;
@@ -1460,7 +1413,7 @@ public class InputFieldEx
 
     private void MoveDown(bool shift, bool goToLastChar)
     {
-        if (hasSelection && !shift)
+        if(hasSelection && !shift)
         {
             // If we have a selection and press down without shift,
             // set caret position to end of selection before we move it down.
@@ -1469,7 +1422,7 @@ public class InputFieldEx
 
         int position = multiLine ? LineDownCharacterPosition(caretSelectPositionInternal, goToLastChar) : text.Length;
 
-        if (shift)
+        if(shift)
             caretSelectPositionInternal = position;
         else
             caretPositionInternal = caretSelectPositionInternal = position;
@@ -1482,7 +1435,7 @@ public class InputFieldEx
 
     private void MoveUp(bool shift, bool goToFirstChar)
     {
-        if (hasSelection && !shift)
+        if(hasSelection && !shift)
         {
             // If we have a selection and press up without shift,
             // set caret position to start of selection before we move it up.
@@ -1491,7 +1444,7 @@ public class InputFieldEx
 
         int position = multiLine ? LineUpCharacterPosition(caretSelectPositionInternal, goToFirstChar) : 0;
 
-        if (shift)
+        if(shift)
             caretSelectPositionInternal = position;
         else
             caretSelectPositionInternal = caretPositionInternal = position;
@@ -1499,13 +1452,13 @@ public class InputFieldEx
 
     private void Delete()
     {
-        if (m_ReadOnly)
+        if(m_ReadOnly)
             return;
 
-        if (caretPositionInternal == caretSelectPositionInternal)
+        if(caretPositionInternal == caretSelectPositionInternal)
             return;
 
-        if (caretPositionInternal < caretSelectPositionInternal)
+        if(caretPositionInternal < caretSelectPositionInternal)
         {
             m_Text = text.Substring(0, caretPositionInternal) + text.Substring(caretSelectPositionInternal, text.Length - caretSelectPositionInternal);
             caretSelectPositionInternal = caretPositionInternal;
@@ -1519,17 +1472,17 @@ public class InputFieldEx
 
     private void ForwardSpace()
     {
-        if (m_ReadOnly)
+        if(m_ReadOnly)
             return;
 
-        if (hasSelection)
+        if(hasSelection)
         {
             Delete();
             SendOnValueChangedAndUpdateLabel();
         }
         else
         {
-            if (caretPositionInternal < text.Length)
+            if(caretPositionInternal < text.Length)
             {
                 m_Text = text.Remove(caretPositionInternal, 1);
                 SendOnValueChangedAndUpdateLabel();
@@ -1539,17 +1492,17 @@ public class InputFieldEx
 
     private void Backspace()
     {
-        if (m_ReadOnly)
+        if(m_ReadOnly)
             return;
 
-        if (hasSelection)
+        if(hasSelection)
         {
             Delete();
             SendOnValueChangedAndUpdateLabel();
         }
         else
         {
-            if (caretPositionInternal > 0)
+            if(caretPositionInternal > 0)
             {
                 m_Text = text.Remove(caretPositionInternal - 1, 1);
                 caretSelectPositionInternal = caretPositionInternal = caretPositionInternal - 1;
@@ -1561,16 +1514,16 @@ public class InputFieldEx
     // Insert the character and update the label.
     private void Insert(char c)
     {
-        if (m_ReadOnly)
+        if(m_ReadOnly)
             return;
 
         string replaceString = c.ToString();
         Delete();
 
         // Can't go past the character limit
-        if (characterLimit > 0 && text.Length >= characterLimit)
+        if(characterLimit > 0 && text.Length >= characterLimit)
             return;
-        
+
         m_Text = text.Insert(m_CaretPosition, replaceString);
         caretSelectPositionInternal = caretPositionInternal += replaceString.Length;
 
@@ -1585,13 +1538,13 @@ public class InputFieldEx
 
     private void SendOnValueChanged()
     {
-        if (onValueChanged != null)
+        if(onValueChanged != null)
             onValueChanged.Invoke(text);
     }
 
     private void SendOnFocusChanged()
     {
-        if (onFocusChanged != null)
+        if(onFocusChanged != null)
             onFocusChanged.Invoke(m_AllowInput);
     }
 
@@ -1602,7 +1555,7 @@ public class InputFieldEx
 
     protected void SendOnSubmit()
     {
-        if (onEndEdit != null)
+        if(onEndEdit != null)
             onEndEdit.Invoke(m_Text);
     }
 
@@ -1612,17 +1565,17 @@ public class InputFieldEx
 
     protected virtual void Append(string input)
     {
-        if (m_ReadOnly)
+        if(m_ReadOnly)
             return;
 
-        if (!InPlaceEditing())
+        if(!InPlaceEditing())
             return;
 
-        for (int i = 0, imax = input.Length; i < imax; ++i)
+        for(int i = 0, imax = input.Length; i < imax; ++i)
         {
             char c = input[i];
 
-            if (c >= ' ' || c == '\t' || c == '\r' || c == 10 || c == '\n')
+            if(c >= ' ' || c == '\t' || c == '\r' || c == 10 || c == '\n')
             {
                 Append(c);
             }
@@ -1631,21 +1584,21 @@ public class InputFieldEx
 
     protected virtual void Append(char input)
     {
-        if (m_ReadOnly)
+        if(m_ReadOnly)
             return;
 
-        if (!InPlaceEditing())
+        if(!InPlaceEditing())
             return;
 
         // If we have an input validator, validate the input first
         int insertionPoint = Math.Min(selectionFocusPosition, selectionAnchorPosition);
-        if (onValidateInput != null)
+        if(onValidateInput != null)
             input = onValidateInput(text, insertionPoint, input);
-        else if (characterValidation != CharacterValidation.None)
+        else if(characterValidation != CharacterValidation.None)
             input = Validate(text, insertionPoint, input);
 
         // If the input is invalid, skip it
-        if (input == 0)
+        if(input == 0)
             return;
 
         // Append the character and update the label
@@ -1658,7 +1611,7 @@ public class InputFieldEx
 
     protected void UpdateLabel()
     {
-        if (m_TextComponent != null && m_TextComponent.font != null && !m_PreventFontCallback)
+        if(m_TextComponent != null && m_TextComponent.font != null && !m_PreventFontCallback)
         {
             // TextGenerator.Populate invokes a callback that's called for anything
             // that needs to be updated when the data for that font has changed.
@@ -1676,33 +1629,33 @@ public class InputFieldEx
             m_PreventFontCallback = true;
 
             string fullText;
-            if (compositionString.Length > 0)
+            if(compositionString.Length > 0)
                 fullText = text.Substring(0, m_CaretPosition) + compositionString + text.Substring(m_CaretPosition);
             else
                 fullText = text;
 
             string processed;
-            if (inputType == InputType.Password)
+            if(inputType == InputType.Password)
                 processed = new string(asteriskChar, fullText.Length);
             else
                 processed = fullText;
 
             bool isEmpty = string.IsNullOrEmpty(fullText);
 
-            if (m_Placeholder != null)
+            if(m_Placeholder != null)
                 m_Placeholder.enabled = isEmpty;
 
             // If not currently editing the text, set the visible range to the whole text.
             // The UpdateLabel method will then truncate it to the part that fits inside the Text area.
             // We can't do this when text is being edited since it would discard the current scroll,
             // which is defined by means of the m_DrawStart and m_DrawEnd indices.
-            if (!m_AllowInput)
+            if(!m_AllowInput)
             {
                 m_DrawStart = 0;
                 m_DrawEnd = m_Text.Length;
             }
 
-            if (!isEmpty)
+            if(!isEmpty)
             {
                 // Determine what will actually fit into the given line
                 Vector2 extents = m_TextComponent.rectTransform.rect.size;
@@ -1714,7 +1667,7 @@ public class InputFieldEx
 
                 SetDrawRangeToContainCaretPosition(caretSelectPositionInternal);
 
-                if (!m_isSupportEmoji)
+                if(!m_isSupportEmoji)
                     processed = processed.Substring(m_DrawStart, Mathf.Min(m_DrawEnd, processed.Length) - m_DrawStart);
 
                 SetCaretVisible();
@@ -1727,10 +1680,10 @@ public class InputFieldEx
 
     private bool IsSelectionVisible()
     {
-        if (m_DrawStart > caretPositionInternal || m_DrawStart > caretSelectPositionInternal)
+        if(m_DrawStart > caretPositionInternal || m_DrawStart > caretSelectPositionInternal)
             return false;
 
-        if (m_DrawEnd < caretPositionInternal || m_DrawEnd < caretSelectPositionInternal)
+        if(m_DrawEnd < caretPositionInternal || m_DrawEnd < caretSelectPositionInternal)
             return false;
 
         return true;
@@ -1745,7 +1698,7 @@ public class InputFieldEx
     private static int GetLineEndPosition(TextGenerator gen, int line)
     {
         line = Mathf.Max(line, 0);
-        if (line + 1 < gen.lines.Count)
+        if(line + 1 < gen.lines.Count)
             return gen.lines[line + 1].startCharIdx - 1;
         return gen.characterCountVisible;
     }
@@ -1753,33 +1706,33 @@ public class InputFieldEx
     private void SetDrawRangeToContainCaretPosition(int caretPos)
     {
         // We don't have any generated lines generation is not valid.
-        if (cachedInputTextGenerator.lineCount <= 0)
+        if(cachedInputTextGenerator.lineCount <= 0)
             return;
 
         // the extents gets modified by the pixel density, so we need to use the generated extents since that will be in the same 'space' as
         // the values returned by the TextGenerator.lines[x].height for instance.
         Vector2 extents = cachedInputTextGenerator.rectExtents.size;
 
-        if (multiLine)
+        if(multiLine)
         {
             var lines = cachedInputTextGenerator.lines;
             int caretLine = DetermineCharacterLine(caretPos, cachedInputTextGenerator);
 
-            if (caretPos > m_DrawEnd)
+            if(caretPos > m_DrawEnd)
             {
                 // Caret comes after drawEnd, so we need to move drawEnd to the end of the line with the caret
                 m_DrawEnd = GetLineEndPosition(cachedInputTextGenerator, caretLine);
                 float bottomY = lines[caretLine].topY - lines[caretLine].height;
-                if (caretLine == lines.Count - 1)
+                if(caretLine == lines.Count - 1)
                 {
                     // Remove interline spacing on last line.
                     bottomY += lines[caretLine].leading;
                 }
                 int startLine = caretLine;
-                while (startLine > 0)
+                while(startLine > 0)
                 {
                     float topY = lines[startLine - 1].topY;
-                    if (topY - bottomY > extents.y)
+                    if(topY - bottomY > extents.y)
                         break;
                     startLine--;
                 }
@@ -1787,7 +1740,7 @@ public class InputFieldEx
             }
             else
             {
-                if (caretPos < m_DrawStart)
+                if(caretPos < m_DrawStart)
                 {
                     // Caret comes before drawStart, so we need to move drawStart to an earlier line start that comes before caret.
                     m_DrawStart = GetLineStartPosition(cachedInputTextGenerator, caretLine);
@@ -1799,33 +1752,33 @@ public class InputFieldEx
                 float topY = lines[startLine].topY;
                 float bottomY = lines[endLine].topY - lines[endLine].height;
 
-                if (endLine == lines.Count - 1)
+                if(endLine == lines.Count - 1)
                 {
                     // Remove interline spacing on last line.
                     bottomY += lines[endLine].leading;
                 }
 
-                while (endLine < lines.Count - 1)
+                while(endLine < lines.Count - 1)
                 {
                     bottomY = lines[endLine + 1].topY - lines[endLine + 1].height;
 
-                    if (endLine + 1 == lines.Count - 1)
+                    if(endLine + 1 == lines.Count - 1)
                     {
                         // Remove interline spacing on last line.
                         bottomY += lines[endLine + 1].leading;
                     }
 
-                    if (topY - bottomY > extents.y)
+                    if(topY - bottomY > extents.y)
                         break;
                     ++endLine;
                 }
 
                 m_DrawEnd = GetLineEndPosition(cachedInputTextGenerator, endLine);
 
-                while (startLine > 0)
+                while(startLine > 0)
                 {
                     topY = lines[startLine - 1].topY;
-                    if (topY - bottomY > extents.y)
+                    if(topY - bottomY > extents.y)
                         break;
                     startLine--;
                 }
@@ -1835,17 +1788,17 @@ public class InputFieldEx
         else
         {
             var characters = cachedInputTextGenerator.characters;
-            if (m_DrawEnd > cachedInputTextGenerator.characterCountVisible)
+            if(m_DrawEnd > cachedInputTextGenerator.characterCountVisible)
                 m_DrawEnd = cachedInputTextGenerator.characterCountVisible;
 
             float width = 0.0f;
-            if (caretPos > m_DrawEnd || (caretPos == m_DrawEnd && m_DrawStart > 0))
+            if(caretPos > m_DrawEnd || (caretPos == m_DrawEnd && m_DrawStart > 0))
             {
                 // fit characters from the caretPos leftward
                 m_DrawEnd = caretPos;
-                for (m_DrawStart = m_DrawEnd - 1; m_DrawStart >= 0; --m_DrawStart)
+                for(m_DrawStart = m_DrawEnd - 1; m_DrawStart >= 0; --m_DrawStart)
                 {
-                    if (width + characters[m_DrawStart].charWidth > extents.x)
+                    if(width + characters[m_DrawStart].charWidth > extents.x)
                         break;
 
                     width += characters[m_DrawStart].charWidth;
@@ -1854,17 +1807,17 @@ public class InputFieldEx
             }
             else
             {
-                if (caretPos < m_DrawStart)
+                if(caretPos < m_DrawStart)
                     m_DrawStart = caretPos;
 
                 m_DrawEnd = m_DrawStart;
             }
 
             // fit characters rightward
-            for (; m_DrawEnd < cachedInputTextGenerator.characterCountVisible; ++m_DrawEnd)
+            for(; m_DrawEnd < cachedInputTextGenerator.characterCountVisible; ++m_DrawEnd)
             {
                 width += characters[m_DrawEnd].charWidth;
-                if (width > extents.x)
+                if(width > extents.x)
                     break;
             }
         }
@@ -1878,7 +1831,7 @@ public class InputFieldEx
     private void MarkGeometryAsDirty()
     {
 #if UNITY_EDITOR
-        if (!Application.isPlaying || UnityEditor.PrefabUtility.GetPrefabObject(gameObject) != null)
+        if(!Application.isPlaying || UnityEditor.PrefabUtility.GetPrefabObject(gameObject) != null)
             return;
 #endif
 
@@ -1887,7 +1840,7 @@ public class InputFieldEx
 
     public virtual void Rebuild(CanvasUpdate update)
     {
-        switch (update)
+        switch(update)
         {
             case CanvasUpdate.LatePreRender:
                 UpdateGeometry();
@@ -1904,14 +1857,14 @@ public class InputFieldEx
     private void UpdateGeometry()
     {
 #if UNITY_EDITOR
-        if (!Application.isPlaying)
+        if(!Application.isPlaying)
             return;
 #endif
         // No need to draw a cursor on mobile as its handled by the devices keyboard.
-        if (!shouldHideMobileInput)
+        if(!shouldHideMobileInput)
             return;
 
-        if (m_CachedInputRenderer == null && m_TextComponent != null)
+        if(m_CachedInputRenderer == null && m_TextComponent != null)
         {
             GameObject go = new GameObject(transform.name + " Input Caret", typeof(RectTransform), typeof(CanvasRenderer));
             go.hideFlags = HideFlags.DontSave;
@@ -1929,7 +1882,7 @@ public class InputFieldEx
             AssignPositioningIfNeeded();
         }
 
-        if (m_CachedInputRenderer == null)
+        if(m_CachedInputRenderer == null)
             return;
 
         OnFillVBO(mesh);
@@ -1938,7 +1891,7 @@ public class InputFieldEx
 
     private void AssignPositioningIfNeeded()
     {
-        if (m_TextComponent != null && caretRectTrans != null &&
+        if(m_TextComponent != null && caretRectTrans != null &&
             (caretRectTrans.localPosition != m_TextComponent.rectTransform.localPosition ||
                 caretRectTrans.localRotation != m_TextComponent.rectTransform.localRotation ||
                 caretRectTrans.localScale != m_TextComponent.rectTransform.localScale ||
@@ -1961,16 +1914,16 @@ public class InputFieldEx
 
     private void OnFillVBO(Mesh vbo)
     {
-        using (var helper = new VertexHelper())
+        using(var helper = new VertexHelper())
         {
-            if (!isFocused)
+            if(!isFocused)
             {
                 helper.FillMesh(vbo);
                 return;
             }
 
             Vector2 roundingOffset = m_TextComponent.PixelAdjustPoint(Vector2.zero);
-            if (!hasSelection)
+            if(!hasSelection)
                 GenerateCaret(helper, roundingOffset);
             else
                 GenerateHightlight(helper, roundingOffset);
@@ -1981,10 +1934,10 @@ public class InputFieldEx
 
     private void GenerateCaret(VertexHelper vbo, Vector2 roundingOffset)
     {
-        if (!m_CaretVisible)
+        if(!m_CaretVisible)
             return;
 
-        if (m_CursorVerts == null)
+        if(m_CursorVerts == null)
         {
             CreateCursorVerts();
         }
@@ -1993,16 +1946,16 @@ public class InputFieldEx
         int adjustedPos = Mathf.Max(0, caretPositionInternal - m_DrawStart);
         TextGenerator gen = m_TextComponent.cachedTextGenerator;
 
-        if (gen == null)
+        if(gen == null)
             return;
 
-        if (gen.lineCount == 0)
+        if(gen.lineCount == 0)
             return;
 
         Vector2 startPosition = Vector2.zero;
 
         // Calculate startPosition
-        if (adjustedPos < gen.characters.Count)
+        if(adjustedPos < gen.characters.Count)
         {
             UICharInfo cursorChar = gen.characters[adjustedPos];
             startPosition.x = cursorChar.cursorPos.x;
@@ -2010,14 +1963,14 @@ public class InputFieldEx
         startPosition.x /= m_TextComponent.pixelsPerUnit;
 
         // TODO: Only clamp when Text uses horizontal word wrap.
-        if (startPosition.x > m_TextComponent.rectTransform.rect.xMax)
+        if(startPosition.x > m_TextComponent.rectTransform.rect.xMax)
             startPosition.x = m_TextComponent.rectTransform.rect.xMax;
 
         int characterLine = DetermineCharacterLine(adjustedPos, gen);
         startPosition.y = gen.lines[characterLine].topY / m_TextComponent.pixelsPerUnit;
         float height = gen.lines[characterLine].height / m_TextComponent.pixelsPerUnit;
 
-        for (int i = 0; i < m_CursorVerts.Length; i++)
+        for(int i = 0; i < m_CursorVerts.Length; i++)
             m_CursorVerts[i].color = caretColor;
 
         m_CursorVerts[0].position = new Vector3(startPosition.x, startPosition.y - height, 0.0f);
@@ -2025,9 +1978,9 @@ public class InputFieldEx
         m_CursorVerts[2].position = new Vector3(startPosition.x + width, startPosition.y, 0.0f);
         m_CursorVerts[3].position = new Vector3(startPosition.x, startPosition.y, 0.0f);
 
-        if (roundingOffset != Vector2.zero)
+        if(roundingOffset != Vector2.zero)
         {
-            for (int i = 0; i < m_CursorVerts.Length; i++)
+            for(int i = 0; i < m_CursorVerts.Length; i++)
             {
                 UIVertex uiv = m_CursorVerts[i];
                 uiv.position.x += roundingOffset.x;
@@ -2042,7 +1995,7 @@ public class InputFieldEx
         // resolution is always the desktops resolution since its part of the display API,
         // so we use the standard none multiple display method. (case 741751)
         int displayIndex = m_TextComponent.canvas.targetDisplay;
-        if (displayIndex > 0 && displayIndex < Display.displays.Length)
+        if(displayIndex > 0 && displayIndex < Display.displays.Length)
             screenHeight = Display.displays[displayIndex].renderingHeight;
 
         startPosition.y = screenHeight - startPosition.y;
@@ -2053,7 +2006,7 @@ public class InputFieldEx
     {
         m_CursorVerts = new UIVertex[4];
 
-        for (int i = 0; i < m_CursorVerts.Length; i++)
+        for(int i = 0; i < m_CursorVerts.Length; i++)
         {
             m_CursorVerts[i] = UIVertex.simpleVert;
             m_CursorVerts[i].uv0 = Vector2.zero;
@@ -2066,7 +2019,7 @@ public class InputFieldEx
         int endChar = Mathf.Max(0, caretSelectPositionInternal - m_DrawStart);
 
         // Ensure pos is always less then selPos to make the code simpler
-        if (startChar > endChar)
+        if(startChar > endChar)
         {
             int temp = startChar;
             startChar = endChar;
@@ -2076,7 +2029,7 @@ public class InputFieldEx
         endChar -= 1;
         TextGenerator gen = m_TextComponent.cachedTextGenerator;
 
-        if (gen.lineCount <= 0)
+        if(gen.lineCount <= 0)
             return;
 
         int currentLineIndex = DetermineCharacterLine(startChar, gen);
@@ -2088,9 +2041,9 @@ public class InputFieldEx
         vert.color = selectionColor;
 
         int currentChar = startChar;
-        while (currentChar <= endChar && currentChar < gen.characterCount)
+        while(currentChar <= endChar && currentChar < gen.characterCount)
         {
-            if (currentChar == lastCharInLineIndex || currentChar == endChar)
+            if(currentChar == lastCharInLineIndex || currentChar == endChar)
             {
                 UICharInfo startCharInfo = gen.characters[startChar];
                 UICharInfo endCharInfo = gen.characters[currentChar];
@@ -2098,7 +2051,7 @@ public class InputFieldEx
                 Vector2 endPosition = new Vector2((endCharInfo.cursorPos.x + endCharInfo.charWidth) / m_TextComponent.pixelsPerUnit, startPosition.y - gen.lines[currentLineIndex].height / m_TextComponent.pixelsPerUnit);
 
                 // Checking xMin as well due to text generator not setting position if char is not rendered.
-                if (endPosition.x > m_TextComponent.rectTransform.rect.xMax || endPosition.x < m_TextComponent.rectTransform.rect.xMin)
+                if(endPosition.x > m_TextComponent.rectTransform.rect.xMax || endPosition.x < m_TextComponent.rectTransform.rect.xMin)
                     endPosition.x = m_TextComponent.rectTransform.rect.xMax;
 
                 var startIndex = vbo.currentVertCount;
@@ -2133,29 +2086,29 @@ public class InputFieldEx
     protected char Validate(string text, int pos, char ch)
     {
         // Validation is disabled
-        if (characterValidation == CharacterValidation.None || !enabled)
+        if(characterValidation == CharacterValidation.None || !enabled)
             return ch;
 
-        if (characterValidation == CharacterValidation.Integer || characterValidation == CharacterValidation.Decimal)
+        if(characterValidation == CharacterValidation.Integer || characterValidation == CharacterValidation.Decimal)
         {
             // Integer and decimal
             bool cursorBeforeDash = (pos == 0 && text.Length > 0 && text[0] == '-');
             bool selectionAtStart = caretPositionInternal == 0 || caretSelectPositionInternal == 0;
-            if (!cursorBeforeDash)
+            if(!cursorBeforeDash)
             {
-                if (ch >= '0' && ch <= '9') return ch;
-                if (ch == '-' && (pos == 0 || selectionAtStart)) return ch;
-                if (ch == '.' && characterValidation == CharacterValidation.Decimal && !text.Contains(".")) return ch;
+                if(ch >= '0' && ch <= '9') return ch;
+                if(ch == '-' && (pos == 0 || selectionAtStart)) return ch;
+                if(ch == '.' && characterValidation == CharacterValidation.Decimal && !text.Contains(".")) return ch;
             }
         }
-        else if (characterValidation == CharacterValidation.Alphanumeric)
+        else if(characterValidation == CharacterValidation.Alphanumeric)
         {
             // All alphanumeric characters
-            if (ch >= 'A' && ch <= 'Z') return ch;
-            if (ch >= 'a' && ch <= 'z') return ch;
-            if (ch >= '0' && ch <= '9') return ch;
+            if(ch >= 'A' && ch <= 'Z') return ch;
+            if(ch >= 'a' && ch <= 'z') return ch;
+            if(ch >= '0' && ch <= '9') return ch;
         }
-        else if (characterValidation == CharacterValidation.Name)
+        else if(characterValidation == CharacterValidation.Name)
         {
             // FIXME: some actions still lead to invalid input:
             //        - Hitting delete in front of an uppercase letter
@@ -2170,16 +2123,16 @@ public class InputFieldEx
             //
             // The rule we try to implement are too complex for this kind of verification.
 
-            if (char.IsLetter(ch))
+            if(char.IsLetter(ch))
             {
                 // Character following a space should be in uppercase.
-                if (char.IsLower(ch) && ((pos == 0) || (text[pos - 1] == ' ')))
+                if(char.IsLower(ch) && ((pos == 0) || (text[pos - 1] == ' ')))
                 {
                     return char.ToUpper(ch);
                 }
 
                 // Character not following a space or an apostrophe should be in lowercase.
-                if (char.IsUpper(ch) && (pos > 0) && (text[pos - 1] != ' ') && (text[pos - 1] != '\''))
+                if(char.IsUpper(ch) && (pos > 0) && (text[pos - 1] != ' ') && (text[pos - 1] != '\''))
                 {
                     return char.ToLower(ch);
                 }
@@ -2187,25 +2140,25 @@ public class InputFieldEx
                 return ch;
             }
 
-            if (ch == '\'')
+            if(ch == '\'')
             {
                 // Don't allow more than one apostrophe
-                if (!text.Contains("'"))
+                if(!text.Contains("'"))
                     // Don't allow consecutive spaces and apostrophes.
-                    if (!(((pos > 0) && ((text[pos - 1] == ' ') || (text[pos - 1] == '\''))) ||
+                    if(!(((pos > 0) && ((text[pos - 1] == ' ') || (text[pos - 1] == '\''))) ||
                             ((pos < text.Length) && ((text[pos] == ' ') || (text[pos] == '\'')))))
                         return ch;
             }
 
-            if (ch == ' ')
+            if(ch == ' ')
             {
                 // Don't allow consecutive spaces and apostrophes.
-                if (!(((pos > 0) && ((text[pos - 1] == ' ') || (text[pos - 1] == '\''))) ||
+                if(!(((pos > 0) && ((text[pos - 1] == ' ') || (text[pos - 1] == '\''))) ||
                         ((pos < text.Length) && ((text[pos] == ' ') || (text[pos] == '\'')))))
                     return ch;
             }
         }
-        else if (characterValidation == CharacterValidation.EmailAddress)
+        else if(characterValidation == CharacterValidation.EmailAddress)
         {
             // From StackOverflow about allowed characters in email addresses:
             // Uppercase and lowercase English letters (a-z, A-Z)
@@ -2214,16 +2167,16 @@ public class InputFieldEx
             // Character . (dot, period, full stop) provided that it is not the first or last character,
             // and provided also that it does not appear two or more times consecutively.
 
-            if (ch >= 'A' && ch <= 'Z') return ch;
-            if (ch >= 'a' && ch <= 'z') return ch;
-            if (ch >= '0' && ch <= '9') return ch;
-            if (ch == '@' && text.IndexOf('@') == -1) return ch;
-            if (kEmailSpecialCharacters.IndexOf(ch) != -1) return ch;
-            if (ch == '.')
+            if(ch >= 'A' && ch <= 'Z') return ch;
+            if(ch >= 'a' && ch <= 'z') return ch;
+            if(ch >= '0' && ch <= '9') return ch;
+            if(ch == '@' && text.IndexOf('@') == -1) return ch;
+            if(kEmailSpecialCharacters.IndexOf(ch) != -1) return ch;
+            if(ch == '.')
             {
                 char lastChar = (text.Length > 0) ? text[Mathf.Clamp(pos, 0, text.Length - 1)] : ' ';
                 char nextChar = (text.Length > 0) ? text[Mathf.Clamp(pos + 1, 0, text.Length - 1)] : '\n';
-                if (lastChar != '.' && nextChar != '.')
+                if(lastChar != '.' && nextChar != '.')
                     return ch;
             }
         }
@@ -2232,12 +2185,12 @@ public class InputFieldEx
 
     public void ActivateInputField()
     {
-        if (m_TextComponent == null || m_TextComponent.font == null || !IsActive() || !IsInteractable())
+        if(m_TextComponent == null || m_TextComponent.font == null || !IsActive() || !IsInteractable())
             return;
 
-        if (isFocused)
+        if(isFocused)
         {
-            if (m_Keyboard != null && !m_Keyboard.active)
+            if(m_Keyboard != null && !m_Keyboard.active)
             {
                 m_Keyboard.active = true;
                 m_Keyboard.text = m_Text;
@@ -2249,15 +2202,15 @@ public class InputFieldEx
 
     private void ActivateInputFieldInternal()
     {
-        if (EventSystem.current == null)
+        if(EventSystem.current == null)
             return;
 
-        if (EventSystem.current.currentSelectedGameObject != gameObject)
+        if(EventSystem.current.currentSelectedGameObject != gameObject)
             EventSystem.current.SetSelectedGameObject(gameObject);
 
-        if (TouchScreenKeyboard.isSupported)
+        if(TouchScreenKeyboard.isSupported)
         {
-            if (input.touchSupported)
+            if(input.touchSupported)
             {
                 TouchScreenKeyboard.hideInput = shouldHideMobileInput;
             }
@@ -2288,13 +2241,13 @@ public class InputFieldEx
     {
         base.OnSelect(eventData);
 
-        if (shouldActivateOnSelect)
+        if(shouldActivateOnSelect)
             ActivateInputField();
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left)
+        if(eventData.button != PointerEventData.InputButton.Left)
             return;
 
         ActivateInputField();
@@ -2303,21 +2256,21 @@ public class InputFieldEx
     public void DeactivateInputField()
     {
         // Not activated do nothing.
-        if (!m_AllowInput)
+        if(!m_AllowInput)
             return;
 
         m_HasDoneFocusTransition = false;
         m_AllowInput = false;
 
-        if (m_Placeholder != null)
+        if(m_Placeholder != null)
             m_Placeholder.enabled = string.IsNullOrEmpty(m_Text);
 
-        if (m_TextComponent != null && IsInteractable())
+        if(m_TextComponent != null && IsInteractable())
         {
-            if (m_WasCanceled)
+            if(m_WasCanceled)
                 text = m_OriginalText;
 
-            if (m_Keyboard != null)
+            if(m_Keyboard != null)
             {
                 m_Keyboard.active = false;
                 m_Keyboard = null;
@@ -2342,16 +2295,16 @@ public class InputFieldEx
 
     public virtual void OnSubmit(BaseEventData eventData)
     {
-        if (!IsActive() || !IsInteractable())
+        if(!IsActive() || !IsInteractable())
             return;
 
-        if (!isFocused)
+        if(!isFocused)
             m_ShouldActivateNextUpdate = true;
     }
 
     private void EnforceContentType()
     {
-        switch (contentType)
+        switch(contentType)
         {
             case ContentType.Standard:
                 {
@@ -2437,8 +2390,8 @@ public class InputFieldEx
 
     void EnforceTextHOverflow()
     {
-        if (m_TextComponent != null)
-            if (multiLine)
+        if(m_TextComponent != null)
+            if(multiLine)
                 m_TextComponent.horizontalOverflow = HorizontalWrapMode.Wrap;
             else
                 m_TextComponent.horizontalOverflow = HorizontalWrapMode.Overflow;
@@ -2446,11 +2399,11 @@ public class InputFieldEx
 
     void SetToCustomIfContentTypeIsNot(params ContentType[] allowedContentTypes)
     {
-        if (contentType == ContentType.Custom)
+        if(contentType == ContentType.Custom)
             return;
 
-        for (int i = 0; i < allowedContentTypes.Length; i++)
-            if (contentType == allowedContentTypes[i])
+        for(int i = 0; i < allowedContentTypes.Length; i++)
+            if(contentType == allowedContentTypes[i])
                 return;
 
         contentType = ContentType.Custom;
@@ -2458,7 +2411,7 @@ public class InputFieldEx
 
     void SetToCustom()
     {
-        if (contentType == ContentType.Custom)
+        if(contentType == ContentType.Custom)
             return;
 
         contentType = ContentType.Custom;
@@ -2466,9 +2419,9 @@ public class InputFieldEx
 
     protected override void DoStateTransition(SelectionState state, bool instant)
     {
-        if (m_HasDoneFocusTransition)
+        if(m_HasDoneFocusTransition)
             state = SelectionState.Highlighted;
-        else if (state == SelectionState.Pressed)
+        else if(state == SelectionState.Pressed)
             m_HasDoneFocusTransition = true;
 
         base.DoStateTransition(state, instant);
@@ -2483,7 +2436,7 @@ public class InputFieldEx
     {
         get
         {
-            if (textComponent == null)
+            if(textComponent == null)
                 return 0;
             var settings = textComponent.GetGenerationSettings(Vector2.zero);
             return textComponent.cachedTextGeneratorForLayout.GetPreferredWidth(m_Text, settings) / textComponent.pixelsPerUnit;
@@ -2496,7 +2449,7 @@ public class InputFieldEx
     {
         get
         {
-            if (textComponent == null)
+            if(textComponent == null)
                 return 0;
             var settings = textComponent.GetGenerationSettings(new Vector2(textComponent.rectTransform.rect.size.x, 0.0f));
             return textComponent.cachedTextGeneratorForLayout.GetPreferredHeight(m_Text, settings) / textComponent.pixelsPerUnit;
@@ -2506,13 +2459,13 @@ public class InputFieldEx
     public virtual float flexibleHeight { get { return -1; } }
     public virtual int layoutPriority { get { return 1; } }
 
-	/// <summary>
+    /// <summary>
     /// 修复 TouchScreenKeyboard bug，unity官方的问题
     /// </summary>
     /// <param name="focus"></param>
     protected virtual void OnApplicationFocus(bool focus)
     {
-        if (focus)
+        if(focus)
         {
             DeactivateInputField();
         }
@@ -2523,7 +2476,7 @@ internal static class SetPropertyUtility
 {
     public static bool SetColor(ref Color currentValue, Color newValue)
     {
-        if (currentValue.r == newValue.r && currentValue.g == newValue.g && currentValue.b == newValue.b && currentValue.a == newValue.a)
+        if(currentValue.r == newValue.r && currentValue.g == newValue.g && currentValue.b == newValue.b && currentValue.a == newValue.a)
             return false;
 
         currentValue = newValue;
@@ -2532,7 +2485,7 @@ internal static class SetPropertyUtility
 
     public static bool SetStruct<T>(ref T currentValue, T newValue) where T : struct
     {
-        if (currentValue.Equals(newValue))
+        if(currentValue.Equals(newValue))
             return false;
 
         currentValue = newValue;
@@ -2541,7 +2494,7 @@ internal static class SetPropertyUtility
 
     public static bool SetClass<T>(ref T currentValue, T newValue) where T : class
     {
-        if ((currentValue == null && newValue == null) || (currentValue != null && currentValue.Equals(newValue)))
+        if((currentValue == null && newValue == null) || (currentValue != null && currentValue.Equals(newValue)))
             return false;
 
         currentValue = newValue;

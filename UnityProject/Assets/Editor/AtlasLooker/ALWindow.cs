@@ -13,7 +13,7 @@ namespace AtlasLooker
     {
         public static ALStyles ALStyles;
 
-        private static EditorWindow ALWindowInstance;
+        //private static EditorWindow ALWindowInstance;
 
         private int _selectedAtlasIndex = 0;
         private int _atlasNameScrollRectCount;
@@ -31,7 +31,7 @@ namespace AtlasLooker
         [MenuItem("Window/AtlasLooker")]
         public static void Init()
         {
-            ALWindowInstance = EditorWindow.GetWindow<ALWindow>("Atlas Looker");
+            EditorWindow.GetWindow<ALWindow>("Atlas Looker");
         }
 
         private void OnEnable()

@@ -20,9 +20,9 @@ public class UndoRedoManager
     #region fields
     private int selectIndex;
     private static CommandPool commandPool;
-    private string m_strFilePath = "Assets/CommandLog.json";
+    //private string m_strFilePath = "Assets/CommandLog.json";
     private List<Command> m_allCommands;
-    private int m_intMaxCommandCount;
+    //private int m_intMaxCommandCount;
     #endregion
 
     #region properties
@@ -70,7 +70,7 @@ public class UndoRedoManager
     #region methods
     public UndoRedoManager(int maxCommandCount)
     {
-        this.m_intMaxCommandCount = maxCommandCount;
+        //this.m_intMaxCommandCount = maxCommandCount;
 
         commandPool = new CommandPool(maxCommandCount);
         m_allCommands = new List<Command>();

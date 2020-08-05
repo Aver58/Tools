@@ -308,7 +308,7 @@ public class Deque<T> : ICollection, IEnumerable<T>
             throw new Exception("Empty Queue");
         }
 
-        T item = items[head];
+        //T item = items[head];
         items[head] = default(T);
         head = (head + 1) % items.Length;
         --count;

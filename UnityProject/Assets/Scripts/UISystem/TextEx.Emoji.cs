@@ -99,6 +99,8 @@ public partial class TextEx
     string EmojiParse(string inputStr)
     {
         m_emjDataLst.Clear();
+        ClearEmoji();
+
         bool isEmoji = false;
         for(int x = 0; x < inputStr.Length; x++)
         {
@@ -124,14 +126,12 @@ public partial class TextEx
             {
                 sb.Append(EMJSPACE);
                 m_emjDataLst.Add(new EmojiData(sb.Length - 1, EmjRectDic[fourChar]));
-                //RefreshHyperlinkIndex(i, 3);
                 i += 4;
             }
             else if(EmjRectDic.ContainsKey(doubleChar))
             {
                 sb.Append(EMJSPACE);
                 m_emjDataLst.Add(new EmojiData(sb.Length - 1, EmjRectDic[doubleChar]));
-                //RefreshHyperlinkIndex(i, 1);
                 i += 2;
             }
             else if(EmjRectDic.ContainsKey(singleChar))

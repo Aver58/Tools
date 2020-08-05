@@ -31,9 +31,9 @@ public class MyAStar : MonoBehaviour
     private Stack<string> parentList;
     //基础物体
     private Transform plane;
-    private Transform start;
-    private Transform end;
-    private Transform obstacle;
+    //private Transform start;
+    //private Transform end;
+    //private Transform obstacle;
     //流颜色参数
     private float alpha = 0;
     private float incrementPer = 0;
@@ -42,9 +42,9 @@ public class MyAStar : MonoBehaviour
     {
         instance = this;
         plane = GameObject.Find ("Plane").transform;
-        start = GameObject.Find ("Start").transform;
-        end = GameObject.Find ("End").transform;
-        obstacle = GameObject.Find ("Obstacle").transform;
+        //start = GameObject.Find ("Start").transform;
+        //end = GameObject.Find ("End").transform;
+        //obstacle = GameObject.Find ("Obstacle").transform;
         parentList = new Stack<string> ();
         openList = new ArrayList ();
         closeList = new ArrayList ();
