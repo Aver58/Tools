@@ -5,5 +5,5 @@
 	public const string TempTPPath = "Assets/TP/ui";    //TP预览临时目录
 	public const string UI_PATH = "ui";
 	public static string UI_ASSETS_PATH { get { return "Assets/Data/ui"; } }
-
+	public static string AtlasEmojiPath = "ui/atlas_tp/emoji";
 }

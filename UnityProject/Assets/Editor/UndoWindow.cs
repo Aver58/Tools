@@ -81,7 +81,7 @@ public class UndoWindow : EditorWindow
 
     void OnRightMouseDown(Event e)
     {
-        if (e != null && e.button == 1 && e.type == EventType.mouseDown)
+        if (e != null && e.button == 1 && e.type == EventType.MouseDown)
         {
             //右键单击啦，在这里显示菜单
             GenericMenu menu = new GenericMenu();

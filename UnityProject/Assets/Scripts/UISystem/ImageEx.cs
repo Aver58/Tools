@@ -1,14 +1,14 @@
-﻿
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Sprites;
 using System.Collections.Generic;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using UnityEngine;
-using UnityEngine.Sprites;
-using UnityEngine.UI;
-using System;
 
-public class SDImage : Image
+public class ImageEx : Image
 {
     [SerializeField]
     private string m_SpriteName;
@@ -21,9 +21,23 @@ public class SDImage : Image
     private Sprite m_OverrideSprite;
     private Sprite activeSprite { get { return m_OverrideSprite != null ? m_OverrideSprite : sprite; } }
 
-    protected SDImage()
+    protected ImageEx()
     {
         useLegacyMeshGeneration = false;
+    }
+
+    public void SetEmojiName(string name)
+    {
+        SpriteModule.Instance.LoadEmojiByName(name, onLoadedEmoji);
+    }
+
+    private void onLoadedEmoji(object obj, Material mat)
+    {
+        Sprite sp = obj as Sprite;
+        this.sprite = sp;
+
+        if(mat != null)
+            this.material = mat;
     }
 
     public string SpriteName
@@ -169,7 +183,6 @@ public class SDImage : Image
 
         return v;
     }
-
 
     /// <summary>
     /// 更新UI渲染网格(Polygon模式未开启)
@@ -828,5 +841,4 @@ public class SDImage : Image
             else xy[i1].x = Mathf.Lerp(xy[i0].x, xy[i2].x, cos);
         }
     }
-
 }

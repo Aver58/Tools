@@ -119,7 +119,7 @@ namespace AtlasLooker
                 return;
             }
 
-            if (ev.type == EventType.keyDown && (ev.keyCode == KeyCode.UpArrow || ev.keyCode == KeyCode.DownArrow))
+            if (ev.type == EventType.KeyDown && (ev.keyCode == KeyCode.UpArrow || ev.keyCode == KeyCode.DownArrow))
             {
                 if (ev.keyCode == KeyCode.UpArrow) {
                     _selectedAtlasIndex--;
