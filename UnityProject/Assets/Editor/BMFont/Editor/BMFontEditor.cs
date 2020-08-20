@@ -41,15 +41,28 @@ public class BMFontEditor : EditorWindow
 				BMGlyph bmInfo = bmFont.glyphs[i];
 				CharacterInfo info = new CharacterInfo();
 				info.index = bmInfo.index;
-				info.uv.x = (float)bmInfo.x / (float)bmFont.texWidth;
-				info.uv.y = 1 - (float)bmInfo.y / (float)bmFont.texHeight;
-				info.uv.width = (float)bmInfo.width / (float)bmFont.texWidth;
-				info.uv.height = -1f * (float)bmInfo.height / (float)bmFont.texHeight;
-				info.vert.x = 0;
-				info.vert.y = (-(float)bmInfo.height)/2; //居中
-				info.vert.width = (float)bmInfo.width;
-				info.vert.height = (float)bmInfo.height;
-				info.width = (float)bmInfo.advance;
+				int width = bmInfo.width;
+				int height = bmInfo.height;
+				int texWidth = bmFont.texWidth;
+				int texHeight = bmFont.texHeight;
+
+				float uvX = 1f * bmInfo.x / texWidth;
+				float uvY = 1 - (1f * bmInfo.y / texHeight);//UV的坐标轴是以左上为0点
+				float uvWidth = 1f * width / texWidth;
+				float uvHeight = -1f * height / texHeight;
+
+				info.uvBottomLeft = new Vector2(uvX, uvY);
+				info.uvBottomRight = new Vector2(uvX + uvWidth, uvY);
+				info.uvTopLeft = new Vector2(uvX, uvY + uvHeight);
+				info.uvTopRight = new Vector2(uvX + uvWidth, uvY + uvHeight);
+
+				info.minX = bmInfo.offsetX;
+				info.minY = bmInfo.offsetY + height / 2;
+				info.maxX = bmInfo.offsetX + width;//todo test
+				info.maxY = bmInfo.offsetY + height;
+				info.glyphWidth = width;
+				info.glyphHeight = -height; // 不知道为什么要用负的，可能跟unity纹理uv有关  
+				info.advance = bmInfo.advance;
 				characterInfo[i] = info;
 			}
 			targetFont.characterInfo = characterInfo;
