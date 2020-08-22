@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class TestDot : MonoBehaviour {
+public class TestRotation : MonoBehaviour {
 	public Transform target;
 	public Transform source;
 
@@ -12,7 +10,6 @@ public class TestDot : MonoBehaviour {
 	Vector2 sourceForward;
 	Vector2 targetForward;
 
-	// Use this for initialization
 	void Start () {
 		sourcePos = source.localPosition;
 		targetPos = target.localPosition;
@@ -21,17 +18,6 @@ public class TestDot : MonoBehaviour {
 		targetForward = (targetPos - sourcePos).normalized;
 	}
 
-	public static Vector2 Vector2RotateFromRadian(float forwardX, float forwardZ, float radian)
-	{
-		//2维向量旋转(逆时针旋转公式) 顺时针角度为负，逆时针角度为正
-		float sinValue = (float)Math.Sin(radian);
-		float cosValue = (float)Math.Cos(radian);
-		float x = forwardX * cosValue - forwardZ * sinValue;
-		float z = forwardX * sinValue + forwardZ * cosValue;
-		return new Vector2(x, z);
-	}
-
-	// Update is called once per frame
 	void Update () {
 		//[Unity中点乘和叉乘的原理及使用方法](https://gameinstitute.qq.com/community/detail/112157)
 		// 简单的说: 点乘判断角度，叉乘判断方向。
@@ -39,31 +25,45 @@ public class TestDot : MonoBehaviour {
 		// 叉乘可以判断你是往左转还是往右转更好的转向敌人，
 		// 点乘得到你当前的面朝向的方向和你到敌人的方向的所成的角度大小。
 
-		sourceForward = new Vector2((float)Math.Sin(source.localRotation.z), (float)Math.Cos(source.localRotation.z));
+		// The red axis of the transform in world space.
+		sourceForward = source.right;// new Vector2((float)Math.Cos(source.localRotation.z * Mathf.Deg2Rad),(float)Math.Sin(source.localRotation.z * Mathf.Deg2Rad));
 
 		float turnSpeed = 1f;
 		float angle = Vector2.Angle(targetForward, sourceForward);
-		if(angle <= 0)
+		if(angle <= 1)
 			return;
 			
 		float deltaTime = Time.fixedDeltaTime;
 		float radianToTurn = turnSpeed * deltaTime;
 
-		//叉积算出方向
-	   Vector3 cross = Vector3.Cross(sourceForward, targetForward);
+		//叉积算出方向 unity是左手坐标系，所以反过来了，不知道对不对
+		Vector3 cross = Vector3.Cross(targetForward, sourceForward);
 
-		if(cross.y > 0)
-			// target 在 source 的顺时针方向  
+		// target 在 source 的顺时针方向  
+		if(cross.z > 0)
 			radianToTurn = -radianToTurn;
 
 		Vector2 newForward = Vector2RotateFromRadian(sourceForward.x, sourceForward.y, radianToTurn);
 		float newAngle = Vector2.Angle(sourceForward, newForward);
-		Debug.Log("sourceForward:" + sourceForward.ToString() + " targetForward:" + targetForward.ToString() + " angle:" + angle.ToString() + " radianToTurn:" 
-			+ radianToTurn.ToString() + " cross:" + cross.ToString() + " newForward:" + newForward.ToString() + " newAngle:" + newAngle.ToString());
+		Debug.Log("sourceForward:" + sourceForward.ToString() + " targetForward:" + targetForward.ToString() + 
+			" angle:" + angle.ToString() + " radianToTurn:" + radianToTurn.ToString() + " cross:" + cross.ToString() 
+			+ " newForward:" + newForward.ToString() + " newAngle:" + newAngle.ToString());
 
-		source.localRotation = new Quaternion(0,0,newAngle,1);
+		source.right = newForward;
+	}
+
+	//2维向量旋转(逆时针旋转公式) 顺时针角度为负，逆时针角度为正
+	private static Vector2 Vector2RotateFromRadian(float forwardX, float forwardZ, float radian)
+	{
+		float sinValue = (float)Math.Sin(radian);
+		float cosValue = (float)Math.Cos(radian);
+		float x = forwardX * cosValue - forwardZ * sinValue;
+		float z = forwardX * sinValue + forwardZ * cosValue;
+		return new Vector2(x, z);
 	}
 }
+
+//Vector3 cross = Vector3.Cross(a, b);
 //if(cross.y > 0)
 //{
 //	// b 在 a 的顺时针方向  
