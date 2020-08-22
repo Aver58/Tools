@@ -26,10 +26,18 @@ public class TestRotation : MonoBehaviour {
 		// 点乘得到你当前的面朝向的方向和你到敌人的方向的所成的角度大小。
 
 		// The red axis of the transform in world space.
-		sourceForward = source.right;// new Vector2((float)Math.Cos(source.localRotation.z * Mathf.Deg2Rad),(float)Math.Sin(source.localRotation.z * Mathf.Deg2Rad));
-
+		sourceForward = source.right;
 		float turnSpeed = 1f;
-		float angle = Vector2.Angle(targetForward, sourceForward);
+		//方法1:Vector2.Angle
+		//float angle = Vector2.Angle(targetForward, sourceForward);
+		//方法2：点积
+		// 计算 a、b 单位向量的点积,得到夹角余弦值,|a.normalized|*|b.normalized|=1; 
+		float dot = Vector2.Dot(sourceForward.normalized, targetForward.normalized);
+		// 通过反余弦函数获取 向量 a、b 夹角（默认为 弧度）
+		float radians = Mathf.Acos(dot);
+		// 将弧度转换为 角度  Unity中如果想要计算 Sin30°的值，得先将角度转为弧度
+		// Sin30°就得写成 Mathf.Sin（30*(Math.PI*2/360)）或 Math.Sin（30*Mathf.Deg2Rad）。
+		float angle = radians * Mathf.Rad2Deg;
 		if(angle <= 1)
 			return;
 			
@@ -44,10 +52,9 @@ public class TestRotation : MonoBehaviour {
 			radianToTurn = -radianToTurn;
 
 		Vector2 newForward = Vector2RotateFromRadian(sourceForward.x, sourceForward.y, radianToTurn);
-		float newAngle = Vector2.Angle(sourceForward, newForward);
 		Debug.Log("sourceForward:" + sourceForward.ToString() + " targetForward:" + targetForward.ToString() + 
 			" angle:" + angle.ToString() + " radianToTurn:" + radianToTurn.ToString() + " cross:" + cross.ToString() 
-			+ " newForward:" + newForward.ToString() + " newAngle:" + newAngle.ToString());
+			+ " newForward:" + newForward.ToString());
 
 		source.right = newForward;
 	}
