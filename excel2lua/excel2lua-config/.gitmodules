@@ -1,3 +1,0 @@
-[submodule "xlrd"]
-	path = xlrd
-	url = git@github.com:python-excel/xlrd.git
