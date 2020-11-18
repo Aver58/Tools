@@ -25,4 +25,21 @@ class FileHelper
 
         return ret;
     }
+
+    public static string[] GetAllChildFiles(string path, string suffix = "", SearchOption option = SearchOption.AllDirectories)
+    {
+        string strPattner = "*";
+        if(suffix.Length > 0 && suffix[0] != '.')
+        {
+            strPattner += "." + suffix;
+        }
+        else
+        {
+            strPattner += suffix;
+        }
+
+        string[] files = Directory.GetFiles(path, strPattner, option);
+
+        return files;
+    }
 }
