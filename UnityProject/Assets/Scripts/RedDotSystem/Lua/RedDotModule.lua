@@ -15,17 +15,16 @@
 --            + 子节点数据变化，比对是否变化，变化才通知父节点刷新，减少无用刷新
 --            + Debug Tree 生成item在Hierarchy
 -- todo 重构代价太大：红点系统本身只关注红点的产生和管理以及表现，不关心数据的来源。==》发消息的时候直接传数量，红点模块记住数量进行比对
+-- 红点树业务可以增删节点，最后还是一个定义对应一个节点
 
----@generic T
----@class redTreeNode
----@field nodeName string
----@field parent redTreeNode
----@field childList redTreeNode[]
----@field item RedDotItem
----@field target T
+-- 一对多：一个定义，多份实例【都是镜像，数据一样】
+-- 多对一：一个定义，多份实例【不同红点，参数区分】 以ModuleType.Vip_Level为例
+-- todo 不同界面，一份实例，注册不同红点，target和redDotItem是一样的， 比如 PropActivityView
+-- todo 这种情况没处理，释放的时候只会释放最后关闭界面的红点实例，再次打开界面，激活红点的时候，旧的句柄被卸载了，会报错,暂时处理就是界面Onclose的时候自己UnRegisterRedDot
+-- todo 下个项目，不要耦合view层item了
 
 ---@class RedDotModule:ModuleBase
----@field _redDotMap table<string,redTreeNode>
+---@field _redDotMap table<string,RedTreeNode>
 local _M = class("RedDotModule", me.ModuleBase)
 
 local _dirtyNodeCount = 0
@@ -44,12 +43,17 @@ end
 
 function _M:Init()
     _M.super.Init(self)
-    GameMsg.AddMessage("RED_DOT_UPDATE", self, self.OnRedDotCountChange)
+    GameMsg.AddMessage("RED_DOT_UPDATE", self, self.OnRedDotUpdate)
     GameMsg.AddMessage("RED_DOT_UNLOCK", self, self.OnRedDotFunctionUnlock)
     GameMsg.AddMessage("ON_SERVER_UPDATE_RED_DOT", self, self.OnServerRedDotCountChange)
     GameMsg.AddMessage("GAME_TODAY_OVER", self, self.OnTodayOver) --隔天刷新红点
     GameMsg.AddMessage("GAME_RESTART_TIMER", self, self.OnRestartTimer)
 
+    -- 需要初始化的网络数据完成
+    GameMsg.AddMessage("FRAMEWORK_INITDATA_COMPLETE", self, self.OnEnterGame)
+end
+
+function _M:OnEnterGame()
     self._redDotMap = {}
     self:InitTree()
 end
@@ -58,7 +62,7 @@ end
 
 function _M:OnTodayOver()
     for i, moduleType in pairs(RedDotDefine.ModuleType) do
-        self:OnRedDotCountChange(moduleType)
+        self:OnRedDotUpdate(moduleType)
     end
 end
 
@@ -72,7 +76,7 @@ function _M:OnRedDotFunctionUnlock(unlockType)
     local moduleType = self._functionUnlockMap[unlockType]
     if moduleType then
         printA("[红点]功能解锁刷新红点：",unlockType)
-        self:OnRedDotCountChange(moduleType)
+        self:OnRedDotUpdate(moduleType)
     end
 end
 
@@ -84,7 +88,9 @@ local RedModuleType = redDef.RedModuleType
 local ModuleType = RedDotDefine.ModuleType
 
 local ModuleTypeMap ={
+    [RedModuleType.CrossArena] = ModuleType.CrossArena_Record,
     [RedModuleType.Arena] = ModuleType.HeroArena_Record,
+
     [RedModuleType.Alliance] = ModuleType.Alliance_Member_Btn,
     [RedModuleType.Journey] = ModuleType.JourneyClue,
 }
@@ -94,9 +100,10 @@ function _M:OnServerRedDotCountChange(param)
     local mid = param.mid
     local rid = param.rid
     local moduleType = ModuleTypeMap[mid]
-    self:OnRedDotCountChange(moduleType)
+    self:OnRedDotUpdate(moduleType)
 end
 
+-- 获取服务器红点数量
 function _M:GetRedNum(moduleType)
     local redDotDetail = ModuleDetail[moduleType]
     if not redDotDetail then
@@ -119,19 +126,20 @@ function _M:reqRedReadRid(moduleType)
     local rid = redDotDetail.rid
     Ctrl.RedCtrl:reqRedReadRid(mid,rid)
 
-    self:OnRedDotCountChange(moduleType)
+    self:OnRedDotUpdate(moduleType)
 end
 
 --endregion
 
 --region 主逻辑
 
+--region 【结构层】
+
 -- 初始化节点 【结构层】
 function _M:InitTree()
     -- 构造所有节点
     for key, moduleType in pairs(RedDotDefine.ModuleType) do
         local redTreeNode = RedTreeNode.new(moduleType)
-        redTreeNode:Init(moduleType)
         self._redDotMap[moduleType] = redTreeNode
     end
 
@@ -140,34 +148,55 @@ function _M:InitTree()
         local redDotDetail = ModuleDetail[key]
         local parentKey = redDotDetail.parent
         if parentKey then
-            local parent = self._redDotMap[parentKey]
-            if parent then
-                parent:AddChild(node)
-                node:SetParent(parent)
-            end
+            self:_SetTreeNodeParent(parentKey,node)
         end
     end
 end
 
+-- 设置父子节点
+function _M:_SetTreeNodeParent(parentKey, node)
+    local parent = self._redDotMap[parentKey]
+    if parent then
+        parent:AddChild(node)
+        node:SetParent(parent)
+    end
+end
+
 -- 找到指定节点
----@return redTreeNode
+---@return RedTreeNode
 function _M:_GetTargetNode(moduleType)
+    if not self._redDotMap then
+        return
+    end
     return self._redDotMap[moduleType]
+end
+
+--endregion
+
+function _M:GetRedDotCount(moduleType)
+    if not moduleType then
+        printATError(gType.Red,"GetRedDotCount 没有传入 moduleType！")
+        return
+    end
+
+    local node = self:_GetTargetNode(moduleType)
+    if not node then
+        printATError(gType.Red,"GetRedDotCount 没有找到指定节点！",moduleType)
+    end
+
+    return node:GetCount()
 end
 
 -- 注册红点 【驱动层】
 ---@param target ViewBase @传入view对象
 ---@param moduleType number @模块枚举
 ---@return RedDotItem
-function _M:RegisterRedDot(target, moduleType, redDotItem,params)
+function _M:RegisterRedDot(target, moduleType, redDotItem)
     local redDotDetail = ModuleDetail[moduleType]
     if not redDotDetail then
         printAError("[红点]没有找到指定模块的红点信息！moduleType：", moduleType)
         return
     end
-
-    ---@field redTreeNode redTreeNode
-    local node = self:_GetTargetNode(moduleType)
 
     local parentName = redDotDetail.parentName
     if not parentName then
@@ -189,10 +218,12 @@ function _M:RegisterRedDot(target, moduleType, redDotItem,params)
     if redDotItem == nil then
         redDotItem = target:GenerateOne(me.RedDotItem, prefabName, target[parentName])
     end
-    redDotItem:Init(moduleType,params)
-    node:AddItem(redDotItem,target,params)
 
-    printAF("[红点]注册成功：%s ,name: %s, childCount:%s", moduleType,node:GetChildCount(),node:GetChildCount())
+    redDotItem:Init(moduleType)
+
+    ---@type RedTreeNode
+    local node = self:_GetTargetNode(moduleType)
+    printAF("[红点]注册成功：%s , childCount:%s", moduleType,node:GetChildCount())
     return redDotItem
 end
 
@@ -215,8 +246,8 @@ function _M:UnRegisterRedDot(moduleType, targetItem)
     end
 end
 
-function _M:ClearRedDot(moduleType, targetItem)
-    if not moduleType or not targetItem then
+function _M:ClearRedDot(moduleType)
+    if not moduleType then
         return
     end
 
@@ -230,10 +261,11 @@ function _M:ClearRedDot(moduleType, targetItem)
 end
 
 -- 红点数量变化
-function _M:OnRedDotCountChange(moduleType)
+function _M:OnRedDotUpdate(moduleType)
     if not moduleType then
         return
     end
+
     local node = self:_GetTargetNode(moduleType)
     if node then
         self:MarkDirtyNode(node)
@@ -248,9 +280,9 @@ end
 function _M:Update(dt)
     if _dirtyNodeCount > 0 then
         for moduleType, node in pairs(self._dirtyNodeMap) do
-            node:ChangeValue()
+            node:OnMsg()
             self._dirtyNodeMap[moduleType] = nil
-            --printA("[红点]清理脏节点:",node:GetName())
+            printA("[红点]清理脏节点:",node:GetKey())
         end
         _dirtyNodeCount = 0
     end
@@ -261,9 +293,10 @@ function _M:MarkDirtyNode(node)
     if node == nil then
         return
     end
-    self._dirtyNodeMap[node:GetName()] = node
+    self._dirtyNodeMap[node:GetKey()] = node
+    node:SetDirty()
     _dirtyNodeCount = _dirtyNodeCount + 1
-    --printA("[红点]标记脏节点",node:GetName(),_dirtyNodeCount)
+    printA("[红点]标记脏节点",node:GetKey(),_dirtyNodeCount)
 end
 
 --endregion
@@ -310,7 +343,7 @@ end
 
 function _M:OnTimer()
     if self._curTimerModuleType then
-        self:OnRedDotCountChange(self._curTimerModuleType)
+        self:OnRedDotUpdate(self._curTimerModuleType)
     end
     table.remove(self._timestampList,1)
     printA("[红点]倒计时结束，刷新红点：moduleType：",self._curTimerModuleType,"剩余timer数量:",#self._timestampList)
@@ -334,7 +367,7 @@ end
 
 -- 递归一棵树
 function _M:RecursiveOneTree(node,parentGO)
-    local obj = GameObject(node:GetName())
+    local obj = GameObject(node:GetKey())
     obj:SetParent(parentGO.transform)
     if node:GetChildCount() > 0 then
         for i, childNode in ipairs(node:GetChildList()) do
