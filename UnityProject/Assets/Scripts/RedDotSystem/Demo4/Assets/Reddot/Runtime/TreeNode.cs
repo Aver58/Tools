@@ -196,7 +196,8 @@ public class TreeNode
             return null;
         }
 
-        m_Children.TryGetValue(key, out TreeNode child);
+        TreeNode child;
+        m_Children.TryGetValue(key, out child);
         return child;
     }
 

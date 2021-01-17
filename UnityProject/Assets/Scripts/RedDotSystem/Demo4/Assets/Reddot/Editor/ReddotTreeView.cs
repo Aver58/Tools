@@ -16,7 +16,7 @@ public class ReddotTreeView : TreeView
     {
         Reload();
 
-        useScrollView = true;
+        //useScrollView = true;
 
         ReddotMananger.Instance.NodeNumChangeCallback += Reload;
         ReddotMananger.Instance.NodeValueChangeCallback += Repaint;

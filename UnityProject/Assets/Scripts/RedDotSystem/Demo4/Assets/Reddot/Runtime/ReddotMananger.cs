@@ -160,7 +160,8 @@ public class ReddotMananger
             throw new Exception("路径不合法，不能为空");
         }
 
-        if (m_AllNodes.TryGetValue(path,out TreeNode node))
+        TreeNode node;
+        if (m_AllNodes.TryGetValue(path,out node))
         {
             return node;
         }
