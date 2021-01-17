@@ -28,7 +28,7 @@ public class Grid : IComparable
     public int g;
     public int h;
     //格子类型
-    public GridType type;
+    public GridType type;                                             
     //格子的归属（父格子）
     public Grid parent;
 
