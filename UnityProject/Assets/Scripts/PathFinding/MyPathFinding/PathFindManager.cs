@@ -86,11 +86,11 @@ namespace MyNamespace
             if(GUILayout.Button("设置普通"))
                 curCommand = CommandType.SetNormal;
 
-            if(GUILayout.Button("开始寻路"))
-                StartPathFinding();
+            //if(GUILayout.Button("开始寻路"))
+            //    StartPathFinding();
 
-            if(GUILayout.Button("下一步"))
-                StartPathFindingOneStep();
+            //if(GUILayout.Button("下一步"))
+            //    StartPathFindingOneStep();
 
             //if(GUILayout.Button("上一步"))
             //  StartPathFinding();
@@ -127,6 +127,18 @@ namespace MyNamespace
             }
 
             if(Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                StopPathCoroutine();
+                _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_BFS);
+                StartCoroutine(_pathRoutine);
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                StopPathCoroutine();
+                _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_Dijkstra);
+                StartCoroutine(_pathRoutine);
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha3))
             {
                 StopPathCoroutine();
                 _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_AStar);
@@ -267,7 +279,7 @@ namespace MyNamespace
         void StartPathFinding()
         {
             ResetGrids();
-            tempPath = PathFinder.FindPath_AStar(this, startItem, endItem);
+            //tempPath = PathFinder.FindPath_AStar(this, startItem, endItem);
         }
 
         void StartPathFindingOneStep()

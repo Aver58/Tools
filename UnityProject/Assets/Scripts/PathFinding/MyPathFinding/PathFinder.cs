@@ -16,31 +16,21 @@ using Debug = UnityEngine.Debug;
 
 namespace MyNamespace
 {
-    public class Graph<Location>
-    {
-        // NameValueCollection would be a reasonable alternative here, if
-        // you're always using string location types
-        public Dictionary<Location, Location[]> edges = new Dictionary<Location, Location[]>();
-
-        public Location[] Neighbors(Location id)
-        {
-            return edges[id];
-        }
-    };
-
     public class PathFinder
     {
-        private static List<GridItem> openSet;
-        private static HashSet<GridItem> closeSet;
         static Stopwatch sw = new Stopwatch();
 
-        static void Search(Graph<string> graph, string start, string end)
+        public static List<GridItem> FindPath_BFS(PathFindManager mgr, GridItem start, GridItem end)
         {
-            var frontier = new Queue<string>();
+            sw.Start();
+
+            Queue<GridItem> frontier = new Queue<GridItem>();
+            HashSet<GridItem> reached = new HashSet<GridItem>();
+
             //首先将根节点放入队列中。
             frontier.Enqueue(start);
-            var reached = new HashSet<string>();
             reached.Add(start);
+            bool pathSuccess = false;
 
             while(frontier.Count > 0)
             {
@@ -49,36 +39,92 @@ namespace MyNamespace
                 //如果找到目标，则结束搜寻并回传结果。
                 if(current == end)
                 {
-                    Debug.Log("BFS Find!");
+                    sw.Stop();
+                    Debug.Log("BFS found: " + sw.ElapsedMilliseconds + " ms");
+                    pathSuccess = true;
                     break;
                 }
                 //否则将它所有尚未检验过的直接子节点（邻节点）加入队列中。
-                foreach(var next in graph.Neighbors(current))
+                foreach(var neighbor in mgr.GetNeighbors(current))
                 {
-                    if(!reached.Contains(next))
+                    if(!reached.Contains(neighbor))
                     {
-                        frontier.Enqueue(next);
-                        reached.Add(next);
+                        neighbor.parent = current;
+                        frontier.Enqueue(neighbor);
+                        reached.Add(neighbor);
                     }
                 }
             }
-            //若队列为空，表示整张图都检查过了——亦即图中没有欲搜寻的目标。结束搜寻并回传“找不到目标”。
+            if(pathSuccess)
+            {
+                var results = RetracePath(start, end);
+                return results;
+            }
             Debug.Log("BFS Can't Find!");
+
+            return null;
+            //若队列为空，表示整张图都检查过了——亦即图中没有欲搜寻的目标。结束搜寻并回传“找不到目标”。
         }
 
-        static void Main()
+        public static List<GridItem> FindPath_Dijkstra(PathFindManager mgr, GridItem start, GridItem end)
         {
-            Graph<string> g = new Graph<string>();
-            g.edges = new Dictionary<string, string[]>
-            {
-                { "A", new [] { "B" } },
-                { "B", new [] { "A", "C", "D" } },
-                { "C", new [] { "A" } },
-                { "D", new [] { "E", "A" } },
-                { "E", new [] { "B" } }
-            };
+            sw.Start();
 
-            Search(g, "A","B");
+            Queue<GridItem> frontier = new Queue<GridItem>();
+            HashSet<GridItem> closeSet = new HashSet<GridItem>();
+
+           
+            //首先将根节点放入队列中。
+            start.gCost = 0;
+            frontier.Enqueue(start);
+            closeSet.Add(start);
+            bool pathSuccess = false;
+
+            while(frontier.Count > 0)
+            {
+                //从队列中取出第一个节点，并检验它是否为目标。
+                var current = frontier.Dequeue();
+                foreach(var item in frontier)
+                {
+                    if(item.gCost < current.gCost)
+                    {
+                        current = item;
+                    }
+                }
+                //如果找到目标，则结束搜寻并回传结果。
+                if(current == end)
+                {
+                    sw.Stop();
+                    Debug.Log("Dijkstra found: " + sw.ElapsedMilliseconds + " ms");
+                    pathSuccess = true;
+                    break;
+                }
+                //否则将它所有尚未检验过的直接子节点（邻节点）加入队列中。
+                foreach(var neighbor in mgr.GetNeighbors(current))
+                {
+                    if(closeSet.Contains(neighbor) || !neighbor.walkable)
+                        continue;
+
+                    int newCostToNeighbour = current.gCost + GetDistance(current, neighbor);
+                    if(newCostToNeighbour < neighbor.gCost)
+                    {
+                        neighbor.parent = current;
+                        neighbor.gCost = newCostToNeighbour;
+                        neighbor.SetText(string.Format("g:{0}",neighbor.gCost));
+
+                        frontier.Enqueue(neighbor);
+                        closeSet.Add(neighbor);
+                    }
+                }
+            }
+            if(pathSuccess)
+            {
+                var results = RetracePath(start, end);
+                return results;
+            }
+            Debug.Log("Dijkstra Can't Find!");
+
+            return null;
         }
 
         #region Episode 01 - pseudocode 伪代码
@@ -122,8 +168,8 @@ namespace MyNamespace
             sw.Start();
 
             bool pathSuccess = false;
-            openSet = new List<GridItem>();
-            closeSet = new HashSet<GridItem>();
+            List<GridItem> openSet = new List<GridItem>();
+            HashSet<GridItem>  closeSet = new HashSet<GridItem>();
 
             openSet.Add(start);
 
@@ -145,13 +191,12 @@ namespace MyNamespace
                 if(current == end)
                 {
                     sw.Stop();
-                    Debug.Log("Path found: " + sw.ElapsedMilliseconds + " ms");
+                    Debug.Log("AStar found: " + sw.ElapsedMilliseconds + " ms");
                     pathSuccess = true;
                     break;
                 }
 
-                var neighbors = mgr.GetNeighbors(current);
-                foreach(var neighbor in neighbors)
+                foreach(var neighbor in mgr.GetNeighbors(current))
                 {
                     // 剔除封闭列表元素
                     if(closeSet.Contains(neighbor) || !neighbor.walkable)
@@ -180,7 +225,6 @@ namespace MyNamespace
             if(pathSuccess)
             {
                 var results = RetracePath(start, end);
-                pathSuccess = results.Count > 0;
                 return results;
             }
             return null;
