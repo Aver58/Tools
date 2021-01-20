@@ -17,10 +17,13 @@ namespace MyNamespace
     public enum GridType
     {
         Normal,
+        Path,
+        Frontier,
         Start,
         End,
         Obstacle,
     }
+
     /// <summary>
     /// 一个格子实例
     /// </summary>

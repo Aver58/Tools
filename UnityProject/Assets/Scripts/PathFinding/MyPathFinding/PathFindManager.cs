@@ -38,7 +38,7 @@ namespace MyNamespace
         private GridItem endItem;
         private Color DefaultColor = new Color(0.86f, 0.83f, 0.83f);
         private Color ExpensiveColor = new Color(0.19f, 0.65f, 0.43f);
-        private Color InfinityColor = new Color(0.37f, 0.37f, 0.37f);
+        //private Color InfinityColor = new Color(0.37f, 0.37f, 0.37f);
         private Color StartColor = Color.green;
         private Color EndColor = Color.red;
         private Color PathColor = new Color(0.73f, 0.0f, 1.0f);
@@ -132,18 +132,18 @@ namespace MyNamespace
                 _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_BFS);
                 StartCoroutine(_pathRoutine);
             }
-            if(Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                StopPathCoroutine();
-                _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_Dijkstra);
-                StartCoroutine(_pathRoutine);
-            }
-            if(Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                StopPathCoroutine();
-                _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_AStar);
-                StartCoroutine(_pathRoutine);
-            }
+            //if(Input.GetKeyDown(KeyCode.Alpha2))
+            //{
+            //    StopPathCoroutine();
+            //    _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_Dijkstra);
+            //    StartCoroutine(_pathRoutine);
+            //}
+            //if(Input.GetKeyDown(KeyCode.Alpha3))
+            //{
+            //    StopPathCoroutine();
+            //    _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_AStar);
+            //    StartCoroutine(_pathRoutine);
+            //}
         }
 
         private int GetTileIndex(int row, int col)
@@ -195,21 +195,19 @@ namespace MyNamespace
             return null;
         }
 
-        private IEnumerator FindPath(GridItem start, GridItem end, Func<PathFindManager, GridItem, GridItem, List<GridItem>> pathFindingFunc)
+        private IEnumerator FindPath(GridItem start, GridItem end, Func<PathFindManager, GridItem, GridItem, List<IVisualStep>> pathFindingFunc)
         {
             ResetGrids();
 
-            List<GridItem> path = pathFindingFunc(this, start, end);
-            if(path !=null)
+            List<IVisualStep> steps = pathFindingFunc(this, start, end);
+            if(steps != null)
             {
-                foreach(var item in path)
+                foreach(var step in steps)
                 {
-                    yield return new WaitForSeconds(0.5f);
-                    item.SetColor(PathColor);
+                    step.Execute();
+                    yield return new WaitForFixedUpdate();
                 }
             }
-         
-            //yield return null;
         }
 
         void SetStart(int row,int col)
@@ -308,6 +306,9 @@ namespace MyNamespace
                     break;
                 case GridType.End:
                     gridItem.SetColor(EndColor);
+                    break;
+                case GridType.Path:
+                    gridItem.SetColor(PathColor);
                     break;
                 default:
                     break;
