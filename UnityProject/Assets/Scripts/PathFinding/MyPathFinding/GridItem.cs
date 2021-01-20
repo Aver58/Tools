@@ -17,11 +17,12 @@ namespace MyNamespace
     public enum GridType
     {
         Normal,
-        Path,
-        Frontier,
         Start,
         End,
         Obstacle,
+        Path,
+        Frontier,
+        Visited
     }
 
     /// <summary>

@@ -16,73 +16,6 @@ using Debug = UnityEngine.Debug;
 
 namespace MyNamespace
 {
-    #region VisualStep 算法步骤可视化
-
-    public interface IVisualStep
-    {
-        void Execute();
-    }
-
-
-    public abstract class VisualStep : IVisualStep
-    {
-        protected GridItem _tile;
-
-        public VisualStep(GridItem tile)
-        {
-            _tile = tile;
-        }
-
-        public abstract void Execute();
-    }
-
-    public class MarkStartTileStep : VisualStep
-    {
-        public MarkStartTileStep(GridItem tile) : base(tile) { }
-
-        public override void Execute()
-        {
-            _tile.gridType = GridType.Start;
-        }
-    }
-
-    public class MarkEndTileStep : VisualStep
-    {
-        public MarkEndTileStep(GridItem tile) : base(tile) { }
-
-        public override void Execute()
-        {
-            _tile.gridType = GridType.End;
-        }
-    }
-
-    public class MarkPathTileStep : VisualStep
-    {
-        public MarkPathTileStep(GridItem tile) : base(tile) { }
-
-        public override void Execute()
-        {
-            _tile.gridType = GridType.Path;
-        }
-    }
-
-    public class PushTileInFrontierStep : VisualStep
-    {
-        private int _cost;
-
-        public PushTileInFrontierStep(GridItem tile, int cost) : base(tile)
-        {
-            _cost = cost;
-        }
-
-        public override void Execute()
-        {
-            _tile.gridType = GridType.Frontier;
-            _tile.SetText(_cost != 0 ? _cost.ToString() : "");
-        }
-    }
-
-    #endregion
     public class PathFinder
     {
         static Stopwatch sw = new Stopwatch();
@@ -93,8 +26,8 @@ namespace MyNamespace
 
             // Visual Step 算法步骤可视化
             List<IVisualStep> outSteps = new List<IVisualStep>();
-            outSteps.Add(new MarkStartTileStep(start));
-            outSteps.Add(new MarkEndTileStep(end));
+            outSteps.Add(new MarkStartTileStep(start, mgr));
+            outSteps.Add(new MarkEndTileStep(end, mgr));
             // ~Visual stuff
 
             Queue<GridItem> frontier = new Queue<GridItem>();
@@ -109,6 +42,12 @@ namespace MyNamespace
             {
                 //从队列中取出第一个节点，并检验它是否为目标。
                 var current = frontier.Dequeue();
+
+                // Visual Step 算法步骤可视化
+                if((current != start) && (current != end))
+                    outSteps.Add(new VisitTileStep(current, mgr));
+                // ~Visual stuff
+
                 //如果找到目标，则结束搜寻并回传结果。
                 if(current == end)
                 {
@@ -125,8 +64,10 @@ namespace MyNamespace
                         neighbor.parent = current;
                         frontier.Enqueue(neighbor);
                         reached.Add(neighbor);
+
                         // Visual Step 算法步骤可视化
-                        outSteps.Add(new MarkPathTileStep(current));
+                        if(neighbor != end && neighbor.walkable)
+                            outSteps.Add(new PushTileInFrontierStep(current, mgr, 0));
                         // ~Visual stuff
                     }
                 }
@@ -134,7 +75,16 @@ namespace MyNamespace
             if(pathSuccess)
             {
                 var results = RetracePath(start, end);
+
+                // Visual Step 算法步骤可视化
+                foreach(var tile in results)
+                {
+                    if(tile == start || tile == end)
+                        continue;
+                    outSteps.Add(new MarkPathTileStep(tile, mgr));
+                }
                 return outSteps;
+                // ~Visual stuff
             }
             Debug.Log("BFS Can't Find!");
 

@@ -210,7 +210,7 @@ namespace MyNamespace
             }
         }
 
-        void SetStart(int row,int col)
+        private void SetStart(int row,int col)
         {
             if(IsValid(row, col))
             {
@@ -227,7 +227,7 @@ namespace MyNamespace
             }
         }
 
-        void SetEnd(int row, int col)
+        private void SetEnd(int row, int col)
         {
             if(IsValid(row, col))
             {
@@ -244,7 +244,7 @@ namespace MyNamespace
             }
         }
 
-        void SetNormal(int row, int col)
+        private void SetNormal(int row, int col)
         {
             if(IsValid(row, col))
             {
@@ -254,7 +254,7 @@ namespace MyNamespace
             }
         }
 
-        void SetExpensive(int row, int col)
+        private void SetExpensive(int row, int col)
         {
             if(IsValid(row, col))
             {
@@ -274,13 +274,13 @@ namespace MyNamespace
             }
         }
 
-        void StartPathFinding()
+        private void StartPathFinding()
         {
             ResetGrids();
             //tempPath = PathFinder.FindPath_AStar(this, startItem, endItem);
         }
 
-        void StartPathFindingOneStep()
+        private void StartPathFindingOneStep()
         {
             if(tempPath != null)
             {
@@ -288,7 +288,15 @@ namespace MyNamespace
             }
         }
 
-        private void ResetGrid(GridItem gridItem)
+        private void ResetGrids()
+        {
+            foreach(GridItem gridItem in GridItems)
+            {
+                ResetGrid(gridItem);
+            }
+        }
+
+        public void ResetGrid(GridItem gridItem)
         {
             gridItem.gCost = 0;
             gridItem.SetText("");
@@ -310,16 +318,14 @@ namespace MyNamespace
                 case GridType.Path:
                     gridItem.SetColor(PathColor);
                     break;
+                case GridType.Frontier:
+                    gridItem.SetColor(FrontierColor);
+                    break;
+                case GridType.Visited:
+                    gridItem.SetColor(VisitedColor);
+                    break;
                 default:
                     break;
-            }
-        }
-
-        private void ResetGrids()
-        {
-            foreach(GridItem gridItem in GridItems)
-            {
-                ResetGrid(gridItem);
             }
         }
     }
