@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 //https://github.com/dbrizov/Unity-PathFindingAlgorithms
 namespace PathFinding

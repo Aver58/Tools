@@ -93,9 +93,10 @@ namespace MyNamespace
         }
     }
 
-    public class VisitTileStep : VisualStep
+    // 访问过的格子
+    public class VisitedTileStep : VisualStep
     {
-        public VisitTileStep(GridItem tile, PathFindManager mgr) : base(tile, mgr)
+        public VisitedTileStep(GridItem tile, PathFindManager mgr) : base(tile, mgr)
         {
         }
 

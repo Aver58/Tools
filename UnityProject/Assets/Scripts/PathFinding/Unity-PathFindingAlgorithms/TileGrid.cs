@@ -140,7 +140,6 @@ namespace PathFinding
 
             List<IVisualStep> steps = new List<IVisualStep>();
             pathFindingFunc(this, start, end, steps);
-
             foreach (var step in steps)
             {
                 step.Execute();

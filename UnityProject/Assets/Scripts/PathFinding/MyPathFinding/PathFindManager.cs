@@ -27,9 +27,9 @@ namespace MyNamespace
 
     public class PathFindManager : MonoBehaviour
     {
-        public int Rows = 10;
-        public int Cols = 10;
-        private int itemSize = 60;
+        public int Rows = 15;
+        public int Cols = 15;
+        private int itemSize = 40;
         public GameObject GridPrefab;
 
         public GridItem[] GridItems { get; private set; }
@@ -50,6 +50,7 @@ namespace MyNamespace
         private List<GridItem> tempPath;
 
         private int ExpensiveWeight = 50;
+
         void Awake()
         {
             neighbors = new List<GridItem>();
@@ -66,43 +67,20 @@ namespace MyNamespace
                     GridItems[index] = item;
                 }
             }
-            SetStart(0, 0);
-            SetEnd(9, 9);
-            SetExpensive(1, 1);
-            SetExpensive(1, 2);
-            SetExpensive(2, 1);
 
-            ResetGrids();
+            ClearGrids();
         }
 
-        void OnGUI()
+        void Update()
         {
-            if(GUILayout.Button("设置起点"))
-                curCommand = CommandType.SetStart;
-            if(GUILayout.Button("设置终点"))
-                curCommand = CommandType.SetEnd;
-            if(GUILayout.Button("设置障碍"))
-                curCommand = CommandType.SetExpensive;
-            if(GUILayout.Button("设置普通"))
-                curCommand = CommandType.SetNormal;
-
-            //if(GUILayout.Button("开始寻路"))
-            //    StartPathFinding();
-
-            //if(GUILayout.Button("下一步"))
-            //    StartPathFindingOneStep();
-
-            //if(GUILayout.Button("上一步"))
-            //  StartPathFinding();
-
             if(Input.GetKeyDown(KeyCode.Escape))
-                ResetGrids();
+                ClearGrids();
 
             if(Input.GetMouseButtonDown(0))
             {
                 int row = (int)(Input.mousePosition.y / itemSize);
                 int col = (int)(Input.mousePosition.x / itemSize);
-                if(IsValid(row,col))
+                if(IsValid(row, col))
                 {
                     switch(curCommand)
                     {
@@ -126,24 +104,54 @@ namespace MyNamespace
                 }
             }
 
+            // 开始算法
             if(Input.GetKeyDown(KeyCode.Alpha1))
             {
                 StopPathCoroutine();
                 _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_BFS);
                 StartCoroutine(_pathRoutine);
             }
-            //if(Input.GetKeyDown(KeyCode.Alpha2))
-            //{
-            //    StopPathCoroutine();
-            //    _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_Dijkstra);
-            //    StartCoroutine(_pathRoutine);
-            //}
-            //if(Input.GetKeyDown(KeyCode.Alpha3))
-            //{
-            //    StopPathCoroutine();
-            //    _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_AStar);
-            //    StartCoroutine(_pathRoutine);
-            //}
+            if(Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                StopPathCoroutine();
+                _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_Dijkstra);
+                StartCoroutine(_pathRoutine);
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                StopPathCoroutine();
+                _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_GreedyBestFirstSearch);
+                StartCoroutine(_pathRoutine);
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                StopPathCoroutine();
+                _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_AStar);
+                StartCoroutine(_pathRoutine);
+            }
+        }
+
+        void OnGUI()
+        {
+            //在一帧中会调用多次
+            if(GUILayout.Button("设置起点"))
+                curCommand = CommandType.SetStart;
+            if(GUILayout.Button("设置终点"))
+                curCommand = CommandType.SetEnd;
+            if(GUILayout.Button("设置障碍"))
+                curCommand = CommandType.SetExpensive;
+            if(GUILayout.Button("设置普通"))
+                curCommand = CommandType.SetNormal;
+
+            //if(GUILayout.Button("开始寻路"))
+            //    StartPathFinding();
+
+            //if(GUILayout.Button("下一步"))
+            //    StartPathFindingOneStep();
+
+            //if(GUILayout.Button("上一步"))
+            //  StartPathFinding();
+            //OnGUI
         }
 
         private int GetTileIndex(int row, int col)
@@ -161,37 +169,85 @@ namespace MyNamespace
             return false;
         }
 
-        public List<GridItem> GetNeighbors(GridItem source)
+        private List<int[]> neighborMap = new List<int[]>
+        {
+            {new int[2]{-1, 0}},
+            {new int[2]{ 1, 0}},
+            {new int[2]{ 0,-1}},
+            {new int[2]{ 0, 1 }},
+        };
+
+        public IEnumerable<GridItem> GetNeighbors(GridItem tile)
         {
             neighbors.Clear();
-            for(int x = -1; x <= 1; x++)
-            {
-                for(int y = -1; y <= 1; y++)
-                {
-                    // 排除自己
-                    if(x == 0 && y == 0)
-                        continue;
+            // 九宫格
+            //for(int x = -1; x <= 1; x++)
+            //{
+            //    for(int y = -1; y <= 1; y++)
+            //    {
+            //        // 排除自己
+            //        if(x == 0 && y == 0)
+            //            continue;
 
-                    int gridX = source.gridX + x;
-                    int gridY = source.gridY + y;
-                    if(IsValid(gridX, gridY))
-                    {
-                        var item = GetGridItem(gridX, gridY);
-                        neighbors.Add(item);
-                    }
-                }
+            //        int gridX = source.gridX + x;
+            //        int gridY = source.gridY + y;
+            //        if(IsValid(gridX, gridY))
+            //        {
+            //            var item = GetGridItem(gridX, gridY);
+            //            neighbors.Add(item);
+            //        }
+            //    }
+            //}
+            // 四格
+            //for(int i = 0; i < neighborMap.Count; i++)
+            //{
+            //    var array = neighborMap[i];
+            //    int gridX = tile.gridX + array[0];
+            //    int gridY = tile.gridY + array[1];
+            //    if(IsValid(gridX, gridY))
+            //    {
+            //        var item = GetGridItem(gridX, gridY);
+            //        neighbors.Add(item);
+            //    }
+            //}
+
+            //return neighbors;
+
+            var right = GetGridItem(tile.gridX, tile.gridY + 1);
+            if(right != null)
+            {
+                yield return right;
             }
-            return neighbors;
+
+            var up = GetGridItem(tile.gridX - 1, tile.gridY);
+            if(up != null)
+            {
+                yield return up;
+            }
+
+            var left = GetGridItem(tile.gridX, tile.gridY - 1);
+            if(left != null)
+            {
+                yield return left;
+            }
+
+            var down = GetGridItem(tile.gridX + 1, tile.gridY);
+            if(down != null)
+            {
+                yield return down;
+            }
         }
 
         private GridItem GetGridItem(int row, int col)
         {
+            if(!IsValid(row, col))
+                return null;
+
             int index = GetTileIndex(row, col);
             var item = GridItems[index];
             if(item != null)
-            {
                 return item;
-            }
+
             return null;
         }
 
@@ -265,6 +321,17 @@ namespace MyNamespace
             }
         }
 
+        private void CreateExpensiveArea(int row, int col, int width, int height)
+        {
+            for(int r = row; r < row + height; r++)
+            {
+                for(int c = col; c < col + width; c++)
+                {
+                    SetExpensive(r, c);
+                }
+            }
+        }
+
         private void StopPathCoroutine()
         {
             if(_pathRoutine != null)
@@ -288,6 +355,27 @@ namespace MyNamespace
             }
         }
 
+        private void ClearGrids()
+        {
+            foreach(GridItem gridItem in GridItems)
+            {
+                gridItem.SetText("");
+                gridItem.gridType = GridType.Normal;
+            }
+
+            SetStart(2, 0);
+            SetEnd(12, 14);
+
+            CreateExpensiveArea(2, 2, 10, 1);
+            CreateExpensiveArea(2, 12, 1, 10);
+            CreateExpensiveArea(12, 2, 11, 1);
+
+            foreach(GridItem gridItem in GridItems)
+            {
+                ResetGrid(gridItem);
+            }
+        }
+
         private void ResetGrids()
         {
             foreach(GridItem gridItem in GridItems)
@@ -299,7 +387,7 @@ namespace MyNamespace
         public void ResetGrid(GridItem gridItem)
         {
             gridItem.gCost = 0;
-            gridItem.SetText("");
+            //gridItem.SetText("");
 
             switch(gridItem.gridType)
             {

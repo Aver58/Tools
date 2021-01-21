@@ -26,26 +26,28 @@ namespace MyNamespace
 
             // Visual Step 算法步骤可视化
             List<IVisualStep> outSteps = new List<IVisualStep>();
-            outSteps.Add(new MarkStartTileStep(start, mgr));
-            outSteps.Add(new MarkEndTileStep(end, mgr));
             // ~Visual stuff
 
-            Queue<GridItem> frontier = new Queue<GridItem>();
-            HashSet<GridItem> reached = new HashSet<GridItem>();
+            List<GridItem> frontier = new List<GridItem>();
+            HashSet<GridItem> visited = new HashSet<GridItem>();
 
             //首先将根节点放入队列中。
-            frontier.Enqueue(start);
-            reached.Add(start);
             bool pathSuccess = false;
+            start.parent = null;
+            frontier.Add(start);
+            visited.Add(start);
 
             while(frontier.Count > 0)
             {
                 //从队列中取出第一个节点，并检验它是否为目标。
-                var current = frontier.Dequeue();
+                var current = frontier[0];
+                frontier.Remove(current);
 
                 // Visual Step 算法步骤可视化
-                if((current != start) && (current != end))
-                    outSteps.Add(new VisitTileStep(current, mgr));
+                if(current != start && current != end)
+                {
+                    outSteps.Add(new VisitedTileStep(current, mgr));
+                }
                 // ~Visual stuff
 
                 //如果找到目标，则结束搜寻并回传结果。
@@ -56,25 +58,28 @@ namespace MyNamespace
                     pathSuccess = true;
                     break;
                 }
+
                 //否则将它所有尚未检验过的直接子节点（邻节点）加入队列中。
                 foreach(var neighbor in mgr.GetNeighbors(current))
                 {
-                    if(!reached.Contains(neighbor))
+                    if(!visited.Contains(neighbor) && neighbor.walkable)
                     {
+                        visited.Add(neighbor);
+                        frontier.Add(neighbor);
                         neighbor.parent = current;
-                        frontier.Enqueue(neighbor);
-                        reached.Add(neighbor);
 
                         // Visual Step 算法步骤可视化
-                        if(neighbor != end && neighbor.walkable)
+                        if(neighbor != end)
+                        {
                             outSteps.Add(new PushTileInFrontierStep(current, mgr, 0));
+                        }
                         // ~Visual stuff
                     }
                 }
             }
             if(pathSuccess)
             {
-                var results = RetracePath(start, end);
+                var results = ReversePath(start, end);
 
                 // Visual Step 算法步骤可视化
                 foreach(var tile in results)
@@ -92,30 +97,46 @@ namespace MyNamespace
             //若队列为空，表示整张图都检查过了——亦即图中没有欲搜寻的目标。结束搜寻并回传“找不到目标”。
         }
 
-        public static List<GridItem> FindPath_Dijkstra(PathFindManager mgr, GridItem start, GridItem end)
+        public static List<IVisualStep> FindPath_Dijkstra(PathFindManager mgr, GridItem start, GridItem end)
         {
             sw.Start();
 
-            Queue<GridItem> frontier = new Queue<GridItem>();
-            HashSet<GridItem> closeSet = new HashSet<GridItem>();
-           
-            //首先将根节点放入队列中。
+            // Visual Step 算法步骤可视化
+            List<IVisualStep> outSteps = new List<IVisualStep>();
+            // ~Visual stuff
+            List<GridItem> frontier = new List<GridItem>();
+            HashSet<GridItem> visited = new HashSet<GridItem>();
+
+            //初始时，只有起始顶点的预估值cost为0，其他顶点的预估值d都为无穷大 ∞。
+            foreach(var tile in mgr.GridItems)
+            {
+                tile.gCost = int.MaxValue;
+            }
+
             start.gCost = 0;
-            frontier.Enqueue(start);
-            closeSet.Add(start);
+
             bool pathSuccess = false;
+            start.parent = null;
+            frontier.Add(start);
+            visited.Add(start);
+
 
             while(frontier.Count > 0)
             {
-                //从队列中取出第一个节点，并检验它是否为目标。
-                var current = frontier.Dequeue();
+                var current = frontier[0];
+                //查找cost值最小的顶点A，放入path队列
                 foreach(var item in frontier)
                 {
                     if(item.gCost < current.gCost)
-                    {
                         current = item;
-                    }
                 }
+                frontier.Remove(current);
+
+                // Visual Step 算法步骤可视化
+                if(current != start && current != end)
+                    outSteps.Add(new VisitedTileStep(current, mgr));
+                // ~Visual stuff
+
                 //如果找到目标，则结束搜寻并回传结果。
                 if(current == end)
                 {
@@ -127,27 +148,128 @@ namespace MyNamespace
                 //否则将它所有尚未检验过的直接子节点（邻节点）加入队列中。
                 foreach(var neighbor in mgr.GetNeighbors(current))
                 {
-                    if(closeSet.Contains(neighbor) || !neighbor.walkable)
-                        continue;
-
                     int newCostToNeighbour = current.gCost + GetDistance(current, neighbor);
                     if(newCostToNeighbour < neighbor.gCost)
                     {
-                        neighbor.parent = current;
                         neighbor.gCost = newCostToNeighbour;
-                        neighbor.SetText(string.Format("g:{0}",neighbor.gCost));
+                        neighbor.parent = current;
+                    }
 
-                        frontier.Enqueue(neighbor);
-                        closeSet.Add(neighbor);
+                    if(!visited.Contains(neighbor) && neighbor.walkable)
+                    {
+                        visited.Add(neighbor);
+                        frontier.Add(neighbor);
+
+                        // Visual Step 算法步骤可视化
+                        if(neighbor != end)
+                            outSteps.Add(new PushTileInFrontierStep(current, mgr, neighbor.gCost));
+                        // ~Visual stuff
                     }
                 }
             }
+
             if(pathSuccess)
             {
-                var results = RetracePath(start, end);
-                return results;
+                var results = ReversePath(start, end);
+                // Visual Step 算法步骤可视化
+                foreach(var tile in results)
+                {
+                    if(tile == start || tile == end)
+                        continue;
+                    outSteps.Add(new MarkPathTileStep(tile, mgr));
+                }
+                return outSteps;
+                // ~Visual stuff
             }
             Debug.Log("Dijkstra Can't Find!");
+
+            return null;
+        }
+
+        public static List<IVisualStep> FindPath_GreedyBestFirstSearch(PathFindManager mgr, GridItem start, GridItem end)
+        {
+            sw.Start();
+
+            // Visual Step 算法步骤可视化
+            List<IVisualStep> outSteps = new List<IVisualStep>();
+            // ~Visual stuff
+            List<GridItem> frontier = new List<GridItem>();
+            HashSet<GridItem> visited = new HashSet<GridItem>();
+
+            //初始时，只有起始顶点的预估值cost为0，其他顶点的预估值d都为无穷大 ∞。
+            foreach(var tile in mgr.GridItems)
+            {
+                tile.hCost = int.MaxValue;
+            }
+
+            start.hCost = 0;
+
+            bool pathSuccess = false;
+            start.parent = null;
+            frontier.Add(start);
+            visited.Add(start);
+
+            while(frontier.Count > 0)
+            {
+                var current = frontier[0];
+                //查找cost值最小的顶点A，放入path队列
+                foreach(var item in frontier)
+                {
+                    if(item.hCost < current.hCost)
+                        current = item;
+                }
+                frontier.Remove(current);
+
+                // Visual Step 算法步骤可视化
+                if(current != start && current != end)
+                    outSteps.Add(new VisitedTileStep(current, mgr));
+                // ~Visual stuff
+
+                //如果找到目标，则结束搜寻并回传结果。
+                if(current == end)
+                {
+                    sw.Stop();
+                    Debug.Log("GreedyBestFirstSearch found: " + sw.ElapsedMilliseconds + " ms");
+                    pathSuccess = true;
+                    break;
+                }
+                //否则将它所有尚未检验过的直接子节点（邻节点）加入队列中。
+                foreach(var neighbor in mgr.GetNeighbors(current))
+                {
+                    int newCostToNeighbour = current.hCost + GetDistance(neighbor, end);
+                    if(newCostToNeighbour < neighbor.hCost)
+                    {
+                        neighbor.hCost = newCostToNeighbour;
+                        neighbor.parent = current;
+                    }
+
+                    if(!visited.Contains(neighbor) && neighbor.walkable)
+                    {
+                        visited.Add(neighbor);
+                        frontier.Add(neighbor);
+
+                        // Visual Step 算法步骤可视化
+                        if(neighbor != end)
+                            outSteps.Add(new PushTileInFrontierStep(current, mgr, neighbor.hCost));
+                        // ~Visual stuff
+                    }
+                }
+            }
+
+            if(pathSuccess)
+            {
+                var results = ReversePath(start, end);
+                // Visual Step 算法步骤可视化
+                foreach(var tile in results)
+                {
+                    if(tile == start || tile == end)
+                        continue;
+                    outSteps.Add(new MarkPathTileStep(tile, mgr));
+                }
+                return outSteps;
+                // ~Visual stuff
+            }
+            Debug.Log("GreedyBestFirstSearch Can't Find!");
 
             return null;
         }
@@ -188,9 +310,13 @@ namespace MyNamespace
         /// G - 开始点到当前方块的移动代价
         /// H - 当前方块到结束点的预估移动代价
         /// </summary>
-        public static List<GridItem> FindPath_AStar(PathFindManager mgr, GridItem start, GridItem end)
+        public static List<IVisualStep> FindPath_AStar(PathFindManager mgr, GridItem start, GridItem end)
         {
             sw.Start();
+
+            // Visual Step 算法步骤可视化
+            List<IVisualStep> outSteps = new List<IVisualStep>();
+            // ~Visual stuff
 
             bool pathSuccess = false;
             List<GridItem> openSet = new List<GridItem>();
@@ -234,7 +360,7 @@ namespace MyNamespace
                         neighbor.gCost = newCostToNeighbour;
                         neighbor.hCost = GetDistance(end, neighbor);
                         neighbor.parent = current;//做成一个链表，最后用来做结果
-                        neighbor.SetText(string.Format("f:{0}\ng:{1}\nh:{2}", neighbor.fCost, neighbor.gCost,neighbor.hCost));
+                        //neighbor.SetText(string.Format("f:{0}\ng:{1}\nh:{2}", neighbor.fCost, neighbor.gCost,neighbor.hCost));
                         if(openSet.Contains(neighbor))
                         {
                             //openSet
@@ -243,30 +369,45 @@ namespace MyNamespace
                         {
                             openSet.Add(neighbor);
                         }
+                        // Visual Step 算法步骤可视化
+                        if(neighbor != end)
+                        {
+                            outSteps.Add(new PushTileInFrontierStep(current, mgr, neighbor.gCost));
+                        }
+                        // ~Visual stuff
                     }
                 }
             }
 
             if(pathSuccess)
             {
-                var results = RetracePath(start, end);
-                return results;
+                var results = ReversePath(start, end);
+                // Visual Step 算法步骤可视化
+                foreach(var tile in results)
+                {
+                    if(tile == start || tile == end)
+                        continue;
+                    outSteps.Add(new MarkPathTileStep(tile, mgr));
+                }
+                return outSteps;
+                // ~Visual stuff
             }
             return null;
         }
 
-        private static List<GridItem> RetracePath(GridItem start, GridItem end)
+        private static List<GridItem> ReversePath(GridItem start, GridItem end)
         {
+            GridItem current = end;
             List<GridItem> path = new List<GridItem>();
-            GridItem current = end.parent;
 
-            while(current != start)
+            while(current != null)
             {
                 path.Add(current);
                 current = current.parent;
             }
 
             path.Reverse();
+
             return path;
         }
 
@@ -279,7 +420,8 @@ namespace MyNamespace
             //①return D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
             //②return D * max(dx, dy) +(D2 - D) * min(dx, dy)
             //③Patrick Lester if(dx > dy) (D * (dx - dy) + D2 * dy) else (D * (dy - dx) + D2 * dx)
-            // 二、 曼哈顿距离
+            // 二、 曼哈顿距离 return abs(a.x - b.x) + abs(a.y - b.y)
+            // 三、 欧氏距离
             if(dstX > dstY)
                 return 14 * dstY + 10 * (dstX - dstY);
             return 14 * dstX + 10 * (dstY - dstX);

@@ -77,9 +77,9 @@ namespace MyNamespace
             _textComponent.text = text;
         }
 
-        public Vector2 ToVector2()
+        public override string ToString()
         {
-            return new Vector2(gridY, gridX);
+            return string.Format("{0},{1}", gridX, gridY);
         }
     }
 }
