@@ -59,10 +59,11 @@ namespace MyNamespace
                     break;
                 }
 
-                //否则将它所有尚未检验过的直接子节点（邻节点）加入队列中。
+                ////否则将它所有尚未检验过的直接子节点（邻节点）加入队列中。
                 foreach(var neighbor in mgr.GetNeighbors(current))
                 {
-                    if(!visited.Contains(neighbor) && neighbor.walkable)
+                    Debug.Log(neighbor.ToString());
+                    if(!visited.Contains(neighbor))
                     {
                         visited.Add(neighbor);
                         frontier.Add(neighbor);
@@ -71,7 +72,7 @@ namespace MyNamespace
                         // Visual Step 算法步骤可视化
                         if(neighbor != end)
                         {
-                            outSteps.Add(new PushTileInFrontierStep(current, mgr, 0));
+                            outSteps.Add(new PushTileInFrontierStep(neighbor, mgr, 0));
                         }
                         // ~Visual stuff
                     }
@@ -120,7 +121,6 @@ namespace MyNamespace
             frontier.Add(start);
             visited.Add(start);
 
-
             while(frontier.Count > 0)
             {
                 var current = frontier[0];
@@ -145,24 +145,22 @@ namespace MyNamespace
                     pathSuccess = true;
                     break;
                 }
+
                 //否则将它所有尚未检验过的直接子节点（邻节点）加入队列中。
                 foreach(var neighbor in mgr.GetNeighbors(current))
                 {
-                    int newCostToNeighbour = current.gCost + GetDistance(current, neighbor);
-                    if(newCostToNeighbour < neighbor.gCost)
+                    int newCostToNeighbour = current.gCost + neighbor.weight;
+                    if(newCostToNeighbour < neighbor.gCost || !visited.Contains(neighbor))
                     {
                         neighbor.gCost = newCostToNeighbour;
                         neighbor.parent = current;
-                    }
 
-                    if(!visited.Contains(neighbor) && neighbor.walkable)
-                    {
                         visited.Add(neighbor);
                         frontier.Add(neighbor);
 
                         // Visual Step 算法步骤可视化
                         if(neighbor != end)
-                            outSteps.Add(new PushTileInFrontierStep(current, mgr, neighbor.gCost));
+                            outSteps.Add(new PushTileInFrontierStep(neighbor, mgr, neighbor.gCost));
                         // ~Visual stuff
                     }
                 }
@@ -195,12 +193,6 @@ namespace MyNamespace
             // ~Visual stuff
             List<GridItem> frontier = new List<GridItem>();
             HashSet<GridItem> visited = new HashSet<GridItem>();
-
-            //初始时，只有起始顶点的预估值cost为0，其他顶点的预估值d都为无穷大 ∞。
-            foreach(var tile in mgr.GridItems)
-            {
-                tile.hCost = int.MaxValue;
-            }
 
             start.hCost = 0;
 
@@ -236,21 +228,17 @@ namespace MyNamespace
                 //否则将它所有尚未检验过的直接子节点（邻节点）加入队列中。
                 foreach(var neighbor in mgr.GetNeighbors(current))
                 {
-                    int newCostToNeighbour = current.hCost + GetDistance(neighbor, end);
-                    if(newCostToNeighbour < neighbor.hCost)
-                    {
-                        neighbor.hCost = newCostToNeighbour;
-                        neighbor.parent = current;
-                    }
-
                     if(!visited.Contains(neighbor) && neighbor.walkable)
                     {
+                        neighbor.hCost = GetDistance(neighbor, end);
+                        neighbor.parent = current;
+
                         visited.Add(neighbor);
                         frontier.Add(neighbor);
 
                         // Visual Step 算法步骤可视化
                         if(neighbor != end)
-                            outSteps.Add(new PushTileInFrontierStep(current, mgr, neighbor.hCost));
+                            outSteps.Add(new PushTileInFrontierStep(neighbor, mgr, neighbor.hCost));
                         // ~Visual stuff
                     }
                 }
@@ -336,6 +324,11 @@ namespace MyNamespace
                     }
                 }
 
+                // Visual Step 算法步骤可视化
+                if(current != start && current != end)
+                    outSteps.Add(new VisitedTileStep(current, mgr));
+                // ~Visual stuff
+
                 openSet.Remove(current);
                 closeSet.Add(current);
 
@@ -355,24 +348,21 @@ namespace MyNamespace
 
                     // 逐个计算邻居的gCost
                     int newCostToNeighbour = current.gCost + GetDistance(current, neighbor);
+                    //Debug.LogFormat("newCostToNeighbour：{0}，neighbor.gCost：{1}", newCostToNeighbour, neighbor.gCost);
                     if(newCostToNeighbour < neighbor.gCost || !openSet.Contains(neighbor))
                     {
                         neighbor.gCost = newCostToNeighbour;
                         neighbor.hCost = GetDistance(end, neighbor);
                         neighbor.parent = current;//做成一个链表，最后用来做结果
                         //neighbor.SetText(string.Format("f:{0}\ng:{1}\nh:{2}", neighbor.fCost, neighbor.gCost,neighbor.hCost));
-                        if(openSet.Contains(neighbor))
-                        {
-                            //openSet
-                        }
-                        else
+                        if(!openSet.Contains(neighbor))
                         {
                             openSet.Add(neighbor);
                         }
                         // Visual Step 算法步骤可视化
                         if(neighbor != end)
                         {
-                            outSteps.Add(new PushTileInFrontierStep(current, mgr, neighbor.gCost));
+                            outSteps.Add(new PushTileInOpenSetStep(neighbor, mgr));
                         }
                         // ~Visual stuff
                     }

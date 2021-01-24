@@ -93,6 +93,20 @@ namespace MyNamespace
         }
     }
 
+    public class PushTileInOpenSetStep : VisualStep
+    {
+        public PushTileInOpenSetStep(GridItem tile, PathFindManager mgr) : base(tile, mgr)
+        {
+        }
+
+        public override void Execute()
+        {
+            _grid.gridType = GridType.Frontier;
+            _mgr.ResetGrid(_grid);
+            _grid.SetText(string.Format("f:{0}\ng:{1}\nh:{2}",_grid.fCost, _grid.gCost, _grid.hCost));
+        }
+    }
+
     // 访问过的格子
     public class VisitedTileStep : VisualStep
     {

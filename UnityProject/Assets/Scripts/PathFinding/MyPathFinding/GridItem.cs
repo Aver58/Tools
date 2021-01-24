@@ -40,6 +40,7 @@ namespace MyNamespace
         public int fCost{ get { return gCost + hCost; } }
         public int hCost;
         public int gCost;
+        public int weight { get { return (gridType == GridType.Obstacle) ? 50 : 1; } }
         public GridItem parent;
 
         // view

@@ -123,7 +123,7 @@ namespace MyNamespace
                 _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_GreedyBestFirstSearch);
                 StartCoroutine(_pathRoutine);
             }
-            if(Input.GetKeyDown(KeyCode.Alpha3))
+            if(Input.GetKeyDown(KeyCode.Alpha4))
             {
                 StopPathCoroutine();
                 _pathRoutine = FindPath(startItem, endItem, PathFinder.FindPath_AStar);
