@@ -385,6 +385,17 @@ namespace MyNamespace
             return null;
         }
 
+        /*
+         B星算法：
+         1. 用贪心算法，径直走向目标，
+         2. 遇到障碍物，沿着障碍向2边探索
+         https://zhuanlan.zhihu.com/p/86433957
+             */
+        //public static List<IVisualStep> FindPath_BStar(PathFindManager mgr, GridItem start, GridItem end)
+        //{
+
+        //}
+
         private static List<GridItem> ReversePath(GridItem start, GridItem end)
         {
             GridItem current = end;
@@ -406,12 +417,12 @@ namespace MyNamespace
             int dstX = Mathf.Abs(itemB.gridX - itemA.gridX);
             int dstY = Mathf.Abs(itemB.gridY - itemA.gridY);
             //return D * (deltaX + deltaY); D是一个系数
-            // 一、对角线距离 有下面这3种表示方法
+            // 一、对角线距离【允许对角运动】 有下面这3种表示方法
             //①return D * (dx + dy) + (D2 - 2 * D) * min(dx, dy)
             //②return D * max(dx, dy) +(D2 - D) * min(dx, dy)
             //③Patrick Lester if(dx > dy) (D * (dx - dy) + D2 * dy) else (D * (dy - dx) + D2 * dx)
-            // 二、 曼哈顿距离 return abs(a.x - b.x) + abs(a.y - b.y)
-            // 三、 欧氏距离
+            // 二、曼哈顿距离【不允许对角】 return abs(a.x - b.x) + abs(a.y - b.y)
+            // 三、欧几里得距离 return D * sqrt(dx * dx + dy *dy) 不要用平方根，这样做会靠近g(n)的极端情况而不再计算任何东西，A*退化成BFS：
             if(dstX > dstY)
                 return 14 * dstY + 10 * (dstX - dstY);
             return 14 * dstX + 10 * (dstY - dstX);
