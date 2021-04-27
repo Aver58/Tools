@@ -19,9 +19,7 @@
 
 -- 一对多：一个定义，多份实例【都是镜像，数据一样】
 -- 多对一：一个定义，多份实例【不同红点，参数区分】 以ModuleType.Vip_Level为例
--- todo 不同界面，一份实例，注册不同红点，target和redDotItem是一样的， 比如 PropActivityView
--- todo 这种情况没处理，释放的时候只会释放最后关闭界面的红点实例，再次打开界面，激活红点的时候，旧的句柄被卸载了，会报错,暂时处理就是界面Onclose的时候自己UnRegisterRedDot
--- todo 下个项目，不要耦合view层item了
+
 
 ---@class RedDotModule:ModuleBase
 ---@field _redDotMap table<string,RedTreeNode>
@@ -51,12 +49,15 @@ function _M:Init()
 
     -- 需要初始化的网络数据完成
     GameMsg.AddMessage("FRAMEWORK_INITDATA_COMPLETE", self, self.OnEnterGame)
-end
 
-function _M:OnEnterGame()
     self._redDotMap = {}
     self:InitTree()
 end
+
+--function _M:OnEnterGame()
+--    self._redDotMap = {}
+--    self:InitTree()
+--end
 
 --region 响应
 
@@ -173,25 +174,40 @@ end
 
 --endregion
 
+--region 【驱动层】
+
 function _M:GetRedDotCount(moduleType)
     if not moduleType then
-        printATError(gType.Red,"GetRedDotCount 没有传入 moduleType！")
+        printAError("[红点]GetRedDot没有传入moduleType")
+        return
+    end
+    local node = self:_GetTargetNode(moduleType)
+    return node:GetCount()
+end
+
+-- 红点数量变化
+function _M:OnRedDotUpdate(moduleType,count)
+    if not moduleType then
+        printAError("[红点]没有传入moduleType",moduleType,count)
         return
     end
 
     local node = self:_GetTargetNode(moduleType)
-    if not node then
-        printATError(gType.Red,"GetRedDotCount 没有找到指定节点！",moduleType)
+    if node then
+        node:OnRedDotUpdate(count)
     end
-
-    return node:GetCount()
 end
 
+--endregion
+
 -- 注册红点 【驱动层】
+-- todo 不同界面，一份实例，注册不同红点，target和redDotItem是一样的， 比如 PropActivityView
+-- todo 这种情况没处理，释放的时候只会释放最后关闭界面的红点实例，再次打开界面，激活红点的时候，旧的句柄被卸载了，会报错,暂时处理就是界面Onclose的时候自己UnRegisterRedDot
+-- todo 下个项目，不要耦合view层item了
 ---@param target ViewBase @传入view对象
 ---@param moduleType number @模块枚举
 ---@return RedDotItem
-function _M:RegisterRedDot(target, moduleType, redDotItem)
+function _M:RegisterRedDot(target, moduleType, redDotItem,param)
     local redDotDetail = ModuleDetail[moduleType]
     if not redDotDetail then
         printAError("[红点]没有找到指定模块的红点信息！moduleType：", moduleType)
@@ -222,8 +238,9 @@ function _M:RegisterRedDot(target, moduleType, redDotItem)
     redDotItem:Init(moduleType)
 
     ---@type RedTreeNode
-    local node = self:_GetTargetNode(moduleType)
-    printAF("[红点]注册成功：%s , childCount:%s", moduleType,node:GetChildCount())
+    --local node = self:_GetTargetNode(moduleType)
+    --node:AddItem(redDotItem,target,param)
+    --printAF("[红点]注册成功：%s , childCount:%s", moduleType,node:GetChildCount())
     return redDotItem
 end
 
@@ -231,72 +248,33 @@ end
 ---@param moduleType ModuleType @模块枚举
 ---@param targetItem RedDotItem
 function _M:UnRegisterRedDot(moduleType, targetItem)
-    if not moduleType or not targetItem then
-        return
-    end
-
-    local node = self:_GetTargetNode(moduleType)
-    local result = false
-    if node then
-        result = node:RemoveItem(targetItem)
-    end
-
-    if result == false then
-        printA("[红点]UnRegisterRedDot没有找到指定模块的红点实例！moduleType：", moduleType)
-    end
+    --if not moduleType or not targetItem then
+    --    return
+    --end
+    --
+    --local node = self:_GetTargetNode(moduleType)
+    --local result = false
+    --if node then
+    --    result = node:RemoveItem(targetItem)
+    --end
+    --
+    --if result == false then
+    --    printA("[红点]UnRegisterRedDot没有找到指定模块的红点实例！moduleType：", moduleType)
+    --end
 end
 
 function _M:ClearRedDot(moduleType)
-    if not moduleType then
-        return
-    end
-
-    local node = self:_GetTargetNode(moduleType)
-
-    if node then
-        node:ClearItem()
-    else
-        printA("[红点]UnRegisterRedDot没有找到指定模块的红点实例！moduleType：", moduleType)
-    end
-end
-
--- 红点数量变化
-function _M:OnRedDotUpdate(moduleType)
-    if not moduleType then
-        return
-    end
-
-    local node = self:_GetTargetNode(moduleType)
-    if node then
-        self:MarkDirtyNode(node)
-    end
-end
-
---endregion
-
---region 脏标记
-
--- 如果同一帧多个子节点同时改变状态，将导致父节点进行额外的无用刷新，所以引入脏标记
-function _M:Update(dt)
-    if _dirtyNodeCount > 0 then
-        for moduleType, node in pairs(self._dirtyNodeMap) do
-            node:OnMsg()
-            self._dirtyNodeMap[moduleType] = nil
-            printA("[红点]清理脏节点:",node:GetKey())
-        end
-        _dirtyNodeCount = 0
-    end
-end
-
--- 标记为脏节点
-function _M:MarkDirtyNode(node)
-    if node == nil then
-        return
-    end
-    self._dirtyNodeMap[node:GetKey()] = node
-    node:SetDirty()
-    _dirtyNodeCount = _dirtyNodeCount + 1
-    printA("[红点]标记脏节点",node:GetKey(),_dirtyNodeCount)
+    --if not moduleType then
+    --    return
+    --end
+    --
+    --local node = self:_GetTargetNode(moduleType)
+    --
+    --if node then
+    --    node:ClearItem()
+    --else
+    --    printA("[红点]UnRegisterRedDot没有找到指定模块的红点实例！moduleType：", moduleType)
+    --end
 end
 
 --endregion
@@ -367,7 +345,9 @@ end
 
 -- 递归一棵树
 function _M:RecursiveOneTree(node,parentGO)
-    local obj = GameObject(node:GetKey())
+    local count = node:GetRedDotCount()
+    local selfCount = node:GetSelfRedDotCount()
+    local obj = GameObject(string.format("【%s】total:%d self:%d",node:GetName(),count,selfCount))
     obj:SetParent(parentGO.transform)
     if node:GetChildCount() > 0 then
         for i, childNode in ipairs(node:GetChildList()) do
