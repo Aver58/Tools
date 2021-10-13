@@ -1,0 +1,3 @@
+[submodule "excel2lua"]
+	path = excel2lua
+	url = https://github.com/Aver58/excel2lua.git
