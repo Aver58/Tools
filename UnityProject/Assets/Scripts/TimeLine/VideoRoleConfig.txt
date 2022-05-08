@@ -1,0 +1,4 @@
+string	Vector3	Vector3	float	float	string	string[]	float[]	float[]	string[]
+id	startPos	endPos	startTime	duration	defaultActionSign	actionSigns	actionStartTimes	actionDurings	effectSigns
+时装id	起始位置	结束位置	起始时间（单位秒）	持续时间	默认动作	播放动作(目前最多支持到3个动作，需要的话再提)	播放动作时间	动作持续时长(暂时只支持单次动作，播完返回默认动作)	播放特效
+21	(-11.0, 0.0, 0.0)	(11.0, 0.0, 0.0)	0	10	HTR@stand_sprint_forward	HTR@jump_again|HTR@keepdance_34	1|4	2|4.8	0|daoju@keepdance_34	
