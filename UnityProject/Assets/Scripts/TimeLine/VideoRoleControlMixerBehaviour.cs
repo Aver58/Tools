@@ -14,7 +14,9 @@ public class VideoRoleControlMixerBehaviour : PlayableBehaviour {
     private string[] effectSigns;
     private bool isInit = false;
     private bool isStartPlay = false;
-        
+    private PlayableDirector playableDirector;
+    private TimelineClip timelineClip;
+
     #region PlayableBehaviour
 
     // 相当于 Update 帧
@@ -42,6 +44,21 @@ public class VideoRoleControlMixerBehaviour : PlayableBehaviour {
                 Debug.Log("【Model】没有取到指定id的模型！" + suitId);
             }
 
+            if (playableDirector != null) {
+                var timelineAsset = playableDirector.playableAsset as TimelineAsset;
+                if (timelineAsset != null) {
+                    foreach (var trackAsset in timelineAsset.GetRootTracks()) {
+                        foreach (var clip in trackAsset.GetClips()) {
+                            var videoRoleControlAsset = clip.asset as VideoRoleControlAsset;
+                            if (videoRoleControlAsset != null && videoRoleControlAsset.template.suitID == suitId) {
+                                timelineClip = clip;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
             isInit = true;
         }
         
@@ -93,6 +110,12 @@ public class VideoRoleControlMixerBehaviour : PlayableBehaviour {
         }
     }
     
+    public override void OnPlayableCreate(Playable playable)
+    {
+        base.OnPlayableCreate(playable);
+        playableDirector = (playable.GetGraph().GetResolver() as PlayableDirector);
+    }
+
     #endregion
 
     // 卸载模型
