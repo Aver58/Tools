@@ -1,6 +1,7 @@
 import json
 import requests
 import asyncio
+import aiohttp
  
 # https://platform.openai.com/docs/api-reference/chat/create
 YOUR_API_KEY = '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'
@@ -27,13 +28,18 @@ def generate_response(content):
         print(errorStr)
         return errorStr
 
-async def coroutine1():
-    print('coroutine1 started')
-    await generate_response(b'are you ok?')
-    print('coroutine1 ended')
+async def async_request(content):
+    async with aiohttp.ClientSession() as session:
+        data = {
+            'model': model_engine,
+            'messages': [{"role": "user", "content": content.decode("utf-8")}]
+        }
+        async with session.post(url, headers=headers, json=data) as response:
+            result = await response.text()
+            return result
 
-async def main():
-    task1 = asyncio.create_task(coroutine1())
-    await task1
-
-asyncio.run(main())
+try:
+    result = asyncio.run(asyncio.wait_for(async_request(b'Hello'), timeout=30))
+    print(result)
+except asyncio.TimeoutError:
+    print('Async request timed out')
