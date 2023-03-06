@@ -2,7 +2,9 @@ import hashlib
 import reply
 import receive
 import web
-from ChatGptUtil import generate_response
+from ChatGptUtil import sync_request
+from ChatGptUtil import async_request
+import asyncio
 
 class Handle(object):
     def POST(self):
@@ -15,9 +17,15 @@ class Handle(object):
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 print("收到公众号输入消息：", recMsg.Content)
-                result = generate_response(recMsg.Content)
+                result = sync_request(recMsg.Content)
                 print("输出结果：", result)
-                content = result
+                try:
+                    result = asyncio.run(asyncio.wait_for(async_request(recMsg.Content), timeout=30))
+                    # todo 主动回复 记录 FromUserName，异步结束，
+
+                except asyncio.TimeoutError:
+                    return 'Async request timed out'
+                content = "正在等待AI回复，请稍候，不要重复请求！"
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
             else:
