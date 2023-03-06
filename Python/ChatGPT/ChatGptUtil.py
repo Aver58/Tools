@@ -4,8 +4,8 @@ import asyncio
 import aiohttp
  
 # https://platform.openai.com/docs/api-reference/chat/create
-YOUR_API_KEY = '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'
 model_engine = "gpt-3.5-turbo-0301"  # gpt-3.5-turbo and gpt-3.5-turbo-0301
+YOUR_API_KEY = ''
 url = 'https://api.openai.com/v1/chat/completions'
 headers = {
     'Content-Type': 'application/json',
