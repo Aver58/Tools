@@ -1,0 +1,21 @@
+.DS_Store
+.vscode/
+
+# cache
+__pycache__/
+**/**/__pycache__
+
+# venv
+.venv/
+
+# secure config
+**/**/secure.py
+
+# uwsgi
+**/uwsgi/uwsgi*
+
+# config
+config.ini
+
+# env
+.env

@@ -1,0 +1,9 @@
+services:
+  web:
+    build:
+      context: .
+      target: builder
+    ports:
+      - '8081:8081'
+    volumes:
+      - .:/app
